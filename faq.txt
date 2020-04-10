@@ -1,0 +1,2 @@
+Q: Programm crasht beim Starten mit "EOFError: Settings File corrupted.".
+A: Der Inhalt der settings.json wurde bearbeitet. Lösche die Datei, damit sie erneut erstellt werden kann

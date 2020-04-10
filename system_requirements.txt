@@ -1,0 +1,22 @@
+Spec : Minimum / Recommended
+
+EXTREME LOW-POWER VERSION:
+
+CPU: Single Core 500MHz (will work with lower end hardware, but won't be playable at all) / Single Core 1.5 GHz
+RAM: 32MB / 64MB
+GPU: Broadcom VideoCore IV or equivalent 720p capable GPU / Intel HD Graphics (1st Gen)
+Display: 720p or higher / 720p or higher
+
+LOW-POWER VERSION
+
+CPU: Single Core 1GHz (will work with lower end hardware, but won't be playable at all) / Single Core 2GHz or Dual Core 1.5 GHz
+RAM: 32MB / 64MB
+GPU: Broadcom VideoCore IV or equivalent 720p capable GPU / Intel HD Graphics (1st Gen)
+Display: 720p or higher / 720p or higher
+
+STANDARD VERSION
+
+CPU: Dual Core 2GHz / Dual Core 3GHz
+RAM: 32MB / 64MB
+GPU: Broadcom VideoCore IV or equivalent 720p capable GPU / Intel HD Graphics (1st Gen)
+Display: 720p or higher / 720p or higher
