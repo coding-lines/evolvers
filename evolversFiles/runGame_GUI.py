@@ -80,14 +80,14 @@ class game:
         cameraPos = [1,1,34,22,1] if viewDistance == 32 else [1,1,68,44,1] if viewDistance == 64 else [1,1,18,12,1]
         trueFPS = 60
         textureStorage: dict = {}
-        x = time.time()
-        print("Generiere Kreaturen... Das kann einige Zeit dauern...")
-        gameEntities = creatureEngine.initCreatures(startCreatures,worldSize)
-        print(str(startCreatures)+" Kreaturen in "+str(time.time()-x) + " Sekunden generiert.")
-        x = time.time()
-        print("Generiere Welt... Das kann einige Zeit dauern...")
-        gameWorld = creatureEngine.initWorld(worldSize[0],worldSize[1],worldGeneration,worldSmooth)
-        print("Welt von der Größe",str(worldSize[0]),"x",str(worldSize[1]), "in",str(time.time()-x),"Sekunden generiert.")
+        #x = time.time()
+        #print("Generiere Kreaturen... Das kann einige Zeit dauern...")
+        #gameEntities = creatureEngine.initCreatures(startCreatures,worldSize)
+        #print(str(startCreatures)+" Kreaturen in "+str(time.time()-x) + " Sekunden generiert.")
+        #x = time.time()
+        #print("Generiere Welt... Das kann einige Zeit dauern...")
+        #gameWorld = creatureEngine.initWorld(worldSize[0],worldSize[1],worldGeneration,worldSmooth)
+        #print("Welt von der Größe",str(worldSize[0]),"x",str(worldSize[1]), "in",str(time.time()-x),"Sekunden generiert.")
         saturationMax = 11
         #Speicherort von Spieldaten oder Texturen
 
@@ -426,7 +426,6 @@ game.storage.ctrlTexts = [game.storage.fontSmall.render("WASD : Kreatur bewegen"
                           ,game.storage.fontSmall.render("X: Reproduzieren (200 Energie)", True, [255,255,255])]
 s.set_alpha(180)
 toast.set_alpha(180)
-game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
 s.fill((0,0,0))
 toast.fill((0,0,0))
 
@@ -602,6 +601,7 @@ while not game.state.done:
                             game.storage.gameWorld = creatureEngine.initWorld(game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100,game.storage.worldGeneration,game.storage.worldSmooth)
                             game.timers.frame = 0
                             game.timers.seconds = 0
+                            game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
                             game.options.currentScreen = "game"
 
 
