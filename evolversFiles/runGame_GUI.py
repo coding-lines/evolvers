@@ -357,6 +357,7 @@ class execute:
                 pygame.draw.rect(screen,[255,255,255],[165,400,950,5])
                 pygame.draw.rect(screen,[150,150,150],[165 + game.storage.entityCountSlider,380,15,45])
                 screen.blit(entitySliderText,((game.options.dimensions[0]//2)-(entitySliderText.get_rect().width//2),330))
+                screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
 
 
 
@@ -436,8 +437,8 @@ newGame_HOVER = game.storage.fontButton.render("Neues Spiel", True, [100,100,100
 loadGame = game.storage.fontButton.render("Spiel laden", True, [255,255,255])
 loadGame_HOVER = game.storage.fontButton.render("Spiel laden", True, [100,100,100])
 
-saveGame = game.storage.fontButton.render("START", True, [255,255,255])
-saveGame_HOVER = game.storage.fontButton.render("START", True, [0,200,0])
+startGame = game.storage.fontButton.render("START", True, [255,255,255])
+startGame_HOVER = game.storage.fontButton.render("START", True, [0,200,0])
 
 benchmarkRunning = game.storage.fontSubHeader.render("Benchmark läuft... Bitte warten...", True, [255,255,255])
 lowend = game.storage.fontSubHeader.render("Simuliere Szenario 1/3", True, [255,255,255])
@@ -596,6 +597,12 @@ while not game.state.done:
                     elif game.options.currentScreen == "newGame":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
                             game.options.currentScreen = "gamemodeSelect"
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)):
+                            game.storage.gameEntities = creatureEngine.initCreatures(game.storage.entityCountSlider+10)
+                            game.storage.gameWorld = creatureEngine.initWorld(game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100,game.storage.worldGeneration,game.storage.worldSmooth)
+                            game.timers.frame = 0
+                            game.timers.seconds = 0
+                            game.options.currentScreen = "game"
 
 
         if event.type == pygame.KEYDOWN:
