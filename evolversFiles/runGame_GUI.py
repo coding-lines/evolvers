@@ -598,7 +598,7 @@ while not game.state.done:
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(newGame.get_rect().width//2),(game.options.dimensions[0]//2)+(newGame.get_rect().width//2)) and mousePos[1] in range(200,270)):
                             game.options.currentScreen = "newGame"
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(loadGame.get_rect().width//2),(game.options.dimensions[0]//2)+(loadGame.get_rect().width//2)) and mousePos[1] in range(290,360)):
-                            game.options.currentScreen = "loadGame" if len(game.storage.savedWorldsList) != 0 else "gamemodeSelect"
+                            game.options.currentScreen = "loadGame" if game.storage.savedWorldsList != [""] else "gamemodeSelect"
                     elif game.options.currentScreen == "loadGame":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
                             game.options.currentScreen = "gamemodeSelect"
