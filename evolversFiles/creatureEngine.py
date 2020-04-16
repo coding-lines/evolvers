@@ -134,17 +134,17 @@ def runIteration(creatures,world):
                 creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
-                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"])/2
-                creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(134,226):
-                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"])/2 
-                creatures[creature]["y"] += creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"]*3)/4 
+                #creatures[creature]["y"] += creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(44,136):
-                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] += creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] += creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(224,316):
-                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] -= creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] -= creatures[creature]["attributes"]["realFleeSpeed"]
             creatures[creature]["energy"] -= ceil(creatures[creature]["attributes"]["fleeSpeed"]/3)
             #Bewegung nach Rotation und Geschwindigkeit
             #FleeStateReal
@@ -152,17 +152,17 @@ def runIteration(creatures,world):
             creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
-                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"])/2
-                creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(134,226):
-                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"])/2 
-                creatures[creature]["y"] += creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] += creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(44,136):
-                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] += creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] += creatures[creature]["attributes"]["realFleeSpeed"]
             if creatures[creature]["rotation"] in range(224,316):
-                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] -= creatures[creature]["attributes"]["realFleeSpeed"]
+                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realFleeSpeed"] + creatures[creature]["movementX"]*3)/4
+                #creatures[creature]["x"] -= creatures[creature]["attributes"]["realFleeSpeed"]
             creatures[creature]["energy"] -= ceil(creatures[creature]["attributes"]["fleeSpeed"]/2)
             #Bewegung nach Rotation und Geschwindigkeit
             #FleeStateFake
@@ -177,17 +177,17 @@ def runIteration(creatures,world):
             
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
-                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementY"])/2
-                creatures[creature]["y"] -= creatures[creature]["attributes"]["realEatSpeed"]
+                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] -= creatures[creature]["attributes"]["realEatSpeed"]
             if creatures[creature]["rotation"] in range(134,226):
-                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementY"])/2 
-                creatures[creature]["y"] += creatures[creature]["attributes"]["realEatSpeed"]
+                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] += creatures[creature]["attributes"]["realEatSpeed"]
             if creatures[creature]["rotation"] in range(44,136):
-                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] += creatures[creature]["attributes"]["realEatSpeed"]
+                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementX"]*3)/4
+                #creatures[creature]["x"] += creatures[creature]["attributes"]["realEatSpeed"]
             if creatures[creature]["rotation"] in range(224,316):
-                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] -= creatures[creature]["attributes"]["realEatSpeed"]
+                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realEatSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] -= creatures[creature]["attributes"]["realEatSpeed"]
             #Bewegung nach Rotation und Geschwindigkeit
 
             creatures[creature]["energy"] -= ceil(creatures[creature]["attributes"]["eatSpeed"]/2)
@@ -198,17 +198,17 @@ def runIteration(creatures,world):
             
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
-                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementY"])/2
-                creatures[creature]["y"] -= creatures[creature]["attributes"]["realWalkSpeed"]
+                creatures[creature]["movementY"] = (-creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementY"]*3)/4
+                #creatures[creature]["y"] -= creatures[creature]["attributes"]["realWalkSpeed"]
             if creatures[creature]["rotation"] in range(134,226):
-                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementY"])/2 
-                creatures[creature]["y"] += creatures[creature]["attributes"]["realWalkSpeed"]
+                creatures[creature]["movementY"] = (creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementY"]*3)/4 
+                #creatures[creature]["y"] += creatures[creature]["attributes"]["realWalkSpeed"]
             if creatures[creature]["rotation"] in range(44,136):
-                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] += creatures[creature]["attributes"]["realWalkSpeed"]
+                creatures[creature]["movementX"] = (creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] += creatures[creature]["attributes"]["realWalkSpeed"]
             if creatures[creature]["rotation"] in range(224,316):
-                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementX"])/2 
-                creatures[creature]["x"] -= creatures[creature]["attributes"]["realWalkSpeed"]
+                creatures[creature]["movementX"] = (-creatures[creature]["attributes"]["realWalkSpeed"] + creatures[creature]["movementX"]*3)/4 
+                #creatures[creature]["x"] -= creatures[creature]["attributes"]["realWalkSpeed"]
 
             creatures[creature]["energy"] -= ceil(creatures[creature]["attributes"]["walkSpeed"]/2)
             
@@ -220,7 +220,8 @@ def runIteration(creatures,world):
                     creatures[creature]["reproduceTime"] = 60
                     #print("Reproduction")
         
-        
+        creatures[creature]["x"] += creatures[creature]["movementX"]
+        creatures[creature]["y"] += creatures[creature]["movementY"]
         
         if creatures[creature]["rotation"] not in range(0,316):
             creatures[creature]["rotation"] = 0
