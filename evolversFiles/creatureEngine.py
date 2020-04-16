@@ -9,6 +9,15 @@ maintainPopulation = 5 #Wenn die Bevölkerung niedriger als der eingegebene Wert
 def avg(a,b):
     return (a+b)/2
 
+def random_rotation(rotation):
+    if randint(0,100) < 5:
+        if bool(randint(0,1)):
+            return rotation + 45 #Zufällige Rotation
+        else:
+            return rotation - 45
+        if rotation < 0 or rotation > 315:
+            return 0
+    return rotation
 
 def newCreature(worldSize=[100,100]):
     bt = randint(100,400)
@@ -116,22 +125,12 @@ def runIteration(creatures,world):
                     elif world[0][int(creatures[creature]["x"]-1)][int(creatures[creature]["y"]-1)]:
                         creatures[creature]["rotation"] = 315
                     else:
-                        if randint(0,100) < 5:
-                            if bool(randint(0,1)):
-                                creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                            else:
-                                creatures[creature]["rotation"] -= 45
-                            if creatures[creature]["rotation"] < 0:
-                                creatures[creature]["rotation"] = 0
+                        creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
+                else:
+                    creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
                 
             except:
-                if randint(0,100) < 5:
-                    if bool(randint(0,1)):
-                        creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                    else:
-                        creatures[creature]["rotation"] -= 45
-                    if creatures[creature]["rotation"] < 0:
-                        creatures[creature]["rotation"] = 0
+                creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
                 creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
@@ -145,13 +144,7 @@ def runIteration(creatures,world):
             #Bewegung nach Rotation und Geschwindigkeit
             #FleeStateReal
         elif creatures[creature]["attributes"]["fleeState"] == 2 and world[0][int(creatures[creature]["x"])][int(creatures[creature]["y"])]:
-            if randint(0,100) < 5:
-                if bool(randint(0,1)):
-                    creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                else:
-                    creatures[creature]["rotation"] -= 45
-                if creatures[creature]["rotation"] < 0:
-                    creatures[creature]["rotation"] = 0
+            creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
                 creatures[creature]["y"] -= creatures[creature]["attributes"]["realFleeSpeed"]
@@ -164,42 +157,15 @@ def runIteration(creatures,world):
             creatures[creature]["energy"] -= ceil(creatures[creature]["attributes"]["fleeSpeed"]/2)
             #Bewegung nach Rotation und Geschwindigkeit
             #FleeStateFake
-        elif creatures[creature]["energy"]-randint(-150,50) < creatures[creature]["attributes"]["eatState"]:
+        elif creatures[creature]["energy"]+randint(-150,50) < creatures[creature]["attributes"]["eatState"]:
             if world[1][int(creatures[creature]["x"])][int(creatures[creature]["y"])] > 1:
                 #Essen, wenn mindestens eine Energieeinheit im Boden verfügbar
                 world[1][int(creatures[creature]["x"])][int(creatures[creature]["y"])] -= 1
                 creatures[creature]["energy"] += 7 #Essen pro Energieeinheit
-                if randint(0,1000) == 69:
-                    creatures[creature]["energy"] += 10
-                    if randint(0,1000) == 420:
-                        creatures[creature]["energy"] += 100
-                        print("Nice!")
 
-            if randint(0,100) < 10:
-                if bool(randint(0,1)):
-                    creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                else:
-                    creatures[creature]["rotation"] -= 45
-                if creatures[creature]["rotation"] < 0:
-                    creatures[creature]["rotation"] = 0
-            if creatures[creature]["attributes"]["fleeState"] == 1:
-                try:
-                    if not world[0][creatures[creature]["x"]][creatures[creature]["y"]-1] and creatures[creature]["rotation"] == 180:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]][creatures[creature]["y"]+1] and creatures[creature]["rotation"] == 0:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]+1][creatures[creature]["y"]] and creatures[creature]["rotation"] == 90:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]-1][creatures[creature]["y"]] and creatures[creature]["rotation"] == 270:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90]) #Zufällige Rotation
-                except:
-                    if randint(0,100) < 5:
-                        if bool(randint(0,1)):
-                            creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                        else:
-                            creatures[creature]["rotation"] -= 45
-                        if creatures[creature]["rotation"] < 0:
-                            creatures[creature]["rotation"] = 0
+
+            creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
+            
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
                 creatures[creature]["y"] -= creatures[creature]["attributes"]["realEatSpeed"]
@@ -215,32 +181,8 @@ def runIteration(creatures,world):
             #EatState
         else:
             #WalkState
-            if randint(0,100) < 10:
-                if bool(randint(0,1)):
-                    creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                else:
-                    creatures[creature]["rotation"] -= 45
-                if creatures[creature]["rotation"] < 0:
-                    creatures[creature]["rotation"] = 0
+            creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"])
             
-            if creatures[creature]["attributes"]["fleeState"] == 1:
-                try:
-                    if not world[0][creatures[creature]["x"]][creatures[creature]["y"]-1] and creatures[creature]["rotation"] == 180:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]][creatures[creature]["y"]+1] and creatures[creature]["rotation"] == 0:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]+1][creatures[creature]["y"]] and creatures[creature]["rotation"] == 90:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                    if not world[0][creatures[creature]["x"]-1][creatures[creature]["y"]] and creatures[creature]["rotation"] == 270:
-                        creatures[creature]["rotation"] += choice([-90,-45,0,45,90])
-                except:
-                    if randint(0,100) < 5:
-                        if bool(randint(0,1)):
-                            creatures[creature]["rotation"] += 45 #Zufällige Rotation
-                        else:
-                            creatures[creature]["rotation"] -= 45
-                        if creatures[creature]["rotation"] < 0:
-                            creatures[creature]["rotation"] = 0
             
             if creatures[creature]["rotation"] in range(0,45) or creatures[creature]["rotation"] in range(314,360):
                 creatures[creature]["y"] -= creatures[creature]["attributes"]["realWalkSpeed"]
@@ -266,18 +208,10 @@ def runIteration(creatures,world):
             
         if creatures[creature]["x"]+1 > len(world[0]) or creatures[creature]["x"]-1 < 0:
             creatures[creature]["x"] = 1
-            if bool(randint(0,1)):
-                creatures[creature]["rotation"] += 45 #Zufällige Rotation
-            else:
-                creatures[creature]["rotation"] -= 45
-            if creatures[creature]["rotation"] < 0:
-                creatures[creature]["rotation"] = 0
+            creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"]) #Verhindern, dass Kreaturen sich außerhalb der x-Koordinaten der Welt bewegen
         if creatures[creature]["y"]+1 > len(world[0][0]) or creatures[creature]["y"]-1 < 0:
-            creatures[creature]["y"] = 1
-            if bool(randint(0,1)):
-                creatures[creature]["rotation"] += choice([-45,0,45])
-            if creatures[creature]["rotation"] < 0:
-                creatures[creature]["rotation"] = 0
+            creatures[creature]["y"] = 1 #Verhindern, dass Kreaturen sich außerhalb der y-Koordinaten der Welt bewegen
+            creatures[creature]["rotation"] = random_rotation(creatures[creature]["rotation"]) #TODO: Kreaturen nicht immer an x/y = 1 teleportieren, sondern sie an die Grenzen stoßen lassen
         
         if not world[0][int(creatures[creature]["x"])][int(creatures[creature]["y"])]:
             creatures[creature]["energy"] -= ceil(creatures[creature]["energy"] / 100)
