@@ -23,8 +23,8 @@ class game:
             with open("settings.json","w") as f:
                 f.write("{'viewDistance':32,'sizeAffect':False}")
                 f.close()
-        if not os.path.isdir("games"):
-            os.mkdir("games")
+        if not os.path.isdir("save"):
+            os.mkdir("save")
         if not os.path.isfile("data"):
             with open("data","w") as f:
                 f.write("")
@@ -447,11 +447,11 @@ s.fill((0,0,0))
 toast.fill((0,0,0))
 
 
-newGame = game.storage.fontButton.render("Neues Spiel", True, const.WHITE)
-newGame_HOVER = game.storage.fontButton.render("Neues Spiel", True, const.GREY)
+newGame = game.storage.fontButton.render("Neue Simulation", True, const.WHITE)
+newGame_HOVER = game.storage.fontButton.render("Neue Simulation", True, const.GREY)
 
-loadGame = game.storage.fontButton.render("Spiel laden", True, const.WHITE)
-loadGame_HOVER = game.storage.fontButton.render("Spiel laden", True, const.GREY)
+loadGame = game.storage.fontButton.render("Simulation laden", True, const.WHITE)
+loadGame_HOVER = game.storage.fontButton.render("Simulation laden", True, const.GREY)
 
 startGame = game.storage.fontButton.render("START", True, const.WHITE)
 startGame_HOVER = game.storage.fontButton.render("START", True, const.GREEN)
@@ -583,13 +583,13 @@ while not game.state.done:
                                     data += game.storage.textinput.get_text()
                                     f.write(data)
                                     f.close()
-                                with open("games/"+game.storage.textinput.get_text()+"_world.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_world.json","w") as f:
                                     f.write(str(game.storage.gameWorld))
                                     f.close()
-                                with open("games/"+game.storage.textinput.get_text()+"_creatures.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_creatures.json","w") as f:
                                     f.write(str(game.storage.gameEntities))
                                     f.close()
-                                with open("games/"+game.storage.textinput.get_text()+"_players.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_players.json","w") as f:
                                     f.write(str(game.storage.playerInformation))
                                     f.close()
                                 with open("data","r") as f:
@@ -611,13 +611,13 @@ while not game.state.done:
                         if mousePos[0] in range(1196, 1260) and mousePos[1] in range(328, 392):
                             game.storage.worldNumber += 1 if game.storage.worldNumber+1 < len(game.storage.savedWorldsList) else 0
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)):
-                            with open("games/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_world.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_world.json","r") as f:
                                 game.storage.gameWorld = eval(f.read())
                                 f.close()
-                            with open("games/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_players.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_players.json","r") as f:
                                 game.storage.playerInformation = eval(f.read())
                                 f.close()
-                            with open("games/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_creatures.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_creatures.json","r") as f:
                                 game.storage.gameEntities = eval(f.read())
                                 f.close()
                             game.timers.frame = 0
