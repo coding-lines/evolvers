@@ -31,6 +31,8 @@ class game:
                 f.close()
         try:
             optionsFile = eval(readfile("settings.json"))
+            if not (str(type(optionsFile))  == "<class 'dict'>"):
+                raise EOFError("Settings File corrupted")
         except:
             raise EOFError("Settings File corrupted")
         #Spieloptionen
@@ -57,12 +59,14 @@ class game:
         
         entityCountSlider = 0 #Slider bei der Erstellung der Kreaturen
         
-        worldNumber = 0
-        noCommaFrames = 0
-        textinput = pygame_textinput.TextInput(font_family="font_pt-sans.ttf", text_color=(255,255,255),font_size=40, max_string_length=16)
-        benchmarkFrame = 0
+        worldNumber = 0 #Nummer der ausgewählten Welt auf dem LoadScreen
+        noCommaFrames = 0 #Framezeit der Komma-Fehlermeldung beim Speichern
+        textinput = pygame_textinput.TextInput(font_family="font_pt-sans.ttf", text_color=(255,255,255),font_size=40, max_string_length=16) #Texteingabefeld
+        benchmarkFrame = 0 #Fortschritt eines Benchmarks
         try:
-            optionsFile = eval(readfile("settings.json"))
+            optionsFile = eval(readfile("settings.json")) #Lesen aus der Einstellungsdatei
+            if not (str(type(optionsFile))  == "<class 'dict'>"):
+                raise EOFError("Settings File corrupted")
         except:
             raise EOFError("Settings File corrupted")
         viewDistance = optionsFile["viewDistance"]
