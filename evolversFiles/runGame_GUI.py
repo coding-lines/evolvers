@@ -1,6 +1,6 @@
 import pygame, pygame_textinput
 import time, os
-import creatureEngine,cameraEngine,creatureClickEngine,mouseHoverEngine
+import creatureEngine,cameraEngine,creatureClickEngine,mouseHoverEngine,evolversRenderer
 
 def readfile(name):
     with open(name,"r") as f:
@@ -25,6 +25,8 @@ class game:
                 f.close()
         if not os.path.isdir("save"):
             os.mkdir("save")
+        if not os.path.isdir("renders"):
+            os.mkdir("renders")
         if not os.path.isfile("data"):
             with open("data","w") as f:
                 f.write("")
@@ -253,7 +255,7 @@ class execute:
                     screen.blit(energyText,(1010,300))
 
                     for i,n in enumerate(game.storage.ctrlTexts):
-                        screen.blit(n,(1010,470+(i*20)))
+                        screen.blit(n,(1010,450+(i*20)))
 
                     s_speedText = game.storage.fontSmall.render("Simulationsgeschwindigkeit: "+str(game.storage.playBackSpeed), True, const.WHITE)
                     screen.blit(s_speedText,(1010,670))
@@ -440,7 +442,8 @@ game.storage.ctrlTexts = [game.storage.fontSmall.render("WASD : Kreatur bewegen"
                           ,game.storage.fontSmall.render("M: Mousehover umschalten", True, const.WHITE)
                           ,game.storage.fontSmall.render("J: Spieler spawnen/löschen", True, const.WHITE)
                           ,game.storage.fontSmall.render("Q: Essen (als Spieler)", True, const.WHITE)
-                          ,game.storage.fontSmall.render("X: Reproduzieren (200 Energie)", True, const.WHITE)]
+                          ,game.storage.fontSmall.render("X: Reproduzieren (200 Energie)", True, const.WHITE)
+                          ,game.storage.fontSmall.render("F12: Spielfeld rendern", True, const.WHITE)]
 s.set_alpha(180)
 toast.set_alpha(180)
 s.fill((0,0,0))
@@ -640,6 +643,8 @@ while not game.state.done:
         if event.type == pygame.KEYDOWN:
             #CONTROLS
             if game.options.currentScreen == "game":
+                if event.key == pygame.K_F12:
+                    evolversRenderer.render_frame(game.storage.gameWorld,game.storage.gameEntities,10)
                 if event.key == pygame.K_ESCAPE:
                     game.options.currentScreen = "escapeMenu"
                     game.storage.simulationRunning = False
