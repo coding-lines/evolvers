@@ -629,6 +629,7 @@ while not game.state.done:
                             game.options.currentScreen = "gamemodeSelect"
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)):
                             game.storage.gameEntities = creatureEngine.initCreatures(game.storage.entityCountSlider+10)
+                            game.storage.worldSize = [game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100]
                             game.storage.gameWorld = creatureEngine.initWorld(game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100,game.storage.worldGeneration,game.storage.worldSmooth)
                             game.timers.frame = 0
                             game.timers.seconds = 0
