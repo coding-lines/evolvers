@@ -5,6 +5,5 @@ evolversFiles/renders
 evolversFiles/renders/*
 evolversFiles/settings.json
 evolversFiles/system_requirements.txt
-__pycache__
 evolversFiles/__pycache__
 evolversFiles/__pycache__/*
