@@ -581,11 +581,12 @@ while not game.state.done:
                                 with open("data","r") as f:
                                     data = f.read()
                                     f.close()
-                                with open("data","w") as f:
-                                    data += "" if len(data) == 0 else ","
-                                    data += game.storage.textinput.get_text()
-                                    f.write(data)
-                                    f.close()
+                                if not game.storage.textinput.get_text() in data.split(","):
+                                    with open("data","w") as f:
+                                        data += "" if len(data) == 0 else ","
+                                        data += game.storage.textinput.get_text()
+                                        f.write(data)
+                                        f.close()
                                 with open("save/"+game.storage.textinput.get_text()+"_world.json","w") as f:
                                     f.write(str(game.storage.gameWorld))
                                     f.close()
