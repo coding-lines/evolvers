@@ -27,30 +27,7 @@ def newCreature(worldSize=[100,100]):
     return {"name":creatureNames.continueName(creatureNames.continueName(creatureNames.continueName(creatureNames.continueName(creatureNames.newName())))),"energy":100,"parent":"None","x":randint(0,worldSize[0]-1),"reproduceTime":10,"rotation":choice([0,45,90,135,180,225,270,315]),"y":randint(0,worldSize[1]-1),"movementX":0,"movementY":0,"generation":0,"color":col,"boundaries":bnds,"age":0,"attributes":{"birthTreshold":bt,"birthEnergy":bt // 2,"eatState":randint(1,1000),"fleeState":randint(1,2),"walkSpeed":randint(1,5),"eatSpeed":randint(1,5),"fleeSpeed":randint(5,10),"avoidsWater":not bool(randint(0,100))}}
 
 def initWorld(worldSizeX,worldSizeY, worldGeneration="new",smooth=8):
-    if worldGeneration == "new":
-        return newWorldGenerator.makeWorld(worldSizeX,worldSizeY,smooth)
-    land = True
-    world:list = []
-    worldFood:list = []
-    for x in range(worldSizeX):
-        worldFood += [[]]
-        world += [[]]
-        for y in range(worldSizeY):
-            world[x] += [land]
-            if land:
-                if x == 0 or y == 0:
-                    worldFood[x]+=[3]
-                else:
-                    worldFood[x] += [randint(1,2)]
-            else:
-                worldFood[x] += [0]
-            if land:
-                if bool(randint(0,1)) and not bool(randint(0,3)) and bool(randint(0,1)):
-                    land = not land
-            else:
-                if bool(randint(0,1)) and bool(randint(0,1)):
-                    land = not land
-    return [world,worldFood]
+    return newWorldGenerator.makeWorld(worldSizeX,worldSizeY,smooth)
 
 
 def createChildOf(creature):
@@ -252,8 +229,8 @@ def runWorldIteration(world):
             
     for x in range(len(world[1])):
         for y in range(len(world[1][x])):
-            if world[0][x][y] and x != 0 and y != 0 and world[1][x][y] < 10.1:
-                world[1][x][y] += 0.2
+            if world[0][x][y] and world[1][x][y] < 10:
+                world[1][x][y] = round(world[1][x][y] + 0.2,1)
                 
     #print(time()-t)
     return world

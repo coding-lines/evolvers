@@ -104,7 +104,6 @@ class game:
         #print("Generiere Welt... Das kann einige Zeit dauern...")
         #gameWorld = creatureEngine.initWorld(worldSize[0],worldSize[1],worldGeneration,worldSmooth)
         #print("Welt von der Größe",str(worldSize[0]),"x",str(worldSize[1]), "in",str(time.time()-x),"Sekunden generiert.")
-        saturationMax = 11
         #Speicherort von Spieldaten oder Texturen
 
 class engine:
@@ -143,7 +142,7 @@ class execute:
                     for y in range(int(game.storage.cameraPos[1]),int(game.storage.cameraPos[3])):
                         if game.storage.gameWorld[0][x][y]:
                             blue = 0
-                            green = int(game.storage.gameWorld[1][x][y] / (game.storage.saturationMax+1) *100) + 50
+                            green = int(game.storage.gameWorld[1][x][y] / 12 *100) + 50
                             red = 50
                         else:
                             blue = 150
@@ -397,7 +396,6 @@ class execute:
             game.storage.trueFPS = clock.get_fps()
             #print(len(game.storage.gameEntities))
             if game.options.currentScreen == "game" and game.storage.simulationRunning:
-                game.storage.saturationMax = 11
                 game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
             #Code, der jede Sekunde ausgeführt wird.
 
