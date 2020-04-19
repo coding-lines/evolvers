@@ -1,5 +1,6 @@
 import pygame, pygame_textinput
 import time, os
+from math import floor
 import creatureEngine,cameraEngine,creatureClickEngine,mouseHoverEngine,evolversRenderer
 
 def readfile(name):
@@ -149,15 +150,18 @@ class execute:
                             green = 100
                             red = 0
                         p1 = [(x-game.storage.cameraPos[0])*game.storage.fieldSize,(y-game.storage.cameraPos[1])*game.storage.fieldSize]
-                        pygame.draw.line(screen,const.BLACK,[p1[0],0],[p1[0],game.options.dimensions[1]])
-                        pygame.draw.line(screen,const.BLACK,[0,p1[1]],[game.options.dimensions[0],p1[1]])
                         pygame.draw.rect(screen, [red,green,blue], [p1[0],p1[1],game.storage.fieldSize,game.storage.fieldSize])
+                        pygame.draw.line(screen,const.BLACK,[p1[0],0],[p1[0],game.options.dimensions[1] + game.storage.fieldSize])
+                        pygame.draw.line(screen,const.BLACK,[0,p1[1]],[game.options.dimensions[0],p1[1]])
+                        
                 #MOUSEHOVER
                 if game.storage.runMouseHover:
                     pos = list(pygame.mouse.get_pos())
+                    pos[0]+=int(game.storage.cameraPos[0]%1*game.storage.fieldSize)
+                    pos[1]+=int(game.storage.cameraPos[1]%1*game.storage.fieldSize)
                     posNew = mouseHoverEngine.assignClick(pos,game.storage.showSidebar,game.storage.cameraPos,game.storage.fieldSize)
                     if not posNew == None:
-                        saturationText = game.storage.font.render(str(round(game.storage.gameWorld[1][posNew[0]][posNew[1]],1)), True, const.WHITE)
+                        saturationText = game.storage.font.render(str(round(game.storage.gameWorld[1][floor(posNew[0])][floor(posNew[1])],1)), True, const.WHITE)
                         screen.blit(saturationText,(pos[0], pos[1]+20))
                 #KREATUREN
                 for c in range(0,len(game.storage.gameEntities)):
@@ -511,7 +515,10 @@ while not game.state.done:
             if event.button < 4:
                 if game.options.currentScreen == "game":
                     pos = list(pygame.mouse.get_pos())
-                    crt = creatureClickEngine.assignClick(pos,game.storage.cameraPos,game.storage.gameEntities,game.storage.showSidebar,game.storage.fieldSize)
+                    pos[0]+=int(game.storage.cameraPos[0]%1*game.storage.fieldSize)
+                    pos[1]+=int(game.storage.cameraPos[1]%1*game.storage.fieldSize)
+                    flooredCameraPos = [int(game.storage.cameraPos[0]),int(game.storage.cameraPos[1]),int(game.storage.cameraPos[2]),int(game.storage.cameraPos[3])]
+                    crt = creatureClickEngine.assignClick(pos,flooredCameraPos,game.storage.gameEntities,game.storage.showSidebar,game.storage.fieldSize)
                     if not crt == None:
                         game.storage.showSidebar = True
                         game.storage.sideBarInformation["name"] = game.storage.gameEntities[crt]["name"]
@@ -625,6 +632,7 @@ while not game.state.done:
                             game.timers.frame = 0
                             game.timers.seconds = 0
                             game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
+                            game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
                             game.options.currentScreen = "game"
                     elif game.options.currentScreen == "newGame":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
@@ -636,6 +644,7 @@ while not game.state.done:
                             game.timers.frame = 0
                             game.timers.seconds = 0
                             game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
+                            game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
                             game.options.currentScreen = "game"
 
 
