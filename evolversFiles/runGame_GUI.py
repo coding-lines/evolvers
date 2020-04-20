@@ -650,7 +650,7 @@ while not game.state.done:
                             game.storage.playerInformation["attributes"]["birthEnergy"] = 50
                             game.storage.playerInformation["attributes"]["birthTreshold"] = 100
                             del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            playerInformation["attributes"]["speed"] = 10
+                            game.storage.playerInformation["attributes"]["speed"] = 10
                             game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
                             game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
                             game.options.currentScreen = "game"
