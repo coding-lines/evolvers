@@ -261,7 +261,7 @@ class execute:
                         energyText = game.storage.font.render("Energie: "+str(game.storage.playerInformation["energy"]), True, const.WHITE if (game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) and game.storage.playerInformation["energy"] > 50 else [255,0,0] if game.timers.frame % 30 <= 10 else const.WHITE)
 
                     FPS = game.storage.font.render("FPS: "+str(int(game.storage.trueFPS)), True, const.WHITE)
-                    screen.blit(FPS,(1010,400))
+                    screen.blit(FPS,(1010,360))
 
                     screen.blit(nameText,(1010,140))
                     screen.blit(ageText,(1010,180))
@@ -270,7 +270,7 @@ class execute:
                     screen.blit(energyText,(1010,300))
 
                     for i,n in enumerate(game.storage.ctrlTexts):
-                        screen.blit(n,(1010,450+(i*20)))
+                        screen.blit(n,(1010,430+(i*20)))
 
                     s_speedText = game.storage.fontSmall.render("Simulationsgeschwindigkeit: "+str(game.storage.playBackSpeed), True, const.WHITE)
                     screen.blit(s_speedText,(1010,670))
@@ -457,7 +457,8 @@ game.storage.ctrlTexts = [game.storage.fontSmall.render("WASD : Kreatur bewegen"
                           ,game.storage.fontSmall.render("J: Spieler spawnen/löschen", True, const.WHITE)
                           ,game.storage.fontSmall.render("Q: Essen (als Spieler)", True, const.WHITE)
                           ,game.storage.fontSmall.render("X: Reproduzieren (200 Energie)", True, const.WHITE)
-                          ,game.storage.fontSmall.render("F12: Spielfeld rendern", True, const.WHITE)]
+                          ,game.storage.fontSmall.render("F12: Spielfeld rendern", True, const.WHITE)
+                          ,game.storage.fontSmall.render("Scrollen: Kamerageschwindigkeit", True, const.WHITE)]
 s.set_alpha(180)
 toast.set_alpha(180)
 s.fill((0,0,0))
