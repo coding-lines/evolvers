@@ -141,6 +141,7 @@ class execute:
     class draw:
         def onDrawFunction():
             if game.options.currentScreen == "game":
+                mPos = list(pygame.mouse.get_pos())
                 if not game.storage.cameraMoved:
                     game.storage.cameraSpeed = [0,0]
                 else:
@@ -174,7 +175,7 @@ class execute:
                     posNew = mouseHoverEngine.assignClick(pos,game.storage.showSidebar,game.storage.cameraPos,game.storage.fieldSize)
                     if not posNew == None:
                         saturationText = game.storage.font.render(str(round(game.storage.gameWorld[1][floor(posNew[0])][floor(posNew[1])],1)), True, const.WHITE)
-                        screen.blit(saturationText,(pos[0], pos[1]+20))
+                        screen.blit(saturationText,(mPos[0], mPos[1]+20))
                 #KREATUREN
                 for c in range(0,len(game.storage.gameEntities)):
                     pos = [int((game.storage.gameEntities[c]["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.gameEntities[c]["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
@@ -410,6 +411,8 @@ class execute:
     class timedExecute:
         def onSecondFunction():
             game.storage.trueFPS = clock.get_fps()
+            if game.storage.playerInGame:
+                game.storage.playerInformation["energy"] -= 1
             #print(len(game.storage.gameEntities))
             if game.options.currentScreen == "game" and game.storage.simulationRunning:
                 game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
