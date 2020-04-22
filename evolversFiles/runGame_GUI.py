@@ -687,21 +687,25 @@ while not game.state.done:
                     game.options.currentScreen = "escapeMenu"
                     game.storage.simulationRunning = False
                 if event.key == pygame.K_LEFT:
-                    game.storage.cameraMoved = True
-                    game.storage.cameraSpeed[0] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
-                    game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
+                    if not game.storage.playerInGame:
+                        game.storage.cameraMoved = True
+                        game.storage.cameraSpeed[0] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
                 if event.key == pygame.K_RIGHT:
-                    game.storage.cameraSpeed[0] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
-                    game.storage.cameraMoved = True
-                    game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[0] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
                 if event.key == pygame.K_UP:
-                    game.storage.cameraSpeed[1] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
-                    game.storage.cameraMoved = True
-                    game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[1] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
                 if event.key == pygame.K_DOWN:
-                    game.storage.cameraSpeed[1] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
-                    game.storage.cameraMoved = True
-                    game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[1] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
                 if event.key == pygame.K_SPACE:
                     game.storage.simulationRunning = not game.storage.simulationRunning
                     if game.storage.simulationRunning:
@@ -782,6 +786,8 @@ while not game.state.done:
                     game.storage.playerInGame = not game.storage.playerInGame
                     game.storage.playerCameraMovement = [0,0]
                     game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,11,1]
+                    if game.storage.playerInGame:
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.playerInformation["x"]%1,game.storage.playerInformation["y"]%1], game.storage.worldSize)
                 if event.key == pygame.K_o:
                     game.storage.playBackSpeed /= 2 if game.storage.playBackSpeed >= 2 else 1
                     game.storage.playBackSpeed = int(game.storage.playBackSpeed)
