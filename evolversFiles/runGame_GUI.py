@@ -85,7 +85,7 @@ class game:
         worldGeneration = "new"
         playerHasMoved = 0
         playerInGame = False
-        playerCameraMovement = [0,0]
+        #playerCameraMovement = [0,0]
         playerInformation = creatureEngine.newCreature()
         playerInformation["name"] = "PLAYER"
         playerInformation["x"] = 16
@@ -178,12 +178,14 @@ class execute:
                         screen.blit(saturationText,(mPos[0], mPos[1]+20))
                 #KREATUREN
                 for c in range(0,len(game.storage.gameEntities)):
-                    pos = [int((game.storage.gameEntities[c]["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.gameEntities[c]["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
-                    size = int((game.storage.gameEntities[c]["energy"]/8+88)/5) if game.options.sizeAffect else 40 if game.storage.viewDistance == 16 else 20
-                    pygame.draw.circle(screen,game.storage.gameEntities[c]["boundaries"],pos,size+2)
-                    pygame.draw.circle(screen,game.storage.gameEntities[c]["color"],pos,size)
-                    text = game.storage.font.render(game.storage.gameEntities[c]["name"], True, const.WHITE)
-                    screen.blit(text,(pos[0]-50, pos[1]+size))
+                    if game.storage.gameEntities[c]["x"] >= game.storage.cameraPos[0]-1 and game.storage.gameEntities[c]["y"] >= game.storage.cameraPos[1]-1:
+                        if game.storage.gameEntities[c]["x"] <= game.storage.cameraPos[2]+1 and game.storage.gameEntities[c]["y"] <= game.storage.cameraPos[3]+1:
+                            pos = [int((game.storage.gameEntities[c]["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.gameEntities[c]["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
+                            size = int((game.storage.gameEntities[c]["energy"]/8+88)/5) if game.options.sizeAffect else 40 if game.storage.viewDistance == 16 else 20
+                            pygame.draw.circle(screen,game.storage.gameEntities[c]["boundaries"],pos,size+2)
+                            pygame.draw.circle(screen,game.storage.gameEntities[c]["color"],pos,size)
+                            text = game.storage.font.render(game.storage.gameEntities[c]["name"], True, const.WHITE)
+                            screen.blit(text,(pos[0]-50, pos[1]+size))
 
                 #SPIELER
                 if game.storage.playerInGame:
@@ -719,7 +721,7 @@ while not game.state.done:
                                 game.storage.playerHasMoved = 2
                                 game.storage.playerInformation["energy"] -= 1
                                 game.storage.playerInformation["x"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
-                                game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
+                                #game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
                             game.storage.playerInformation["name"] = "PLAYER"
@@ -735,7 +737,7 @@ while not game.state.done:
                             game.storage.playerHasMoved = 2
                             game.storage.playerInformation["energy"] -= 1
                             game.storage.playerInformation["x"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
-                            game.storage.playerCameraMovement[0] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
+                            #game.storage.playerCameraMovement[0] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
                             game.storage.playerInformation["name"] = "PLAYER"
@@ -751,7 +753,7 @@ while not game.state.done:
                             if not int(game.storage.playerInformation["y"]+1) >= game.storage.worldSize[1]:
                                 game.storage.playerHasMoved = 2
                                 game.storage.playerInformation["energy"] -= 1
-                                game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
+                                #game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                                 game.storage.playerInformation["y"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
@@ -768,7 +770,7 @@ while not game.state.done:
                             game.storage.playerHasMoved = 2
                             game.storage.playerInformation["energy"] -= 1
                             game.storage.playerInformation["y"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
-                            game.storage.playerCameraMovement[1] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
+                            #game.storage.playerCameraMovement[1] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
                             game.storage.playerInformation["name"] = "PLAYER"

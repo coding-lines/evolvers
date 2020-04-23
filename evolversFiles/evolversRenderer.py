@@ -44,10 +44,10 @@ def runRenderer():
                 draw.rectangle([p1[0],p1[1],p1[0]+options.scaling,p1[1]+options.scaling],fill=(red,green,blue),outline=(0,0,0))
 
         for c in range(len(storage.creatures)):
-                        pos = [storage.creatures[c]["x"]*options.scaling,storage.creatures[c]["y"]*options.scaling]
-                        size = int((storage.creatures[c]["energy"]/8+88)/5)
-                        draw.ellipse([pos[0],pos[1],pos[0]+size,pos[1]+size],fill=tuple(storage.creatures[c]["color"]),outline=tuple(storage.creatures[c]["boundaries"]))
-                        draw.text((pos[0]-5,pos[1]+size), storage.creatures[c]["name"], font=storage.font, fill=(255,255,255))
+            pos = [storage.creatures[c]["x"]*options.scaling,storage.creatures[c]["y"]*options.scaling]
+            size = int((storage.creatures[c]["energy"]/8+88)/5)
+            draw.ellipse([pos[0],pos[1],pos[0]+size,pos[1]+size],fill=tuple(storage.creatures[c]["color"]),outline=tuple(storage.creatures[c]["boundaries"]))
+            draw.text((pos[0]-5,pos[1]+size), storage.creatures[c]["name"], font=storage.font, fill=(255,255,255))
         filename = 0
         while os.path.isfile("renders/"+str(filename)+".png"):
             filename += 1
