@@ -715,10 +715,11 @@ while not game.state.done:
                 if event.key == pygame.K_d:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
-                            game.storage.playerHasMoved = 2
-                            game.storage.playerInformation["energy"] -= 1
-                            game.storage.playerInformation["x"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
-                            game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
+                            if not int(game.storage.playerInformation["x"]+1) >= game.storage.worldSize[0]:
+                                game.storage.playerHasMoved = 2
+                                game.storage.playerInformation["energy"] -= 1
+                                game.storage.playerInformation["x"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
+                                game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
                             game.storage.playerInformation["name"] = "PLAYER"
@@ -747,10 +748,11 @@ while not game.state.done:
                 if event.key == pygame.K_s:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
-                            game.storage.playerHasMoved = 2
-                            game.storage.playerInformation["energy"] -= 1
-                            game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
-                            game.storage.playerInformation["y"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
+                            if not int(game.storage.playerInformation["y"]+1) >= game.storage.worldSize[1]:
+                                game.storage.playerHasMoved = 2
+                                game.storage.playerInformation["energy"] -= 1
+                                game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
+                                game.storage.playerInformation["y"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                         else:
                             game.storage.playerInformation = creatureEngine.newCreature()
                             game.storage.playerInformation["name"] = "PLAYER"
