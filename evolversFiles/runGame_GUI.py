@@ -85,15 +85,6 @@ class game:
         worldGeneration = "new"
         playerHasMoved = 0
         playerInGame = False
-        #playerCameraMovement = [0,0]
-        playerInformation = creatureEngine.newCreature()
-        playerInformation["name"] = "PLAYER"
-        playerInformation["x"] = 16
-        playerInformation["y"] = 9
-        playerInformation["attributes"]["birthEnergy"] = 50
-        playerInformation["attributes"]["birthTreshold"] = 100
-        del playerInformation["attributes"]["fleeState"],playerInformation["attributes"]["eatState"],playerInformation["attributes"]["eatSpeed"],playerInformation["attributes"]["fleeSpeed"],playerInformation["attributes"]["walkSpeed"]
-        playerInformation["attributes"]["speed"] = 10
         runMouseHover = True
         playBackSpeed = 1
         sideBarInformation: dict = {"name":"None","energy":0,"parent":"None","age":0,"generation":0}
@@ -105,14 +96,6 @@ class game:
         cameraPos = [1,1,34,22,1] if viewDistance == 32 else [1,1,68,44,1] if viewDistance == 64 else [1,1,18,12,1]
         trueFPS = 60
         textureStorage: dict = {}
-        #x = time.time()
-        #print("Generiere Kreaturen... Das kann einige Zeit dauern...")
-        #gameEntities = creatureEngine.initCreatures(startCreatures,worldSize)
-        #print(str(startCreatures)+" Kreaturen in "+str(time.time()-x) + " Sekunden generiert.")
-        #x = time.time()
-        #print("Generiere Welt... Das kann einige Zeit dauern...")
-        #gameWorld = creatureEngine.initWorld(worldSize[0],worldSize[1],worldGeneration,worldSmooth)
-        #print("Welt von der Größe",str(worldSize[0]),"x",str(worldSize[1]), "in",str(time.time()-x),"Sekunden generiert.")
         #Speicherort von Spieldaten oder Texturen
 
 class engine:
@@ -192,14 +175,7 @@ class execute:
                     game.storage.playerInformation["age"] += 1
                     game.storage.playerInformation["energy"] -= 1 if not(bool(game.timers.frame%3)) and not(game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) else 0
                     if game.storage.playerInformation["energy"] < 1:
-                        game.storage.playerInformation = creatureEngine.newCreature()
-                        game.storage.playerInformation["name"] = "PLAYER"
-                        game.storage.playerInformation["x"] = 16
-                        game.storage.playerInformation["y"] = 9
-                        game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                        game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                        del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                        game.storage.playerInformation["attributes"]["speed"] = 10
+                        execute.evolvers.respawnPlayer()
 
                     pos = [int((game.storage.playerInformation["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.playerInformation["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
                     if game.storage.viewDistance != 16:
@@ -419,7 +395,17 @@ class execute:
             if game.options.currentScreen == "game" and game.storage.simulationRunning:
                 game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
             #Code, der jede Sekunde ausgeführt wird.
-
+    
+    class evolvers:
+        def respawnPlayer():
+            game.storage.playerInformation = creatureEngine.newCreature()
+            game.storage.playerInformation["name"] = "PLAYER"
+            game.storage.playerInformation["x"] = 16
+            game.storage.playerInformation["y"] = 9
+            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
+            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
+            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
+            game.storage.playerInformation["attributes"]["speed"] = 10
 
 
 execute.init.texLoader()
@@ -667,14 +653,7 @@ while not game.state.done:
                             game.timers.frame = 0
                             game.timers.seconds = 0
                             game.storage.camSpeedMax = 1
-                            game.storage.playerInformation = creatureEngine.newCreature()
-                            game.storage.playerInformation["name"] = "PLAYER"
-                            game.storage.playerInformation["x"] = 16
-                            game.storage.playerInformation["y"] = 9
-                            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            game.storage.playerInformation["attributes"]["speed"] = 10
+                            execute.evolvers.respawnPlayer()
                             game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
                             game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
                             game.options.currentScreen = "game"
@@ -723,14 +702,7 @@ while not game.state.done:
                                 game.storage.playerInformation["x"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
                                 #game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
                         else:
-                            game.storage.playerInformation = creatureEngine.newCreature()
-                            game.storage.playerInformation["name"] = "PLAYER"
-                            game.storage.playerInformation["x"] = 16
-                            game.storage.playerInformation["y"] = 9
-                            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            game.storage.playerInformation["attributes"]["speed"] = 10
+                            execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_a:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
@@ -739,14 +711,7 @@ while not game.state.done:
                             game.storage.playerInformation["x"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
                             #game.storage.playerCameraMovement[0] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
                         else:
-                            game.storage.playerInformation = creatureEngine.newCreature()
-                            game.storage.playerInformation["name"] = "PLAYER"
-                            game.storage.playerInformation["x"] = 16
-                            game.storage.playerInformation["y"] = 9
-                            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            game.storage.playerInformation["attributes"]["speed"] = 10
+                            execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_s:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
@@ -756,14 +721,7 @@ while not game.state.done:
                                 #game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                                 game.storage.playerInformation["y"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                         else:
-                            game.storage.playerInformation = creatureEngine.newCreature()
-                            game.storage.playerInformation["name"] = "PLAYER"
-                            game.storage.playerInformation["x"] = 16
-                            game.storage.playerInformation["y"] = 9
-                            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            game.storage.playerInformation["attributes"]["speed"] = 10
+                            execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_w:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
@@ -772,14 +730,7 @@ while not game.state.done:
                             game.storage.playerInformation["y"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
                             #game.storage.playerCameraMovement[1] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
                         else:
-                            game.storage.playerInformation = creatureEngine.newCreature()
-                            game.storage.playerInformation["name"] = "PLAYER"
-                            game.storage.playerInformation["x"] = 16
-                            game.storage.playerInformation["y"] = 9
-                            game.storage.playerInformation["attributes"]["birthEnergy"] = 50
-                            game.storage.playerInformation["attributes"]["birthTreshold"] = 100
-                            del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
-                            game.storage.playerInformation["attributes"]["speed"] = 10
+                            execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_m:
                     game.storage.runMouseHover = not game.storage.runMouseHover
                 if event.key == pygame.K_e:
