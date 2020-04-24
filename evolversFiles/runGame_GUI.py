@@ -609,6 +609,9 @@ while not game.state.done:
                                 with open("save/"+game.storage.textinput.get_text()+"_players.json","w") as f:
                                     f.write(str(game.storage.playerInformation))
                                     f.close()
+                                with open("save/"+game.storage.textinput.get_text()+"_options.json","w") as f:
+                                    f.write("{'seconds':"+str(game.timers.seconds)+",'frame':"+str(game.timers.frame)+"}")
+                                    f.close()
                                 with open("data","r") as f:
                                     game.storage.savedWorldsList = f.read().split(",")
                                     f.close()
@@ -637,9 +640,12 @@ while not game.state.done:
                             with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_creatures.json","r") as f:
                                 game.storage.gameEntities = eval(f.read())
                                 f.close()
-                            game.timers.frame = 0
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_options.json","r") as f:
+                                worldOptionsFile:dict = eval(f.read())
+                                f.close()
+                            game.timers.frame = worldOptionsFile["frame"]
                             game.storage.camSpeedMax = 1
-                            game.timers.seconds = 0
+                            game.timers.seconds = worldOptionsFile["seconds"]
                             game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
                             game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
                             game.options.currentScreen = "game"
