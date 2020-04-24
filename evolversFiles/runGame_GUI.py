@@ -700,7 +700,6 @@ while not game.state.done:
                                 game.storage.playerHasMoved = 2
                                 game.storage.playerInformation["energy"] -= 1
                                 game.storage.playerInformation["x"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
-                                #game.storage.playerCameraMovement[0] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] < game.storage.worldSize[0] else 0
                         else:
                             execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_a:
@@ -709,7 +708,6 @@ while not game.state.done:
                             game.storage.playerHasMoved = 2
                             game.storage.playerInformation["energy"] -= 1
                             game.storage.playerInformation["x"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
-                            #game.storage.playerCameraMovement[0] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["x"] > 1 else 0
                         else:
                             execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_s:
@@ -718,7 +716,6 @@ while not game.state.done:
                             if not int(game.storage.playerInformation["y"]+1) >= game.storage.worldSize[1]:
                                 game.storage.playerHasMoved = 2
                                 game.storage.playerInformation["energy"] -= 1
-                                #game.storage.playerCameraMovement[1] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                                 game.storage.playerInformation["y"] += (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] < game.storage.worldSize[1] else 0
                         else:
                             execute.evolvers.respawnPlayer()
@@ -728,7 +725,6 @@ while not game.state.done:
                             game.storage.playerHasMoved = 2
                             game.storage.playerInformation["energy"] -= 1
                             game.storage.playerInformation["y"] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
-                            #game.storage.playerCameraMovement[1] -= (game.storage.playerInformation["attributes"]["speed"] / 10) if game.storage.playerInformation["y"] > 1 else 0
                         else:
                             execute.evolvers.respawnPlayer()
                 if event.key == pygame.K_m:
