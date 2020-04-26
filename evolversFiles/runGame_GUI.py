@@ -300,7 +300,7 @@ class execute:
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
-                screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(420,490)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),420))
+                screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),620))
                 screen.blit(viewdistance,(450 if game.storage.viewDistance == 16 else 465 if game.storage.viewDistance == 32 else 480,180))
                 pygame.draw.rect(screen,const.WHITE,[300,260,680,5])
                 pygame.draw.rect(screen,[200,200,200],[300 if game.storage.viewDistance == 16 else 640 if game.storage.viewDistance == 32 else 980,242,20,40])
@@ -584,7 +584,7 @@ while not game.state.done:
                         if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
                             game.options.currentScreen = "menu"
                     elif game.options.currentScreen == "settings":
-                        if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
+                        if mousePos[0] in range(520,720) and mousePos[1] in range(620,690):
                             with open("settings.json","w") as f:
                                 f.write("{'viewDistance':"+str(game.storage.viewDistance)+",'sizeAffect':"+str(game.options.sizeAffect)+"}")
                                 f.close()
