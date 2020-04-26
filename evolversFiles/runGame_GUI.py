@@ -17,15 +17,21 @@ class const:
     RED = [255,0,0]
     GREEN = [0,200,0]
 
+
+
+
+class builtin:
+    builtinLanguage = {"title":"English (Built in)",
+                       "general":{"back":"back","results":"results","points":"points","wait":"please wait","save":"save","load":"load","menu":"menu"},
+                       "menu":{"start":"start","benchmark":"benchmark","setting":"settings","new":"new simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
+                       "benchmarks":{"simulating":"Simulate scenario","benchmarkRunning":"Benchmark is running"},
+                       "settings":{"view_distance":"Visibility","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"}
+                       ,"sidebar":{"year":"year","population":"population","mode":"game mode","name":"name","age":"Age","generation":"generation","parent":"parent","energy":"energy","fps":"FPS","simulation_speed":"simulation speed"},
+                       "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: Display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"]
+                       ,"gameModes":{"spectator":"spectator","player":"creature"}}
+
+
 class game:
-    class builtin:
-        builtinLanguage = {"general":{"back":"back","results":"results","points":"points","wait":"please wait","save":"save","load":"load","menu":"menu"},
-                           "menu":{"start":"start","benchmark":"benchmark","setting":"settings","new":"new simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
-                           "benchmarks":{"simulating":"Simulate scenario","benchmarkRunning":"Benchmark is running"},
-                           "settings":{"view_distance":"Visibility","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"}
-                           ,"sidebar":{"year":"year","population":"population","mode":"game mode","name":"name","age":"Age","generation":"generation","parent":"parent","energy":"energy","fps":"FPS","simulation_speed":"simulation speed"},
-                           "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: Display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"]
-                           ,"gameModes":{"spectator":"spectator","player":"creature"}}
     class options:
         #Erstellen von Dateien, falls sie fehlen.
         if not os.path.isfile("settings.json"):
@@ -51,6 +57,17 @@ class game:
             language = optionsFile["languagePack"]
         else:
             language = "STD"
+        if os.path.isfile(optionsFile["languagePack"]+".lang"):
+            try:
+                with open(optionsFile["languagePack"]+".lang","r") as f:
+                    langData = eval(f.read())
+                    f.close()
+            except:
+                language = "STD"
+        else:
+            language = "STD"
+        if language == "STD":
+            langData = builtin.builtinLanguage
         dimensions = [1280,720]
         frame_rate = 60
         gameTitle = "Evolvers"
