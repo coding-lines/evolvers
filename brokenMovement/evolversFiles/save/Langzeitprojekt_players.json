@@ -1,0 +1,1 @@
+{'name': 'PLAYER', 'energy': 100, 'parent': 'None', 'x': 16, 'reproduceTime': 10, 'rotation': 315, 'y': 9, 'movementX': 0, 'movementY': 0, 'generation': 0, 'color': [216, 200, 208], 'boundaries': [0, 0, 0], 'age': 0, 'attributes': {'birthTreshold': 100, 'birthEnergy': 50, 'avoidsWater': False, 'speed': 10}}
