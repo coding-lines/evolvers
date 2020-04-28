@@ -24,11 +24,11 @@ class builtin:
     builtinLanguage = {"title":"English (Built in)",
                        "general":{"back":"back","results":"results","points":"points","wait":"please wait","save":"save","load":"load","menu":"menu"},
                        "menu":{"start":"start","benchmark":"benchmark","setting":"settings","new":"new simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
-                       "benchmarks":{"simulating":"Simulate scenario","benchmarkRunning":"Benchmark is running"},
-                       "settings":{"view_distance":"Visibility","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"}
-                       ,"sidebar":{"year":"year","population":"population","mode":"game mode","name":"name","age":"Age","generation":"generation","parent":"parent","energy":"energy","fps":"FPS","simulation_speed":"simulation speed"},
+                       "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulate scenario","benchmarkRunning":"Benchmark is running"},
+                       "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"low","medium":"medium","high":"high"}
+                       ,"sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
                        "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: Display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"]
-                       ,"gameModes":{"spectator":"spectator","player":"creature"}}
+                       ,"gameModes":{"spectator":"Spectator","player":"Creature"}}
 
 
 class game:
@@ -152,6 +152,7 @@ class execute:
             # Funktion, die beim Spielstart ausgeführt wird.
     class draw:
         def onDrawFunction():
+            game.storage.trueFPS = clock.get_fps()
             if game.options.currentScreen == "game":
                 mPos = list(pygame.mouse.get_pos())
                 if not game.storage.cameraMoved:
@@ -232,7 +233,7 @@ class execute:
                     pos = [int((game.storage.playerInformation["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.playerInformation["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
                     pygame.draw.circle(screen,game.storage.playerInformation["boundaries"],pos,size+2)
                     pygame.draw.circle(screen,game.storage.playerInformation["color"],pos,size)
-                    text = game.storage.font.render("PLAYER", True, const.WHITE)
+                    text = game.storage.font.render(game.storage.playerInformation["name"], True, const.WHITE)
                     screen.blit(text,(pos[0]-50, pos[1]+size))
 
 
@@ -242,33 +243,33 @@ class execute:
                 if game.storage.showSidebar:
                     screen.blit(s, (1000,0))
 
-                    timeText = game.storage.fontBig.render("Jahr: "+str(round((game.timers.frame + (game.timers.seconds*60))/4800,3)), True, const.WHITE)
+                    timeText = game.storage.fontBig.render(game.options.langData["sidebar"]["year"]+": "+str(round((game.timers.frame + (game.timers.seconds*60))/4800,3)), True, const.WHITE)
                     screen.blit(timeText,(1010,20))
-                    popText = game.storage.fontBig.render("Bevölkerung: "+str(len(game.storage.gameEntities)), True, const.WHITE)
+                    popText = game.storage.fontBig.render(game.options.langData["sidebar"]["population"]+": "+str(len(game.storage.gameEntities)), True, const.WHITE)
                     screen.blit(popText,(1010,60))
-                    modeText = game.storage.font.render("Spielmodus: Kreatur" if game.storage.playerInGame else "Spielmodus: Zuschauer", True, const.WHITE)
+                    modeText = game.storage.font.render(game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["player"] if game.storage.playerInGame else game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["spectator"], True, const.WHITE)
                     screen.blit(modeText,(1010,100))
 
                     if not game.storage.playerInGame:
-                        nameText = game.storage.font.render("Name: "+game.storage.sideBarInformation["name"], True, const.WHITE)
+                        nameText = game.storage.font.render(game.options.langData["sidebar"]["name"]+": "+game.storage.sideBarInformation["name"], True, const.WHITE)
 
-                        ageText = game.storage.font.render("Alter: "+str(round(game.storage.sideBarInformation["age"]/4800,3))+" Jahre", True, const.WHITE)
+                        ageText = game.storage.font.render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.sideBarInformation["age"]/4800,3))+" "+game.options.langData["sidebar"]["years"], True, const.WHITE)
 
-                        genText = game.storage.font.render("Generation: "+str(game.storage.sideBarInformation["generation"]), True, const.WHITE)
+                        genText = game.storage.font.render(game.options.langData["sidebar"]["generation"]+": "+str(game.storage.sideBarInformation["generation"]), True, const.WHITE)
 
-                        parentText = game.storage.font.render("Elternteil: "+str(game.storage.sideBarInformation["parent"]), True, const.WHITE)
+                        parentText = game.storage.font.render(game.options.langData["sidebar"]["parent"]+": "+str(game.storage.sideBarInformation["parent"]), True, const.WHITE)
 
 
-                        energyText = game.storage.font.render("Energie: "+str(game.storage.sideBarInformation["energy"]), True, const.WHITE)
+                        energyText = game.storage.font.render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.sideBarInformation["energy"]), True, const.WHITE)
 
                     else:
-                        nameText = game.storage.font.render("Name: PLAYER", True, const.WHITE)
-                        ageText = game.storage.font.render("Alter: "+str(round(game.storage.playerInformation["age"]/4800,3))+" Jahre", True, const.WHITE)
-                        genText = game.storage.font.render("Generation: 0", True, const.WHITE)
-                        parentText = game.storage.font.render("Elternteil: None", True, const.WHITE)
-                        energyText = game.storage.font.render("Energie: "+str(game.storage.playerInformation["energy"]), True, const.WHITE if (game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) and game.storage.playerInformation["energy"] > 50 else [255,0,0] if game.timers.frame % 30 <= 10 else const.WHITE)
+                        nameText = game.storage.font.render(game.options.langData["sidebar"]["name"]+": "+ game.storage.playerInformation["name"], True, const.WHITE)
+                        ageText = game.storage.font.render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.playerInformation["age"]/4800,3))+" Jahre", True, const.WHITE)
+                        genText = game.storage.font.render(game.options.langData["sidebar"]["generation"]+": 0", True, const.WHITE)
+                        parentText = game.storage.font.render(game.options.langData["sidebar"]["parent"]+": None", True, const.WHITE)
+                        energyText = game.storage.font.render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.playerInformation["energy"]), True, const.WHITE if (game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) and game.storage.playerInformation["energy"] > 50 else [255,0,0] if game.timers.frame % 30 <= 10 else const.WHITE)
 
-                    FPS = game.storage.font.render("FPS: "+str(int(game.storage.trueFPS)), True, const.WHITE)
+                    FPS = game.storage.font.render(game.options.langData["sidebar"]["fps"]+": "+str(int(game.storage.trueFPS)), True, const.WHITE)
                     screen.blit(FPS,(1010,360))
 
                     screen.blit(nameText,(1010,140))
@@ -280,7 +281,7 @@ class execute:
                     for i,n in enumerate(game.storage.ctrlTexts):
                         screen.blit(n,(1010,430+(i*20)))
 
-                    s_speedText = game.storage.fontSmall.render("Simulationsgeschwindigkeit: "+str(game.storage.playBackSpeed), True, const.WHITE)
+                    s_speedText = game.storage.fontSmall.render(game.options.langData["sidebar"]["simulation_speed"]+": "+str(game.storage.playBackSpeed), True, const.WHITE)
                     screen.blit(s_speedText,(1010,670))
             elif game.options.currentScreen == "menu":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
@@ -296,7 +297,7 @@ class execute:
                 screen.blit(benchmarkTextA if not (mousePos[0] in range((game.options.dimensions[0]//2)-(benchmarkTextA.get_rect().width//2),(game.options.dimensions[0]//2)+(benchmarkTextA.get_rect().width//2)) and mousePos[1] in range(220,290)) else benchmarkA_HOVER,((game.options.dimensions[0]//2)-(benchmarkTextA.get_rect().width//2),220))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(420,490)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),420))
             elif game.options.currentScreen == "settings":
-                viewdistance = game.storage.fontSubHeader.render("Sichtweite: Niedrig" if game.storage.viewDistance == 16 else "Sichtweite: Mittel" if game.storage.viewDistance == 32 else "Sichtweite: Hoch", True, const.WHITE)
+                viewdistance = game.storage.fontSubHeader.render(game.options.langData["settings"]["view_distance"]+": "+(game.options.langData["settings"]["low"] if game.storage.viewDistance == 16 else game.options.langData["settings"]["medium"] if game.storage.viewDistance == 32 else game.options.langData["settings"]["high"]), True, const.WHITE)
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
@@ -346,18 +347,18 @@ class execute:
             elif game.options.currentScreen == "benchmark_nogui_results":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(results,(520,10))
-                resultPoints1 = game.storage.fontSubHeader.render("Niedrige Einstellungen: "+str(int((1/(game.storage.benchmarkResults[0]/20))*1000))+" Punkte", True, const.WHITE)
+                resultPoints1 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["low"]+": "+str(int((1/(game.storage.benchmarkResults[0]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints1,(10,120))
-                resultPoints2 = game.storage.fontSubHeader.render("Mittlere Einstellungen: "+str(int((1/(game.storage.benchmarkResults[1]/20))*1000))+" Punkte", True, const.WHITE)
+                resultPoints2 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["medium"]+": "+str(int((1/(game.storage.benchmarkResults[1]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints2,(10,170))
-                resultPoints1 = game.storage.fontSubHeader.render("Hohe Einstellungen: "+str(int((1/(game.storage.benchmarkResults[2]/20))*1000))+" Punkte", True, const.WHITE)
+                resultPoints1 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["high"]+": "+str(int((1/(game.storage.benchmarkResults[2]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints1,(10,220))
                 if int((1/(game.storage.benchmarkResults[2]/20))*1000) > 4000:
-                    suggestion = game.storage.fontSubHeader.render("Empfehlung: Mittlere bis hohe Sichtweite", True, const.WHITE)
+                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["high"], True, const.WHITE)
                 elif int((1/(game.storage.benchmarkResults[1]/20))*1000) > 4000:
-                    suggestion = game.storage.fontSubHeader.render("Empfehlung: Mittlere Sichtweite", True, const.WHITE)
+                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["medium"], True, const.WHITE)
                 else:
-                    suggestion = game.storage.fontSubHeader.render("Empfehlung: Niedrige Sichtweite", True, const.WHITE)
+                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["low"], True, const.WHITE)
                 screen.blit(suggestion,(10,320))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(420,490)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),420))
             elif game.options.currentScreen == "escapeMenu":
@@ -417,7 +418,6 @@ class execute:
             #Code, der jeden Frame ausgeführt wird. (auch Draw-Befehle)
     class timedExecute:
         def onSecondFunction():
-            game.storage.trueFPS = clock.get_fps()
             if game.storage.playerInGame:
                 game.storage.playerInformation["energy"] -= 1
             #print(len(game.storage.gameEntities))
