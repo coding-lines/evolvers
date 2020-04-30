@@ -616,20 +616,24 @@ while not game.state.done:
                     elif game.options.currentScreen == "settings":
                         if mousePos[0] in range(520,720) and mousePos[1] in range(620,690):
                             with open("settings.json","w") as f:
-                                f.write("{'viewDistance':"+str(game.storage.viewDistance)+",'sizeAffect':"+str(game.options.sizeAffect)+"}")
+                                f.write(str(game.storage.optionsFile))
                                 f.close()
                             game.storage.fieldSize = 40 if game.storage.viewDistance == 32 else 20 if game.storage.viewDistance == 64 else 80
                             game.storage.cameraPos = [1,1,34,22,1] if game.storage.viewDistance == 32 else [1,1,68,44,1] if game.storage.viewDistance == 64 else [1,1,18,12,1]
+                            execute.evolvers.reloadSettings()
                             game.options.currentScreen = "menu"
                         if mousePos[0] in range(280,340) and mousePos[1] in range(230,290):
                             game.storage.viewDistance = 16
+                            game.storage.optionsFile["viewDistance"] = 16
                         if mousePos[0] in range(630,670) and mousePos[1] in range(230,290):
                             game.storage.viewDistance = 32
+                            game.storage.optionsFile["viewDistance"] = 32
                         if mousePos[0] in range(970,1010) and mousePos[1] in range(230,290):
                             game.storage.viewDistance = 64
+                            game.storage.optionsFile["viewDistance"] = 64
                         if mousePos[0] in range(270,355) and mousePos[1] in range(320,395):
                             game.options.sizeAffect = not game.options.sizeAffect
-                            game.storage.optionsFile["sizeAffect"] = not gamestorage.optionsFile["sizeAffect"]
+                            game.storage.optionsFile["sizeAffect"] = not game.storage.optionsFile["sizeAffect"]
                     elif game.options.currentScreen == "benchmark_nogui_results":
                         if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
                             game.options.currentScreen = "menu"
