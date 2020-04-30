@@ -456,6 +456,16 @@ class execute:
                 game.options.language = "STD"
             if game.options.language == "STD":
                 game.options.langData = builtin.builtinLanguage
+            #Neuladen der Spieleinstellungen und Lesen in die Storage Class
+            game.options.sizeAffect = game.options.optionsFile["sizeAffect"]
+            try:
+                game.storage.optionsFile = eval(readfile("settings.json"))
+                if not (str(type(game.storage.optionsFile))  == "<class 'dict'>"):
+                    raise EOFError("Settings File corrupted")
+            except:
+                raise EOFError("Settings File corrupted")
+            game.storage.viewDistance = game.storage.optionsFile["viewDistance"]
+            game.storage.fieldSize = 40 if game.storage.viewDistance == 32 else 20 if game.storage.viewDistance == 64 else 80
 
 execute.init.texLoader()
 execute.init.gameInit()
