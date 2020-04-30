@@ -435,7 +435,27 @@ class execute:
             game.storage.playerInformation["attributes"]["birthTreshold"] = 100
             del game.storage.playerInformation["attributes"]["fleeState"],game.storage.playerInformation["attributes"]["eatState"],game.storage.playerInformation["attributes"]["eatSpeed"],game.storage.playerInformation["attributes"]["fleeSpeed"],game.storage.playerInformation["attributes"]["walkSpeed"]
             game.storage.playerInformation["attributes"]["speed"] = 10
-
+        def reloadSettings():
+            try:
+                game.options.optionsFile = eval(readfile("settings.json"))
+                if not (str(type(game.options.optionsFile))  == "<class 'dict'>"):
+                    raise EOFError("Settings File corrupted")
+            except:
+                raise EOFError("Settings File corrupted")
+            #Neuladen der Sprachpakete
+            if 'languagePack' in game.options.optionsFile:
+                game.options.language = game.options.optionsFile["languagePack"]
+            else:
+                game.options.language = "STD"
+            if os.path.isfile(game.options.optionsFile["languagePack"]+".lang"):
+                try:
+                    game.options.langData = eval(readfile(game.options.optionsFile["languagePack"]+".lang"))
+                except:
+                    game.options.language = "STD"
+            else:
+                game.options.language = "STD"
+            if game.options.language == "STD":
+                game.options.langData = builtin.builtinLanguage
 
 execute.init.texLoader()
 execute.init.gameInit()
@@ -546,9 +566,9 @@ while not game.state.done:
 
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 4 and game.options.currentScreen == "game":
-                game.storage.camMaxSpeed *= 2 if game.storage.camMaxSpeed < 5 else 1
+                game.storage.camMaxSpeed *= 2 if game.storage.camMaxSpeed < 3 else 1
             if event.button == 5 and game.options.currentScreen == "game":
-                game.storage.camMaxSpeed /= 2 if game.storage.camMaxSpeed > 0.3 else 1
+                game.storage.camMaxSpeed /= 2 if game.storage.camMaxSpeed > 0.2 else 1
             if event.button < 4:
                 if game.options.currentScreen == "game":
                     pos = list(pygame.mouse.get_pos())
@@ -599,6 +619,7 @@ while not game.state.done:
                             game.storage.viewDistance = 64
                         if mousePos[0] in range(270,355) and mousePos[1] in range(320,395):
                             game.options.sizeAffect = not game.options.sizeAffect
+                            game.storage.optionsFile["sizeAffect"] = not gamestorage.optionsFile["sizeAffect"]
                     elif game.options.currentScreen == "benchmark_nogui_results":
                         if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
                             game.options.currentScreen = "menu"
