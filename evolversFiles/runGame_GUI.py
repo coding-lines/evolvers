@@ -92,6 +92,7 @@ class game:
         
         cameraMoved = False #Kamera im letzten Frame bewegt?
         
+        toastDuration = 0 #Länge eines Toasts in Frames
         
         #TODO: Cleanup der Variablen
         
@@ -403,7 +404,6 @@ class execute:
                 screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
 
 
-
             elif game.options.currentScreen == "loadGame":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),620))
@@ -413,10 +413,13 @@ class execute:
                 screen.blit(worldNameToLoad,[(game.options.dimensions[0]//2)-(worldNameToLoad.get_rect().width//2) + 120,330])
                 screen.blit(game.storage.textureStorage["worldImage"],[100,180])
                 screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
+            if game.storage.toastDuration > 0:
+                game.storage.toastDuration -= 1
+                screen.blit(toast,[(game.options.dimensions[0]//2)-(toast.get_rect().width//2),600])
+                screen.blit(game.storage.toastMessage,[(game.options.dimensions[0]//2)-(game.storage.toastMessage.get_rect().width//2),635])
 
 
-
-
+            
             #Code, der jeden Frame ausgeführt wird. (auch Draw-Befehle)
     class timedExecute:
         def onSecondFunction():
@@ -468,6 +471,9 @@ class execute:
                 raise EOFError("Settings File corrupted")
             game.storage.viewDistance = game.storage.optionsFile["viewDistance"]
             game.storage.fieldSize = 40 if game.storage.viewDistance == 32 else 20 if game.storage.viewDistance == 64 else 80
+        def toastMessage(message,duration):
+            game.storage.toastDuration = duration
+            game.storage.toastMessage = game.storage.fonts[24].render(message,True,const.WHITE)
 
 execute.init.texLoader()
 execute.init.gameInit()
@@ -507,7 +513,6 @@ s.set_alpha(180)
 toast.set_alpha(180)
 s.fill((0,0,0))
 toast.fill((0,0,0))
-
 
 newGame = game.storage.fonts[64].render("Neue Simulation", True, const.WHITE)
 newGame_HOVER = game.storage.fonts[64].render("Neue Simulation", True, const.GREY)
@@ -549,6 +554,9 @@ menuTextC = game.storage.fonts[64].render("EINSTELLUNGEN", True, const.WHITE)
 menuTextC_HOVER = game.storage.fonts[64].render("EINSTELLUNGEN", True, const.GREY)
 startText = game.storage.fonts[96].render("EV   LVERS", True, const.WHITE)
 relsize = game.storage.fonts[48].render("Größe im Verhältnis zur Energie", True, const.WHITE)
+
+
+
 while not game.state.done:
     events = pygame.event.get()
     for event in events:
