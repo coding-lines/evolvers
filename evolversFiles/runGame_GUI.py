@@ -125,6 +125,8 @@ class game:
         cameraPos = [1,1,34,22,1] if viewDistance == 32 else [1,1,68,44,1] if viewDistance == 64 else [1,1,18,12,1]
         trueFPS = 60
         textureStorage: dict = {}
+        guiTexts: dict = {}
+        fonts: dict = {}
         #Speicherort von Spieldaten oder Texturen
 
 class engine:
@@ -187,7 +189,7 @@ class execute:
                     pos[1]+=int(game.storage.cameraPos[1]%1*game.storage.fieldSize)
                     posNew = mouseHoverEngine.assignClick(pos,game.storage.showSidebar,game.storage.cameraPos,game.storage.fieldSize)
                     if not posNew == None:
-                        saturationText = game.storage.font.render(str(round(game.storage.gameWorld[1][floor(posNew[0])][floor(posNew[1])],1)), True, const.WHITE)
+                        saturationText = game.storage.fonts[24].render(str(round(game.storage.gameWorld[1][floor(posNew[0])][floor(posNew[1])],1)), True, const.WHITE)
                         screen.blit(saturationText,(mPos[0], mPos[1]+20))
                 #KREATUREN
                 for c in range(0,len(game.storage.gameEntities)):
@@ -197,7 +199,7 @@ class execute:
                             size = int((game.storage.gameEntities[c]["energy"]/8+88)/5) if game.options.sizeAffect else 40 if game.storage.viewDistance == 16 else 20
                             pygame.draw.circle(screen,game.storage.gameEntities[c]["boundaries"],pos,size+2)
                             pygame.draw.circle(screen,game.storage.gameEntities[c]["color"],pos,size)
-                            text = game.storage.font.render(game.storage.gameEntities[c]["name"], True, const.WHITE)
+                            text = game.storage.fonts[24].render(game.storage.gameEntities[c]["name"], True, const.WHITE)
                             screen.blit(text,(pos[0]-50, pos[1]+size))
 
                 #SPIELER
@@ -233,7 +235,7 @@ class execute:
                     pos = [int((game.storage.playerInformation["x"] - game.storage.cameraPos[0])*game.storage.fieldSize),int((game.storage.playerInformation["y"] - game.storage.cameraPos[1])*game.storage.fieldSize)]
                     pygame.draw.circle(screen,game.storage.playerInformation["boundaries"],pos,size+2)
                     pygame.draw.circle(screen,game.storage.playerInformation["color"],pos,size)
-                    text = game.storage.font.render(game.storage.playerInformation["name"], True, const.WHITE)
+                    text = game.storage.fonts[24].render(game.storage.playerInformation["name"], True, const.WHITE)
                     screen.blit(text,(pos[0]-50, pos[1]+size))
 
 
@@ -243,33 +245,33 @@ class execute:
                 if game.storage.showSidebar:
                     screen.blit(s, (1000,0))
 
-                    timeText = game.storage.fontBig.render(game.options.langData["sidebar"]["year"]+": "+str(round((game.timers.frame + (game.timers.seconds*60))/4800,3)), True, const.WHITE)
+                    timeText = game.storage.fonts[28].render(game.options.langData["sidebar"]["year"]+": "+str(round((game.timers.frame + (game.timers.seconds*60))/4800,3)), True, const.WHITE)
                     screen.blit(timeText,(1010,20))
-                    popText = game.storage.fontBig.render(game.options.langData["sidebar"]["population"]+": "+str(len(game.storage.gameEntities)), True, const.WHITE)
+                    popText = game.storage.fonts[28].render(game.options.langData["sidebar"]["population"]+": "+str(len(game.storage.gameEntities)), True, const.WHITE)
                     screen.blit(popText,(1010,60))
-                    modeText = game.storage.font.render(game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["player"] if game.storage.playerInGame else game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["spectator"], True, const.WHITE)
+                    modeText = game.storage.fonts[24].render(game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["player"] if game.storage.playerInGame else game.options.langData["sidebar"]["mode"]+": "+game.options.langData["gameModes"]["spectator"], True, const.WHITE)
                     screen.blit(modeText,(1010,100))
 
                     if not game.storage.playerInGame:
-                        nameText = game.storage.font.render(game.options.langData["sidebar"]["name"]+": "+game.storage.sideBarInformation["name"], True, const.WHITE)
+                        nameText = game.storage.fonts[24].render(game.options.langData["sidebar"]["name"]+": "+game.storage.sideBarInformation["name"], True, const.WHITE)
 
-                        ageText = game.storage.font.render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.sideBarInformation["age"]/4800,3))+" "+game.options.langData["sidebar"]["years"], True, const.WHITE)
+                        ageText = game.storage.fonts[24].render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.sideBarInformation["age"]/4800,3))+" "+game.options.langData["sidebar"]["years"], True, const.WHITE)
 
-                        genText = game.storage.font.render(game.options.langData["sidebar"]["generation"]+": "+str(game.storage.sideBarInformation["generation"]), True, const.WHITE)
+                        genText = game.storage.fonts[24].render(game.options.langData["sidebar"]["generation"]+": "+str(game.storage.sideBarInformation["generation"]), True, const.WHITE)
 
-                        parentText = game.storage.font.render(game.options.langData["sidebar"]["parent"]+": "+str(game.storage.sideBarInformation["parent"]), True, const.WHITE)
+                        parentText = game.storage.fonts[24].render(game.options.langData["sidebar"]["parent"]+": "+str(game.storage.sideBarInformation["parent"]), True, const.WHITE)
 
 
-                        energyText = game.storage.font.render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.sideBarInformation["energy"]), True, const.WHITE)
+                        energyText = game.storage.fonts[24].render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.sideBarInformation["energy"]), True, const.WHITE)
 
                     else:
-                        nameText = game.storage.font.render(game.options.langData["sidebar"]["name"]+": "+ game.storage.playerInformation["name"], True, const.WHITE)
-                        ageText = game.storage.font.render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.playerInformation["age"]/4800,3))+" Jahre", True, const.WHITE)
-                        genText = game.storage.font.render(game.options.langData["sidebar"]["generation"]+": 0", True, const.WHITE)
-                        parentText = game.storage.font.render(game.options.langData["sidebar"]["parent"]+": None", True, const.WHITE)
-                        energyText = game.storage.font.render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.playerInformation["energy"]), True, const.WHITE if (game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) and game.storage.playerInformation["energy"] > 50 else [255,0,0] if game.timers.frame % 30 <= 10 else const.WHITE)
+                        nameText = game.storage.fonts[24].render(game.options.langData["sidebar"]["name"]+": "+ game.storage.playerInformation["name"], True, const.WHITE)
+                        ageText = game.storage.fonts[24].render(game.options.langData["sidebar"]["age"]+": "+str(round(game.storage.playerInformation["age"]/4800,3))+" Jahre", True, const.WHITE)
+                        genText = game.storage.fonts[24].render(game.options.langData["sidebar"]["generation"]+": 0", True, const.WHITE)
+                        parentText = game.storage.fonts[24].render(game.options.langData["sidebar"]["parent"]+": None", True, const.WHITE)
+                        energyText = game.storage.fonts[24].render(game.options.langData["sidebar"]["energy"]+": "+str(game.storage.playerInformation["energy"]), True, const.WHITE if (game.storage.gameWorld[0][int(game.storage.playerInformation["x"])][int(game.storage.playerInformation["y"])]) and game.storage.playerInformation["energy"] > 50 else [255,0,0] if game.timers.frame % 30 <= 10 else const.WHITE)
 
-                    FPS = game.storage.font.render(game.options.langData["sidebar"]["fps"]+": "+str(int(game.storage.trueFPS)), True, const.WHITE)
+                    FPS = game.storage.fonts[24].render(game.options.langData["sidebar"]["fps"]+": "+str(int(game.storage.trueFPS)), True, const.WHITE)
                     screen.blit(FPS,(1010,360))
 
                     screen.blit(nameText,(1010,140))
@@ -281,7 +283,7 @@ class execute:
                     for i,n in enumerate(game.storage.ctrlTexts):
                         screen.blit(n,(1010,430+(i*20)))
 
-                    s_speedText = game.storage.fontSmall.render(game.options.langData["sidebar"]["simulation_speed"]+": "+str(game.storage.playBackSpeed), True, const.WHITE)
+                    s_speedText = game.storage.fonts[18].render(game.options.langData["sidebar"]["simulation_speed"]+": "+str(game.storage.playBackSpeed), True, const.WHITE)
                     screen.blit(s_speedText,(1010,670))
             elif game.options.currentScreen == "menu":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
@@ -297,7 +299,7 @@ class execute:
                 screen.blit(benchmarkTextA if not (mousePos[0] in range((game.options.dimensions[0]//2)-(benchmarkTextA.get_rect().width//2),(game.options.dimensions[0]//2)+(benchmarkTextA.get_rect().width//2)) and mousePos[1] in range(220,290)) else benchmarkA_HOVER,((game.options.dimensions[0]//2)-(benchmarkTextA.get_rect().width//2),220))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(420,490)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),420))
             elif game.options.currentScreen == "settings":
-                viewdistance = game.storage.fontSubHeader.render(game.options.langData["settings"]["view_distance"]+": "+(game.options.langData["settings"]["low"] if game.storage.viewDistance == 16 else game.options.langData["settings"]["medium"] if game.storage.viewDistance == 32 else game.options.langData["settings"]["high"]), True, const.WHITE)
+                viewdistance = game.storage.fonts[48].render(game.options.langData["settings"]["view_distance"]+": "+(game.options.langData["settings"]["low"] if game.storage.viewDistance == 16 else game.options.langData["settings"]["medium"] if game.storage.viewDistance == 32 else game.options.langData["settings"]["high"]), True, const.WHITE)
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
@@ -347,18 +349,18 @@ class execute:
             elif game.options.currentScreen == "benchmark_nogui_results":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(results,(520,10))
-                resultPoints1 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["low"]+": "+str(int((1/(game.storage.benchmarkResults[0]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
+                resultPoints1 = game.storage.fonts[48].render(game.options.langData["benchmarks"]["low"]+": "+str(int((1/(game.storage.benchmarkResults[0]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints1,(10,120))
-                resultPoints2 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["medium"]+": "+str(int((1/(game.storage.benchmarkResults[1]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
+                resultPoints2 = game.storage.fonts[48].render(game.options.langData["benchmarks"]["medium"]+": "+str(int((1/(game.storage.benchmarkResults[1]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints2,(10,170))
-                resultPoints1 = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["high"]+": "+str(int((1/(game.storage.benchmarkResults[2]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
+                resultPoints1 = game.storage.fonts[48].render(game.options.langData["benchmarks"]["high"]+": "+str(int((1/(game.storage.benchmarkResults[2]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints1,(10,220))
                 if int((1/(game.storage.benchmarkResults[2]/20))*1000) > 4000:
-                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["high"], True, const.WHITE)
+                    suggestion = game.storage.fonts[48].render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["high"], True, const.WHITE)
                 elif int((1/(game.storage.benchmarkResults[1]/20))*1000) > 4000:
-                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["medium"], True, const.WHITE)
+                    suggestion = game.storage.fonts[48].render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["medium"], True, const.WHITE)
                 else:
-                    suggestion = game.storage.fontSubHeader.render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["low"], True, const.WHITE)
+                    suggestion = game.storage.fonts[48].render(game.options.langData["benchmarks"]["suggestion"]+": "+game.options.langData["benchmarks"]["low"], True, const.WHITE)
                 screen.blit(suggestion,(10,320))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(420,490)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),420))
             elif game.options.currentScreen == "escapeMenu":
@@ -388,8 +390,8 @@ class execute:
                     screen.blit(noComma, ((game.options.dimensions[0]//2)-(noComma.get_rect().width//2),550))
 
             elif game.options.currentScreen == "newGame":
-                sizeSliderText = game.storage.fontBig.render("Weltgröße: "+str(game.storage.worldSizeSlider+100)+"x"+str(game.storage.worldSizeSlider+100), True, const.WHITE)
-                entitySliderText = game.storage.fontBig.render("Startkreaturen: "+str(game.storage.entityCountSlider+10), True, const.WHITE)
+                sizeSliderText = game.storage.fonts[28].render("Weltgröße: "+str(game.storage.worldSizeSlider+100)+"x"+str(game.storage.worldSizeSlider+100), True, const.WHITE)
+                entitySliderText = game.storage.fonts[28].render("Startkreaturen: "+str(game.storage.entityCountSlider+10), True, const.WHITE)
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),620))
                 pygame.draw.rect(screen,const.WHITE,[165,250,950,5])
@@ -407,7 +409,7 @@ class execute:
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),620))
                 screen.blit(game.storage.textureStorage["left"],(20, 328))
                 screen.blit(game.storage.textureStorage["right"],(1196, 328))
-                worldNameToLoad = game.storage.fontSubHeader.render(game.storage.savedWorldsList[game.storage.worldNumber],True,const.WHITE)
+                worldNameToLoad = game.storage.fonts[48].render(game.storage.savedWorldsList[game.storage.worldNumber],True,const.WHITE)
                 screen.blit(worldNameToLoad,[(game.options.dimensions[0]//2)-(worldNameToLoad.get_rect().width//2) + 120,330])
                 screen.blit(game.storage.textureStorage["worldImage"],[100,180])
                 screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
@@ -482,79 +484,71 @@ with open("data","r") as f:
 
 pygame.display.set_icon(programIcon)
 screen = pygame.display.set_mode(game.options.dimensions)
-
 clock = pygame.time.Clock()
-
-
 pygame.display.set_caption(game.options.gameTitle)
 
 pygame.key.set_repeat(100, 10)
 
-game.storage.fontHeader = pygame.font.Font("font_pt-sans.ttf",96)
-game.storage.fontButton = pygame.font.Font("font_pt-sans.ttf",64)
-game.storage.fontSubHeader = pygame.font.Font("font_pt-sans.ttf",48)
-game.storage.fontBig = pygame.font.Font("font_pt-sans.ttf",28)
-game.storage.font = pygame.font.Font("font_pt-sans.ttf",24)
-game.storage.fontSmall = pygame.font.Font("font_pt-sans.ttf",18)
+for i in [96,64,48,28,24,18]: #Alle zu ladenden Schriftgrößen
+    game.storage.fonts[i] = pygame.font.Font("font_pt-sans.ttf",i) #Fonts laden
+
+
 s = pygame.Surface((280,720))
 toast = pygame.Surface((1024,100))
-game.storage.ctrlTexts = [game.storage.fontSmall.render("WASD : Kreatur bewegen", True, const.WHITE),
-                          game.storage.fontSmall.render("Leertaste: Simulation pausieren", True, const.WHITE)
-                          ,game.storage.fontSmall.render("Pfeile: Kamera bewegen", True, const.WHITE)
-                          ,game.storage.fontSmall.render("O / P: Schneller/Langsamer", True, const.WHITE)
-                          ,game.storage.fontSmall.render("E: Seitenmenü ein/ausblenden", True, const.WHITE)
-                          ,game.storage.fontSmall.render("M: Mousehover umschalten", True, const.WHITE)
-                          ,game.storage.fontSmall.render("J: Spieler spawnen/löschen", True, const.WHITE)
-                          ,game.storage.fontSmall.render("Q: Essen (als Spieler)", True, const.WHITE)
-                          ,game.storage.fontSmall.render("X: Reproduzieren (200 Energie)", True, const.WHITE)
-                          ,game.storage.fontSmall.render("F12: Spielfeld rendern", True, const.WHITE)
-                          ,game.storage.fontSmall.render("Scrollen: Kamerageschwindigkeit", True, const.WHITE)]
+
+game.storage.ctrlTexts:list = []
+
+for control in game.options.langData["controls"]:
+    game.storage.ctrlTexts += [game.storage.fonts[18].render(control, True, const.WHITE)] # Steuerungsmethoden rendern
+
+
+
 s.set_alpha(180)
 toast.set_alpha(180)
 s.fill((0,0,0))
 toast.fill((0,0,0))
 
 
-newGame = game.storage.fontButton.render("Neue Simulation", True, const.WHITE)
-newGame_HOVER = game.storage.fontButton.render("Neue Simulation", True, const.GREY)
+newGame = game.storage.fonts[64].render("Neue Simulation", True, const.WHITE)
+newGame_HOVER = game.storage.fonts[64].render("Neue Simulation", True, const.GREY)
 
-loadGame = game.storage.fontButton.render("Simulation laden", True, const.WHITE)
-loadGame_HOVER = game.storage.fontButton.render("Simulation laden", True, const.GREY)
+loadGame = game.storage.fonts[64].render("Simulation laden", True, const.WHITE)
+loadGame_HOVER = game.storage.fonts[64].render("Simulation laden", True, const.GREY)
 
-startGame = game.storage.fontButton.render("START", True, const.WHITE)
-startGame_HOVER = game.storage.fontButton.render("START", True, const.GREEN)
+startGame = game.storage.fonts[64].render("START", True, const.WHITE)
+startGame_HOVER = game.storage.fonts[64].render("START", True, const.GREEN)
 
-benchmarkRunning = game.storage.fontSubHeader.render("Benchmark läuft... Bitte warten...", True, const.WHITE)
-lowend = game.storage.fontSubHeader.render("Simuliere Szenario 1/3", True, const.WHITE)
-midend = game.storage.fontSubHeader.render("Simuliere Szenario 2/3", True, const.WHITE)
-highend = game.storage.fontSubHeader.render("Simuliere Szenario 3/3", True, const.WHITE)
-results = game.storage.fontButton.render("Ergebnisse", True, const.WHITE)
+benchmarkRunning = game.storage.fonts[48].render("Benchmark läuft... Bitte warten...", True, const.WHITE)
+lowend = game.storage.fonts[48].render("Simuliere Szenario 1/3", True, const.WHITE)
+midend = game.storage.fonts[48].render("Simuliere Szenario 2/3", True, const.WHITE)
+highend = game.storage.fonts[48].render("Simuliere Szenario 3/3", True, const.WHITE)
+results = game.storage.fonts[64].render("Ergebnisse", True, const.WHITE)
 
-backToGame = game.storage.fontButton.render("Zurück zum Spiel", True, const.WHITE)
-backToGame_HOVER = game.storage.fontButton.render("Zurück zum Spiel", True, const.GREY)
+backToGame = game.storage.fonts[64].render("Zurück zum Spiel", True, const.WHITE)
+backToGame_HOVER = game.storage.fonts[64].render("Zurück zum Spiel", True, const.GREY)
 
-saveGame = game.storage.fontButton.render("Speichern", True, const.WHITE)
-saveGame_HOVER = game.storage.fontButton.render("Speichern", True, const.GREY)
+saveGame = game.storage.fonts[64].render("Speichern", True, const.WHITE)
+saveGame_HOVER = game.storage.fonts[64].render("Speichern", True, const.GREY)
 
-toMenu = game.storage.fontButton.render("Menü", True, const.WHITE)
-toMenu_HOVER = game.storage.fontButton.render("Menü", True, const.GREY)
+toMenu = game.storage.fonts[64].render("Menü", True, const.WHITE)
+toMenu_HOVER = game.storage.fonts[64].render("Menü", True, const.GREY)
 
-noComma = game.storage.fontSubHeader.render("Im Namen darf kein Komma vorkommen!", True, [255,0,0])
+noComma = game.storage.fonts[48].render("Im Namen darf kein Komma vorkommen!", True, [255,0,0])
 
-saveAsText = game.storage.fontSubHeader.render("Gib einen Namen für den Spielstand ein", True, const.WHITE)
+saveAsText = game.storage.fonts[48].render("Gib einen Namen für den Spielstand ein", True, const.WHITE)
 
-menuTextA = game.storage.fontButton.render("START", True, const.WHITE)
-menuTextA_HOVER = game.storage.fontButton.render("START", True, const.GREY)
-benchmarkTextA = game.storage.fontButton.render("Simulations-Benchmark", True, const.WHITE)
-benchmarkA_HOVER = game.storage.fontButton.render("Simulations-Benchmark", True, const.GREY)
-backButton = game.storage.fontButton.render("Zurück", True, const.WHITE)
-backButton_HOVER = game.storage.fontButton.render("Zurück", True, const.GREY)
-menuTextB = game.storage.fontButton.render("BENCHMARK", True, const.WHITE)
-menuTextB_HOVER = game.storage.fontButton.render("BENCHMARK", True, const.GREY)
-menuTextC = game.storage.fontButton.render("EINSTELLUNGEN", True, const.WHITE)
-menuTextC_HOVER = game.storage.fontButton.render("EINSTELLUNGEN", True, const.GREY)
-startText = game.storage.fontHeader.render("EV   LVERS", True, const.WHITE)
-relsize = game.storage.fontSubHeader.render("Größe im Verhältnis zur Energie", True, const.WHITE)
+menuTextA = game.storage.fonts[64].render("START", True, const.WHITE)
+menuTextA_HOVER = game.storage.fonts[64].render("START", True, const.GREY)
+benchmarkTextA = game.storage.fonts[64].render("Simulations-Benchmark", True, const.WHITE)
+benchmarkA_HOVER = game.storage.fonts[64].render("Simulations-Benchmark", True, const.GREY)
+backButton = game.storage.fonts[64].render("Zurück", True, const.WHITE)
+backButton_HOVER = game.storage.fonts[64].render("Zurück", True, const.GREY)
+menuTextB = game.storage.fonts[64].render("BENCHMARK", True, const.WHITE)
+menuTextB_HOVER = game.storage.fonts[64].render("BENCHMARK", True, const.GREY)
+menuTextC = game.storage.fonts[64].render("EINSTELLUNGEN", True, const.WHITE)
+menuTextC_HOVER = game.storage.fonts[64].render("EINSTELLUNGEN", True, const.GREY)
+startText = game.storage.fonts[96].render("EV   LVERS", True, const.WHITE)
+relsize = game.storage.fonts[48].render("Größe im Verhältnis zur Energie", True, const.WHITE)
 while not game.state.done:
     events = pygame.event.get()
     for event in events:
