@@ -34,6 +34,9 @@ class builtin:
 class game:
     class options:
         #Erstellen von Dateien, falls sie fehlen.
+        
+
+        
         if not os.path.isfile("settings.json"):
             with open("settings.json","w") as f:
                 f.write("{'viewDistance':32,'sizeAffect':False,'languagePack':'STD'}")
@@ -48,7 +51,7 @@ class game:
                 f.close()
         try:
             optionsFile = eval(readfile("settings.json"))
-            if not (str(type(optionsFile))  == "<class 'dict'>"):
+            if not (type(optionsFile) == type({"template":"dict"})):
                 raise EOFError("Settings File corrupted")
         except:
             raise EOFError("Settings File corrupted")
@@ -374,8 +377,8 @@ class execute:
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
                 screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
                 screen.blit(backButton if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)) else backButton_HOVER,((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),620))
-                screen.blit(newGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(newGame.get_rect().width//2),(game.options.dimensions[0]//2)+(newGame.get_rect().width//2)) and mousePos[1] in range(200,270)) else newGame_HOVER,((game.options.dimensions[0]//2)-(newGame.get_rect().width//2),200))
-                screen.blit(loadGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(loadGame.get_rect().width//2),(game.options.dimensions[0]//2)+(loadGame.get_rect().width//2)) and mousePos[1] in range(290,360)) else loadGame_HOVER,((game.options.dimensions[0]//2)-(loadGame.get_rect().width//2),300))
+                screen.blit(game.storage.guiTexts["newGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["newGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["newGame"].get_rect().width//2)) and mousePos[1] in range(200,270)) else game.storage.guiTexts["newGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["newGame"].get_rect().width//2),200))
+                screen.blit(game.storage.guiTexts["loadGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["loadGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["loadGame"].get_rect().width//2)) and mousePos[1] in range(290,360)) else game.storage.guiTexts["loadGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["loadGame"].get_rect().width//2),300))
 
 
 
@@ -401,7 +404,7 @@ class execute:
                 pygame.draw.rect(screen,const.WHITE,[165,400,950,5])
                 pygame.draw.rect(screen,[150,150,150],[165 + game.storage.entityCountSlider,380,15,45])
                 screen.blit(entitySliderText,((game.options.dimensions[0]//2)-(entitySliderText.get_rect().width//2),330))
-                screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
+                screen.blit(game.storage.guiTexts["startGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)) else game.storage.guiTexts["startGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),540))
 
 
             elif game.options.currentScreen == "loadGame":
@@ -412,7 +415,7 @@ class execute:
                 worldNameToLoad = game.storage.fonts[48].render(game.storage.savedWorldsList[game.storage.worldNumber],True,const.WHITE)
                 screen.blit(worldNameToLoad,[(game.options.dimensions[0]//2)-(worldNameToLoad.get_rect().width//2) + 120,330])
                 screen.blit(game.storage.textureStorage["worldImage"],[100,180])
-                screen.blit(startGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)) else startGame_HOVER,((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),540))
+                screen.blit(game.storage.guiTexts["startGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)) else game.storage.guiTexts["startGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),540))
             if game.storage.toastDuration > 0:
                 game.storage.toastDuration -= 1
                 screen.blit(toast,[(game.options.dimensions[0]//2)-(toast.get_rect().width//2),600])
@@ -514,14 +517,28 @@ toast.set_alpha(180)
 s.fill((0,0,0))
 toast.fill((0,0,0))
 
-newGame = game.storage.fonts[64].render("Neue Simulation", True, const.WHITE)
-newGame_HOVER = game.storage.fonts[64].render("Neue Simulation", True, const.GREY)
 
-loadGame = game.storage.fonts[64].render("Simulation laden", True, const.WHITE)
-loadGame_HOVER = game.storage.fonts[64].render("Simulation laden", True, const.GREY)
+#Render Template
+if not (os.path.isfile("render_template")):
+    raise EOFError("No render template found!")
+else:
+    try:
+        with open("render_template","r") as f:
+            render_template = eval(f.read())
+            f.close()
+        if type(render_template) != type([1,]):
+            raise EOFError("Render template incomplete")
+    except:
+        raise EOFError("Render template incomplete")
 
-startGame = game.storage.fonts[64].render("START", True, const.WHITE)
-startGame_HOVER = game.storage.fonts[64].render("START", True, const.GREEN)
+
+for render_job in render_template: #Render every text in the render template
+    game.storage.guiTexts[render_job["name"]] = game.storage.fonts[render_job["font_size"]].render(render_job["text"],True,render_job["color"])
+    if render_job["createHover"]:
+        game.storage.guiTexts[render_job["name"]+"Hover"] = game.storage.fonts[render_job["font_size"]].render(render_job["text"],True,const.GREY)
+
+
+
 
 benchmarkRunning = game.storage.fonts[48].render("Benchmark läuft... Bitte warten...", True, const.WHITE)
 lowend = game.storage.fonts[48].render("Simuliere Szenario 1/3", True, const.WHITE)
@@ -685,9 +702,9 @@ while not game.state.done:
                     elif game.options.currentScreen == "gamemodeSelect":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
                             game.options.currentScreen = "menu"
-                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(newGame.get_rect().width//2),(game.options.dimensions[0]//2)+(newGame.get_rect().width//2)) and mousePos[1] in range(200,270)):
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["newGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["newGame"].get_rect().width//2)) and mousePos[1] in range(200,270)):
                             game.options.currentScreen = "newGame"
-                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(loadGame.get_rect().width//2),(game.options.dimensions[0]//2)+(loadGame.get_rect().width//2)) and mousePos[1] in range(290,360)):
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["loadGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["loadGame"].get_rect().width//2)) and mousePos[1] in range(290,360)):
                             game.options.currentScreen = "loadGame" if game.storage.savedWorldsList != [""] else "gamemodeSelect"
                     elif game.options.currentScreen == "loadGame":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
@@ -696,7 +713,7 @@ while not game.state.done:
                             game.storage.worldNumber -= 1 if game.storage.worldNumber > 0 else 0
                         if mousePos[0] in range(1196, 1260) and mousePos[1] in range(328, 392):
                             game.storage.worldNumber += 1 if game.storage.worldNumber+1 < len(game.storage.savedWorldsList) else 0
-                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)):
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)):
                             with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_world.json","r") as f:
                                 game.storage.gameWorld = eval(f.read())
                                 f.close()
@@ -718,7 +735,7 @@ while not game.state.done:
                     elif game.options.currentScreen == "newGame":
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(backButton.get_rect().width//2),(game.options.dimensions[0]//2)+(backButton.get_rect().width//2)) and mousePos[1] in range(620,690)):
                             game.options.currentScreen = "gamemodeSelect"
-                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(startGame.get_rect().width//2),(game.options.dimensions[0]//2)+(startGame.get_rect().width//2)) and mousePos[1] in range(540,610)):
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)):
                             game.storage.gameEntities = creatureEngine.initCreatures(game.storage.entityCountSlider+10)
                             game.storage.worldSize = [game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100]
                             game.storage.gameWorld = creatureEngine.initWorld(game.storage.worldSizeSlider+100,game.storage.worldSizeSlider+100,game.storage.worldGeneration,game.storage.worldSmooth)

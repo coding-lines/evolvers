@@ -1,0 +1,6 @@
+[
+{"name":"newGame","font_size":64,"text":game.options.langData["menu"]["new"],"createHover":True,"color":const.WHITE},
+{"name":"loadGame","font_size":64,"text":game.options.langData["menu"]["load"],"createHover":True,"color":const.WHITE},
+{"name":"startGame","font_size":64,"text":game.options.langData["menu"]["start"],"createHover":True,"color":const.WHITE},
+
+]
