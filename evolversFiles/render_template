@@ -2,5 +2,8 @@
 {"name":"newGame","font_size":64,"text":game.options.langData["menu"]["new"],"createHover":True,"color":const.WHITE},
 {"name":"loadGame","font_size":64,"text":game.options.langData["menu"]["load"],"createHover":True,"color":const.WHITE},
 {"name":"startGame","font_size":64,"text":game.options.langData["menu"]["start"],"createHover":True,"color":const.WHITE},
-
+{"name":"quitGame","font_size":64,"text":game.options.langData["general"]["menu"],"createHover":True,"color":const.WHITE},
+{"name":"back","font_size":64,"text":game.options.langData["general"]["back"],"createHover":True,"color":const.WHITE},
+{"name":"simulationBenchmark","font_size":64,"text":game.options.langData["menu"]["simBench"],"createHover":True,"color":const.WHITE},
+{"name":"settings","font_size":64,"text":game.options.langData["menu"]["setting"],"createHover":True,"color":const.WHITE},
 ]

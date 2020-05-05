@@ -1,7 +1,7 @@
 {
 "title":"English (external)","author":"Original",
-"general":{"back":"back","results":"results","points":"points","wait":"please wait","save":"save","load":"load","menu":"menu"},
-"menu":{"start":"start","benchmark":"benchmark","setting":"settings","new":"new simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
+"general":{"back":"Back","results":"Results","points":"points","wait":"Please wait..","save":"Save simulation","load":"Load simulation","menu":"Back to menu"},
+"menu":{"start":"Start","benchmark":"Benchmark","setting":"Settings","new":"New simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
 "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulating scenario","benchmarkRunning":"Benchmark is running..."},
 "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"},
 "sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
