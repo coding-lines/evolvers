@@ -21,14 +21,16 @@ class const:
 
 
 class builtin:
-    builtinLanguage = {"title":"English (Built in)",
-                       "general":{"back":"back","results":"results","points":"points","wait":"please wait","save":"save","load":"load","menu":"menu"},
-                       "menu":{"start":"start","benchmark":"benchmark","setting":"settings","new":"new simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
-                       "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulate scenario","benchmarkRunning":"Benchmark is running"},
-                       "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"low","medium":"medium","high":"high"}
-                       ,"sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
-                       "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: Display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"]
-                       ,"gameModes":{"spectator":"Spectator","player":"Creature"}}
+    builtinLanguage = {
+                        "title":"English (external)","author":"Original",
+                        "general":{"back":"Back","results":"Results","points":"points","wait":"Please wait..","save":"Save simulation","load":"Load simulation","menu":"Back to menu"},
+                        "menu":{"start":"Start","benchmark":"Benchmark","setting":"Settings","new":"New simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
+                        "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulating scenario","benchmarkRunning":"Benchmark is running..."},
+                        "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"},
+                        "sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
+                        "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"],
+                        "gameModes":{"spectator":"Spectator","player":"Creature"}
+                       }
 
 
 class game:
@@ -315,11 +317,11 @@ class execute:
                 screen.blit(relsize,(360,330))
             elif game.options.currentScreen == "benchmark_nogui":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(benchmarkRunning,(30,30))
+                screen.blit(game.storage.guiTexts["runningBenchmark"],(30,30))
                 if game.storage.benchmarkFrame == 0:
-                    screen.blit(lowend,(30,120))
+                    screen.blit(game.storage.guiTexts["lowend"],(30,120))
                 if game.storage.benchmarkFrame == 1:
-                    screen.blit(midend,(30,120))
+                    screen.blit(game.storage.guiTexts["midend"],(30,120))
                     game.storage.benchmarkTime = [time.time()]
                     game.storage.benchmarkWorld = creatureEngine.initWorld(101,101,"new",2)
                     game.storage.benchmarkCreatures = creatureEngine.initCreatures(100)
@@ -329,7 +331,7 @@ class execute:
                         game.storage.benchmarkWorld = creatureEngine.runWorldIteration(game.storage.benchmarkWorld)
                     game.storage.benchmarkTime += [time.time()]
                 if game.storage.benchmarkFrame == 2:
-                    screen.blit(highend,(30,120))
+                    screen.blit(game.storage.guiTexts["highend"],(30,120))
                     game.storage.benchmarkTime += [time.time()]
                     game.storage.benchmarkWorld = creatureEngine.initWorld(200,200,"new",2)
                     game.storage.benchmarkCreatures = creatureEngine.initCreatures(250)
@@ -540,10 +542,7 @@ for render_job in render_template: #Render every text in the render template
 
 
 
-benchmarkRunning = game.storage.fonts[48].render("Benchmark läuft... Bitte warten...", True, const.WHITE)
-lowend = game.storage.fonts[48].render("Simuliere Szenario 1/3", True, const.WHITE)
-midend = game.storage.fonts[48].render("Simuliere Szenario 2/3", True, const.WHITE)
-highend = game.storage.fonts[48].render("Simuliere Szenario 3/3", True, const.WHITE)
+
 results = game.storage.fonts[64].render("Ergebnisse", True, const.WHITE)
 
 backToGame = game.storage.fonts[64].render("Zurück zum Spiel", True, const.WHITE)
