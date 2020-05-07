@@ -24,7 +24,7 @@ class builtin:
     builtinLanguage = {
                         "title":"English (external)","author":"Original",
                         "general":{"back":"Back","results":"Results","points":"points","wait":"Please wait..","save":"Save simulation","load":"Load simulation","menu":"Back to menu"},
-                        "menu":{"start":"Start","benchmark":"Benchmark","setting":"Settings","new":"New simulation","load":"Load simulation","simBench":"Simulation benchmark","worldsize":"World size","startcreatures":"Start creatures"},
+                        "menu":{"start":"Start","benchmark":"Benchmark","setting":"Settings","new":"New simulation","load":"Load simulation","simBench":"Simulation benchmark","resume":"Resume","worldsize":"World size","startcreatures":"Start creatures"},
                         "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulating scenario","benchmarkRunning":"Benchmark is running..."},
                         "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"},
                         "sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
@@ -354,7 +354,7 @@ class execute:
                 game.storage.benchmarkFrame += 1
             elif game.options.currentScreen == "benchmark_nogui_results":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(results,(520,10))
+                screen.blit(game.storage.guiTexts["results"],(520,10))
                 resultPoints1 = game.storage.fonts[48].render(game.options.langData["benchmarks"]["low"]+": "+str(int((1/(game.storage.benchmarkResults[0]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
                 screen.blit(resultPoints1,(10,120))
                 resultPoints2 = game.storage.fonts[48].render(game.options.langData["benchmarks"]["medium"]+": "+str(int((1/(game.storage.benchmarkResults[1]/20))*1000))+" "+game.options.langData["general"]["points"], True, const.WHITE)
@@ -371,8 +371,8 @@ class execute:
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(420,490)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),420))
             elif game.options.currentScreen == "escapeMenu":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(backToGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(backToGame.get_rect().width//2),(game.options.dimensions[0]//2)+(backToGame.get_rect().width//2)) and mousePos[1] in range(190,260)) else backToGame_HOVER,((game.options.dimensions[0]//2)-(backToGame.get_rect().width//2),200))
-                screen.blit(saveGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(saveGame.get_rect().width//2),(game.options.dimensions[0]//2)+(saveGame.get_rect().width//2)) and mousePos[1] in range(290,360)) else saveGame_HOVER,((game.options.dimensions[0]//2)-(saveGame.get_rect().width//2),300))
+                screen.blit(game.storage.guiTexts["resume"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["resume"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["resume"].get_rect().width//2)) and mousePos[1] in range(190,260)) else game.storage.guiTexts["resumeHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["resume"].get_rect().width//2),200))
+                screen.blit(game.storage.guiTexts["save"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["save"].get_rect().width//2)) and mousePos[1] in range(290,360)) else game.storage.guiTexts["saveHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),300))
                 screen.blit(game.storage.guiTexts["quitGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["quitGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["quitGame"].get_rect().width//2)) and mousePos[1] in range(390,460)) else game.storage.guiTexts["quitGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["quitGame"].get_rect().width//2),400))
             elif game.options.currentScreen == "gamemodeSelect":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
@@ -390,7 +390,7 @@ class execute:
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(420,490)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),420))
                 game.storage.textinput.update(events)
                 screen.blit(game.storage.textinput.get_surface(), ((game.options.dimensions[0]//2)-(game.storage.textinput.get_surface().get_rect().width//2), 150))
-                screen.blit(saveGame if not (mousePos[0] in range((game.options.dimensions[0]//2)-(saveGame.get_rect().width//2),(game.options.dimensions[0]//2)+(saveGame.get_rect().width//2)) and mousePos[1] in range(330,390)) else saveGame_HOVER,((game.options.dimensions[0]//2)-(saveGame.get_rect().width//2),330))
+                screen.blit(game.storage.guiTexts["save"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["save"].get_rect().width//2)) and mousePos[1] in range(330,390)) else game.storage.guiTexts["saveHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),330))
                 if game.storage.noCommaFrames > 0:
                     game.storage.noCommaFrames -= 1
                     screen.blit(noComma, ((game.options.dimensions[0]//2)-(noComma.get_rect().width//2),550))
@@ -542,15 +542,6 @@ for render_job in render_template: #Render every text in the render template
 
 
 
-
-results = game.storage.fonts[64].render("Ergebnisse", True, const.WHITE)
-
-backToGame = game.storage.fonts[64].render("Zurück zum Spiel", True, const.WHITE)
-backToGame_HOVER = game.storage.fonts[64].render("Zurück zum Spiel", True, const.GREY)
-
-saveGame = game.storage.fonts[64].render("Speichern", True, const.WHITE)
-saveGame_HOVER = game.storage.fonts[64].render("Speichern", True, const.GREY)
-
 noComma = game.storage.fonts[48].render("Im Namen darf kein Komma vorkommen!", True, [255,0,0])
 
 saveAsText = game.storage.fonts[48].render("Gib einen Namen für den Spielstand ein", True, const.WHITE)
@@ -659,7 +650,7 @@ while not game.state.done:
                     elif game.options.currentScreen == "saveAs":
                         if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
                             game.options.currentScreen = "escapeMenu"
-                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(saveGame.get_rect().width//2),(game.options.dimensions[0]//2)+(saveGame.get_rect().width//2)) and mousePos[1] in range(330,390)):
+                        if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["save"].get_rect().width//2)) and mousePos[1] in range(330,390)):
                             if "," in game.storage.textinput.get_text():
                                 game.storage.noCommaFrames = 70
                                 screen.blit(noComma, ((game.options.dimensions[0]//2)-(noComma.get_rect().width//2),550))

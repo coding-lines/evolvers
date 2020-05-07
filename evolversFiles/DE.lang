@@ -1,7 +1,7 @@
 {
 "title":"Deutsch","author":"Original",
 "general":{"back":"Zurück","results":"Ergebnisse","points":"Punkte","wait":"Bitte warten","save":"Speichern","load":"laden","menu":"Menü"},
-"menu":{"start":"Start","benchmark":"Benchmark","setting":"Einstellungen","new":"Neue Simulation","load":"Simulation laden","simBench":"Simulations-Benchmark","worldsize":"Weltgröße","startcreatures":"Startkreaturen"},
+"menu":{"start":"Start","benchmark":"Benchmark","setting":"Einstellungen","new":"Neue Simulation","load":"Simulation laden","simBench":"Simulations-Benchmark","worldsize":"Weltgröße","startcreatures":"Startkreaturen","resume":"Zurück zum Spiel"},
 "benchmarks":{"suggestion":"Empfehlung","low":"Niedrige Einstellungen","medium":"Mittlere Einstellungen","high":"Hohe Einstellungen","simulating":"Simuliere Szenario","benchmarkRunning":"Benchmark läuft"},
 "settings":{"view_distance":"Sichtweite","relative_scale":"Größe im Verhältnis zur Energie","low":"Niedrig","medium":"Mittel","high":"Hoch"},
 "sidebar":{"years":"Jahre","year":"Jahr","population":"Bevölkerung","mode":"Spielmodus","name":"Name","age":"Alter","generation":"Generation","parent":"Elternteil","energy":"Energie","fps":"FPS","simulation_speed":"Simulationsgeschwindigkeit"},
