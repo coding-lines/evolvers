@@ -147,13 +147,13 @@ class engine:
 class execute:
     class init:
         def texLoader():
-            game.storage.textureStorage["backgroundimage"] = pygame.image.load("menuBackground.jpg")
+            game.storage.textureStorage["backgroundimage"] = pygame.image.load("menuBackground.jpg").convert()
             game.storage.textureStorage["logoSmall"] = pygame.image.load("logoSmall.png")
-            game.storage.textureStorage["false"] = pygame.image.load("false.png")
-            game.storage.textureStorage["true"] = pygame.image.load("true.png")
-            game.storage.textureStorage["left"] = pygame.image.load("left.png")
-            game.storage.textureStorage["right"] = pygame.image.load("right.png")
-            game.storage.textureStorage["worldImage"] = pygame.image.load("worldImage.jpg")
+            game.storage.textureStorage["false"] = pygame.image.load("false.png").convert_alpha()
+            game.storage.textureStorage["true"] = pygame.image.load("true.png").convert_alpha()
+            game.storage.textureStorage["left"] = pygame.image.load("left.png").convert_alpha()
+            game.storage.textureStorage["right"] = pygame.image.load("right.png").convert_alpha()
+            game.storage.textureStorage["worldImage"] = pygame.image.load("worldImage.jpg").convert()
             #Funktion, um Texturen zu laden. (Texturen können auch in der DrawFunction geladen werden, das spart zwar RAM, aber führt zu Rucklern!)
         def gameInit():
             pass
@@ -480,9 +480,10 @@ class execute:
             game.storage.toastDuration = duration
             game.storage.toastMessage = game.storage.fonts[24].render(message,True,const.WHITE)
 
+pygame.init()
+screen = pygame.display.set_mode(game.options.dimensions)
 execute.init.texLoader()
 execute.init.gameInit()
-pygame.init()
 programIcon = pygame.image.load('icon.png')
 
 
@@ -494,7 +495,6 @@ with open("data","r") as f:
 
 
 pygame.display.set_icon(programIcon)
-screen = pygame.display.set_mode(game.options.dimensions)
 clock = pygame.time.Clock()
 pygame.display.set_caption(game.options.gameTitle)
 
