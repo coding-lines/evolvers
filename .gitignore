@@ -1,9 +1,8 @@
-evolversFiles/data
-evolversFiles/save
-evolversFiles/save/*
-evolversFiles/renders
-evolversFiles/renders/*
-evolversFiles/settings.json
-evolversFiles/system_requirements.txt
-evolversFiles/__pycache__
-evolversFiles/__pycache__/*
+Evolvers/save
+Evolvers/save/*
+Evolvers/renders
+Evolvers/renders/*
+Evolvers/config.json
+Evolvers/system_requirements.txt
+Evolvers/__pycache__
+Evolvers/__pycache__/*
