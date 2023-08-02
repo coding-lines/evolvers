@@ -15,7 +15,7 @@ class storage:
     if options.useGame == "new":
         creatures = creatureEngine.initCreatures(options.startCreatures,options.worldSize)
         world = creatureEngine.initWorld(options.worldSize[0],options.worldSize[1], options.worldGenerator,8)
-    font = ImageFont.truetype("font_pt-sans.ttf",16)
+    font = ImageFont.truetype("font/PTSans-Regular.ttf",16)
 
 
 def render_frame(world,creatures,scaling=10):

@@ -7,8 +7,8 @@ from math import floor
 import creatureEngine,cameraEngine,creatureClickEngine,mouseHoverEngine,evolversRenderer
 
 def readfile(name):
-    with open(name,"r") as f:
-        return(f.read())
+    with open(name,"rb") as f:
+        return f.read().decode("utf-8")
 
 
 class const:
@@ -25,14 +25,14 @@ class const:
 
 class builtin:
     builtinLanguage = {
-                        "title":"English (external)","author":"Original",
-                        "general":{"back":"Back","results":"Results","points":"points","wait":"Please wait..","save":"Save simulation","load":"Load simulation","menu":"Back to menu"},
-                        "menu":{"start":"Start","benchmark":"Benchmark","setting":"Settings","new":"New simulation","load":"Load simulation","simBench":"Simulation benchmark","resume":"Resume","worldsize":"World size","startcreatures":"Start creatures"},
-                        "benchmarks":{"suggestion":"Suggestion","low":"Low settings","medium":"Medium settings","high":"High settings","simulating":"Simulating scenario","benchmarkRunning":"Benchmark is running..."},
-                        "settings":{"view_distance":"View distance","relative_scale":"Size in relation to energy","low":"Low","medium":"Medium","high":"high"},
-                        "sidebar":{"years":"Years","year":"Year","population":"Population","mode":"Gamemode","name":"Name","age":"Age","generation":"Generation","parent":"Parent","energy":"Energy","fps":"FPS","simulation_speed":"Simulation speed"},
-                        "controls": ["WASD: Move creature","Spacebar: Pause simulation","Arrows: Move camera","O / P: Faster / slower","E: Show / hide side menu","M: display mouse-hover","J: spawn / delete player","Q: eat (as player)","X: reproduce (200 energy)","F12: render field","scroll: camera speed"],
-                        "gameModes":{"spectator":"Spectator","player":"Creature"}
+                        "title": "English (external)", "author": "Original",
+                        "general": {"back": "Back", "results": "Results", "points": "points", "wait": "Please wait..", "save": "Save simulation", "load": "Load simulation", "menu": "Back to menu", "started": "Simulation started.", "stopped": "Simulation stopped."},
+                        "menu": {"start": "Start", "benchmark": "Benchmark", "setting": "Settings", "new": "New simulation", "load": "Load simulation", "simBench": "Simulation benchmark", "resume": "Resume", "worldsize": "World size", "startcreatures": "Start creatures", "save_as": "Enter simulation name:", "save_as_comma": "Names cannot contain commas (,).",},
+                        "benchmarks": {"suggestion": "Suggestion", "low": "Low settings", "medium": "Medium settings", "high": "High settings", "simulating": "Simulating scenario", "benchmarkRunning": "Benchmark is running..."},
+                        "settings": {"view_distance": "View distance", "relative_scale": "Creature size relative to energy", "low": "Low", "medium": "Medium", "high": "high"},
+                        "sidebar": {"years": "Years", "year": "Year", "population": "Population", "mode": "Gamemode", "name": "Name", "age": "Age", "generation": "Generation", "parent": "Parent", "energy": "Energy", "fps": "FPS", "simulation_speed": "Simulation speed"},
+                        "controls": ["WASD: Move creature", "Spacebar: Pause simulation", "Arrows: Move camera", "O / P: Faster / slower", "E: Show / hide side menu", "M: display mouse-hover", "J: spawn / delete player", "Q: eat (as player)", "X: reproduce (200 energy)", "F12: render field", "scroll: camera speed"],
+                        "gameModes": {"spectator": "Spectator", "player": "Creature"}
                        }
 
 
@@ -43,32 +43,32 @@ class game:
 
         
         if not os.path.isfile("config.json"):
-            with open("config.json","w") as f:
-                f.write("{'viewDistance':32,'sizeAffect':False,'languagePack':'STD'}")
+            with open("config.json", "w") as f:
+                f.write("{'viewDistance':32,'sizeAffect':False,'language':'STD'}")
                 f.close()
         if not os.path.isdir("save"):
             os.mkdir("save")
         if not os.path.isdir("renders"):
             os.mkdir("renders")
         if not os.path.isfile("data"):
-            with open("data","w") as f:
+            with open("data", "w") as f:
                 f.write("")
                 f.close()
         try:
             optionsFile = literal_eval(readfile("config.json"))
-            if not (type(optionsFile) == type({"template":"dict"})):
+            if not (type(optionsFile) == type({"template": "dict"})):
                 raise EOFError("Settings File corrupted")
         except:
             raise EOFError("Settings File corrupted")
         #Spieloptionen
-        if 'languagePack' in optionsFile:
-            language = optionsFile["languagePack"]
+        if 'language' in optionsFile:
+            language = optionsFile["language"]
         else:
             language = "STD"
-        if os.path.isfile(optionsFile["languagePack"]+".lang"):
+        if os.path.isfile(optionsFile["language"]+".lang"):
             try:
-                with open(optionsFile["languagePack"]+".lang","r") as f:
-                    langData = literal_eval(f.read())
+                with open(optionsFile["language"]+".lang", "rb") as f:
+                    langData = literal_eval(f.read().decode("utf-8"))
                     f.close()
             except:
                 language = "STD"
@@ -79,7 +79,6 @@ class game:
         dimensions = [1280,720]
         frame_rate = 60
         gameTitle = "Evolvers"
-        pixel_size = 1
         currentScreen = "menu"
         cursorVisible = True
         sizeAffect = optionsFile["sizeAffect"]
@@ -93,7 +92,7 @@ class game:
         done = False
         #Status des Spiels
     class storage:
-        camMaxSpeed = 1 #Maximale Kamerageschwindigkeit in Blocks per Frame
+        camMaxSpeed = 0.5 #Maximale Kamerageschwindigkeit in Blocks per Frame
         
         cameraSpeed = [0,0] #Aktuelle Kamerabewegungsrichtung
         
@@ -110,7 +109,7 @@ class game:
         
         worldNumber = 0 #Nummer der ausgewählten Welt auf dem LoadScreen
         noCommaFrames = 0 #Framezeit der Komma-Fehlermeldung beim Speichern
-        textinput = pygame_textinput.TextInput(font_family="font_pt-sans.ttf", text_color=(255,255,255),font_size=40, max_string_length=16) #Texteingabefeld
+        textinput = pygame_textinput.TextInput(font_family="font/PTSans-Regular.ttf", text_color=(255,255,255),font_size=40, max_string_length=16) #Texteingabefeld
         benchmarkFrame = 0 #Fortschritt eines Benchmarks
         try:
             optionsFile = literal_eval(readfile("config.json")) #Lesen aus der Einstellungsdatei
@@ -125,7 +124,7 @@ class game:
         playerInGame = False
         runMouseHover = True
         playBackSpeed = 1
-        sideBarInformation: dict = {"name":"None","energy":0,"parent":"None","age":0,"generation":0}
+        sideBarInformation: dict = {"name": "None", "energy":0,"parent": "None", "age":0,"generation":0}
         showSidebar = True
         simulationRunning = False
         startCreatures = 200
@@ -144,8 +143,6 @@ class engine:
         global screen
         screen = pygame.display.set_mode(game.options.dimensions)
         pygame.display.set_caption(game.options.gameTitle)
-        game.options.pixel_count = [game.options.dimensions[0] // game.options.pixel_size, game.options.dimensions[1] // game.options.pixel_size]
-
 
 class execute:
     class init:
@@ -399,8 +396,8 @@ class execute:
                     screen.blit(noComma, ((game.options.dimensions[0]//2)-(noComma.get_rect().width//2),550))
 
             elif game.options.currentScreen == "newGame":
-                sizeSliderText = game.storage.fonts[28].render("Weltgröße: "+str(game.storage.worldSizeSlider+100)+"x"+str(game.storage.worldSizeSlider+100), True, const.WHITE)
-                entitySliderText = game.storage.fonts[28].render("Startkreaturen: "+str(game.storage.entityCountSlider+10), True, const.WHITE)
+                sizeSliderText = game.storage.fonts[28].render(game.options.langData["menu"]["worldsize"] + ": "+str(game.storage.worldSizeSlider+100)+"x"+str(game.storage.worldSizeSlider+100), True, const.WHITE)
+                entitySliderText = game.storage.fonts[28].render(game.options.langData["menu"]["startcreatures"] + ": "+str(game.storage.entityCountSlider+10), True, const.WHITE)
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(620,690)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),620))
                 pygame.draw.rect(screen,const.WHITE,[165,250,950,5])
@@ -456,13 +453,13 @@ class execute:
             except:
                 raise EOFError("Settings File corrupted")
             #Neuladen der Sprachpakete
-            if 'languagePack' in game.options.optionsFile:
-                game.options.language = game.options.optionsFile["languagePack"]
+            if 'language' in game.options.optionsFile:
+                game.options.language = game.options.optionsFile["language"]
             else:
                 game.options.language = "STD"
-            if os.path.isfile(game.options.optionsFile["languagePack"]+".lang"):
+            if os.path.isfile(game.options.optionsFile["language"]+".lang"):
                 try:
-                    game.options.langData = literal_eval(readfile(game.options.optionsFile["languagePack"]+".lang"))
+                    game.options.langData = literal_eval(readfile(game.options.optionsFile["language"]+".lang"))
                 except:
                     game.options.language = "STD"
             else:
@@ -491,8 +488,8 @@ programIcon = pygame.image.load('icon.png')
 
 
 
-with open("data","r") as f:
-    game.storage.savedWorldsList = f.read().split(",")
+with open("data", "r") as f:
+    game.storage.savedWorldsList = f.read().split(", ")
     f.close()
 
 
@@ -504,7 +501,7 @@ pygame.display.set_caption(game.options.gameTitle)
 pygame.key.set_repeat(100, 10)
 
 for i in [96,64,48,28,24,18]: #Alle zu ladenden Schriftgrößen
-    game.storage.fonts[i] = pygame.font.Font("font_pt-sans.ttf",i) #Fonts laden
+    game.storage.fonts[i] = pygame.font.Font("font/PTSans-Regular.ttf",i) #Fonts laden
 
 
 s = pygame.Surface((280,720))
@@ -525,20 +522,20 @@ toast.fill((0,0,0))
 
 #Render Template
 render_template = [
-{"name":"newGame","font_size":64,"text":game.options.langData["menu"]["new"],"createHover":True,"color":const.WHITE},
-{"name":"save","font_size":64,"text":game.options.langData["general"]["save"],"createHover":True,"color":const.WHITE},
-{"name":"loadGame","font_size":64,"text":game.options.langData["menu"]["load"],"createHover":True,"color":const.WHITE},
-{"name":"startGame","font_size":64,"text":game.options.langData["menu"]["start"],"createHover":True,"color":const.WHITE},
-{"name":"quitGame","font_size":64,"text":game.options.langData["general"]["menu"],"createHover":True,"color":const.WHITE},
-{"name":"back","font_size":64,"text":game.options.langData["general"]["back"],"createHover":True,"color":const.WHITE},
-{"name":"simulationBenchmark","font_size":64,"text":game.options.langData["menu"]["simBench"],"createHover":True,"color":const.WHITE},
-{"name":"settings","font_size":64,"text":game.options.langData["menu"]["setting"],"createHover":True,"color":const.WHITE},
-{"name":"runningBenchmark","font_size":48,"text":game.options.langData["benchmarks"]["benchmarkRunning"],"createHover":False,"color":const.WHITE},
-{"name":"lowend","font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 1/3","createHover":False,"color":const.WHITE},
-{"name":"midend","font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 2/3","createHover":False,"color":const.WHITE},
-{"name":"highend","font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 3/3","createHover":False,"color":const.WHITE},
-{"name":"results","font_size":64,"text":game.options.langData["general"]["results"],"createHover":False,"color":const.WHITE},
-{"name":"resume","font_size":64,"text":game.options.langData["menu"]["resume"],"createHover":True,"color":const.WHITE},
+{"name": "newGame", "font_size":64,"text":game.options.langData["menu"]["new"],"createHover":True,"color":const.WHITE},
+{"name": "save", "font_size":64,"text":game.options.langData["general"]["save"],"createHover":True,"color":const.WHITE},
+{"name": "loadGame", "font_size":64,"text":game.options.langData["menu"]["load"],"createHover":True,"color":const.WHITE},
+{"name": "startGame", "font_size":64,"text":game.options.langData["menu"]["start"],"createHover":True,"color":const.WHITE},
+{"name": "quitGame", "font_size":64,"text":game.options.langData["general"]["menu"],"createHover":True,"color":const.WHITE},
+{"name": "back", "font_size":64,"text":game.options.langData["general"]["back"],"createHover":True,"color":const.WHITE},
+{"name": "simulationBenchmark", "font_size":64,"text":game.options.langData["menu"]["simBench"],"createHover":True,"color":const.WHITE},
+{"name": "settings", "font_size":64,"text":game.options.langData["menu"]["setting"],"createHover":True,"color":const.WHITE},
+{"name": "runningBenchmark", "font_size":48,"text":game.options.langData["benchmarks"]["benchmarkRunning"],"createHover":False,"color":const.WHITE},
+{"name": "lowend", "font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 1/3", "createHover":False,"color":const.WHITE},
+{"name": "midend", "font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 2/3", "createHover":False,"color":const.WHITE},
+{"name": "highend", "font_size":48,"text":game.options.langData["benchmarks"]["simulating"]+" 3/3", "createHover":False,"color":const.WHITE},
+{"name": "results", "font_size":64,"text":game.options.langData["general"]["results"],"createHover":False,"color":const.WHITE},
+{"name": "resume", "font_size":64,"text":game.options.langData["menu"]["resume"],"createHover":True,"color":const.WHITE},
 ]
 
 
@@ -551,16 +548,16 @@ for render_job in render_template: #Render every text in the render template
 
 
 
-noComma = game.storage.fonts[48].render("Im Namen darf kein Komma vorkommen!", True, [255,0,0])
+noComma = game.storage.fonts[48].render(game.options.langData["menu"]["save_as_comma"], True, [255,0,0])
 
-saveAsText = game.storage.fonts[48].render("Gib einen Namen für den Spielstand ein", True, const.WHITE)
+saveAsText = game.storage.fonts[48].render(game.options.langData["menu"]["save_as"], True, const.WHITE)
 
 menuTextA = game.storage.fonts[64].render("START", True, const.WHITE)
 menuTextA_HOVER = game.storage.fonts[64].render("START", True, const.GREY)
 menuTextB = game.storage.fonts[64].render("BENCHMARK", True, const.WHITE)
 menuTextB_HOVER = game.storage.fonts[64].render("BENCHMARK", True, const.GREY)
 startText = game.storage.fonts[96].render("EV   LVERS", True, const.WHITE)
-relsize = game.storage.fonts[48].render("Größe im Verhältnis zur Energie", True, const.WHITE)
+relsize = game.storage.fonts[48].render(game.options.langData["settings"]["relative_scale"], True, const.WHITE)
 
 
 
@@ -624,7 +621,7 @@ while not game.state.done:
                             game.options.currentScreen = "menu"
                     elif game.options.currentScreen == "settings":
                         if mousePos[0] in range(520,720) and mousePos[1] in range(620,690):
-                            with open("config.json","w") as f:
+                            with open("config.json", "w") as f:
                                 f.write(str(game.storage.optionsFile))
                                 f.close()
                             game.storage.fieldSize = 40 if game.storage.viewDistance == 32 else 20 if game.storage.viewDistance == 64 else 80
@@ -660,33 +657,33 @@ while not game.state.done:
                         if mousePos[0] in range(520,720) and mousePos[1] in range(420,490):
                             game.options.currentScreen = "escapeMenu"
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["save"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["save"].get_rect().width//2)) and mousePos[1] in range(330,390)):
-                            if "," in game.storage.textinput.get_text():
+                            if ", " in game.storage.textinput.get_text():
                                 game.storage.noCommaFrames = 70
                                 screen.blit(noComma, ((game.options.dimensions[0]//2)-(noComma.get_rect().width//2),550))
                             else:
-                                with open("data","r") as f:
+                                with open("data", "r") as f:
                                     data = f.read()
                                     f.close()
-                                if not game.storage.textinput.get_text() in data.split(","):
-                                    with open("data","w") as f:
-                                        data += "" if len(data) == 0 else ","
+                                if not game.storage.textinput.get_text() in data.split(", "):
+                                    with open("data", "w") as f:
+                                        data += "" if len(data) == 0 else ", "
                                         data += game.storage.textinput.get_text()
                                         f.write(data)
                                         f.close()
-                                with open("save/"+game.storage.textinput.get_text()+"_world.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_world.json", "w") as f:
                                     f.write(str(game.storage.gameWorld))
                                     f.close()
-                                with open("save/"+game.storage.textinput.get_text()+"_creatures.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_creatures.json", "w") as f:
                                     f.write(str(game.storage.gameEntities))
                                     f.close()
-                                with open("save/"+game.storage.textinput.get_text()+"_players.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_players.json", "w") as f:
                                     f.write(str(game.storage.playerInformation))
                                     f.close()
-                                with open("save/"+game.storage.textinput.get_text()+"_options.json","w") as f:
+                                with open("save/"+game.storage.textinput.get_text()+"_options.json", "w") as f:
                                     f.write("{'seconds':"+str(game.timers.seconds)+",'frame':"+str(game.timers.frame)+"}")
                                     f.close()
-                                with open("data","r") as f:
-                                    game.storage.savedWorldsList = f.read().split(",")
+                                with open("data", "r") as f:
+                                    game.storage.savedWorldsList = f.read().split(", ")
                                     f.close()
                                 game.options.currentScreen = "escapeMenu"
                     elif game.options.currentScreen == "gamemodeSelect":
@@ -704,16 +701,16 @@ while not game.state.done:
                         if mousePos[0] in range(1196, 1260) and mousePos[1] in range(328, 392):
                             game.storage.worldNumber += 1 if game.storage.worldNumber+1 < len(game.storage.savedWorldsList) else 0
                         if (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)):
-                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_world.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_world.json", "r") as f:
                                 game.storage.gameWorld = literal_eval(f.read())
                                 f.close()
-                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_players.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_players.json", "r") as f:
                                 game.storage.playerInformation = literal_eval(f.read())
                                 f.close()
-                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_creatures.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_creatures.json", "r") as f:
                                 game.storage.gameEntities = literal_eval(f.read())
                                 f.close()
-                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_options.json","r") as f:
+                            with open("save/"+game.storage.savedWorldsList[game.storage.worldNumber]+"_options.json", "r") as f:
                                 worldOptionsFile:dict = literal_eval(f.read())
                                 f.close()
                             game.timers.frame = worldOptionsFile["frame"]
@@ -768,7 +765,7 @@ while not game.state.done:
                         game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
                 if event.key == pygame.K_SPACE:
                     game.storage.simulationRunning = not game.storage.simulationRunning
-                    execute.evolvers.toastMessage("Simulation gestartet." if game.storage.simulationRunning else "Simulation gestoppt.",60)
+                    execute.evolvers.toastMessage(game.options.langData["general"]["started"] if game.storage.simulationRunning else game.options.langData["general"]["stopped"],60)
                 if event.key == pygame.K_d:
                     if bool(game.timers.frame % 2) or game.storage.playerHasMoved == 0:
                         if int(game.storage.playerInformation["energy"]) > 0:
