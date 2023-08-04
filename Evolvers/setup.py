@@ -1,5 +1,7 @@
 import cx_Freeze
 
-executables = [cx_Freeze.Executable("runGame_GUI.py",icon="icon.ico",base="Win32GUI")]
+executables = [cx_Freeze.Executable("run.py",icon="images/icon.ico",base="Win32GUI")]
 
-cx_Freeze.setup(name="Evolvers",options={"build_exe":{"packages":["pygame"],"include_files":["worldImage.jpg","pygame_textinput.py","left.png","right.png","menuBackground.jpg","true.png","false.png","icon.png","logoSmall.png","creatureEngine.py","newWorldGenerator.py","mouseHoverEngine.py","cameraEngine.py","creatureClickEngine.py","creatureNames.py","font_pt-sans.ttf","DE.lang","ENG.lang"]}},executables=executables)
+included_files = ["images/", "font/", "pygame_textinput.py", "creatureEngine.py", "newWorldGenerator.py", "mouseHoverEngine.py", "cameraEngine.py", "creatureClickEngine.py", "creatureNames.py", "evolversRenderer.py", "DE.lang", "ENG.lang"]
+
+cx_Freeze.setup(name="Evolvers", options={"build_exe":{"packages":["pygame", "PIL"], "include_files":included_files}}, executables=executables)

@@ -39,9 +39,9 @@ class builtin:
 class game:
     class options:
         #Erstellen von Dateien, falls sie fehlen.
-        
 
-        
+
+
         if not os.path.isfile("config.json"):
             with open("config.json", "w") as f:
                 f.write("{'viewDistance':32,'sizeAffect':False,'language':'STD'}")
@@ -93,20 +93,20 @@ class game:
         #Status des Spiels
     class storage:
         camMaxSpeed = 0.5 #Maximale Kamerageschwindigkeit in Blocks per Frame
-        
+
         cameraSpeed = [0,0] #Aktuelle Kamerabewegungsrichtung
-        
-        
+
+
         cameraMoved = False #Kamera im letzten Frame bewegt?
-        
+
         toastDuration = 0 #Länge eines Toasts in Frames
-        
+
         #TODO: Cleanup der Variablen
-        
+
         worldSizeSlider = 0 #Slider bei Erstellung einer neuen Welt
-        
+
         entityCountSlider = 0 #Slider bei der Erstellung der Kreaturen
-        
+
         worldNumber = 0 #Nummer der ausgewählten Welt auf dem LoadScreen
         noCommaFrames = 0 #Framezeit der Komma-Fehlermeldung beim Speichern
         textinput = pygame_textinput.TextInput(font_family="font/PTSans-Regular.ttf", text_color=(255,255,255),font_size=40, max_string_length=16) #Texteingabefeld
@@ -147,13 +147,13 @@ class engine:
 class execute:
     class init:
         def texLoader():
-            game.storage.textureStorage["backgroundimage"] = pygame.image.load("menuBackground.jpg").convert()
-            game.storage.textureStorage["logoSmall"] = pygame.image.load("logoSmall.png")
-            game.storage.textureStorage["false"] = pygame.image.load("false.png").convert_alpha()
-            game.storage.textureStorage["true"] = pygame.image.load("true.png").convert_alpha()
-            game.storage.textureStorage["left"] = pygame.image.load("left.png").convert_alpha()
-            game.storage.textureStorage["right"] = pygame.image.load("right.png").convert_alpha()
-            game.storage.textureStorage["worldImage"] = pygame.image.load("worldImage.jpg").convert()
+            game.storage.textureStorage["backgroundimage"] = pygame.image.load("images/menu_background.jpg").convert()
+            game.storage.textureStorage["logo_small"] = pygame.image.load("images/logo_small.png")
+            game.storage.textureStorage["false"] = pygame.image.load("images/false.png").convert_alpha()
+            game.storage.textureStorage["true"] = pygame.image.load("images/true.png").convert_alpha()
+            game.storage.textureStorage["left"] = pygame.image.load("images/left.png").convert_alpha()
+            game.storage.textureStorage["right"] = pygame.image.load("images/right.png").convert_alpha()
+            game.storage.textureStorage["world_preview"] = pygame.image.load("images/world_preview.jpg").convert()
             #Funktion, um Texturen zu laden. (Texturen können auch in der DrawFunction geladen werden, das spart zwar RAM, aber führt zu Rucklern!)
         def gameInit():
             pass
@@ -187,7 +187,7 @@ class execute:
                         pygame.draw.rect(screen, [red,green,blue], [p1[0],p1[1],game.storage.fieldSize,game.storage.fieldSize])
                         pygame.draw.line(screen,const.BLACK,[p1[0],0],[p1[0],game.options.dimensions[1] + game.storage.fieldSize])
                         pygame.draw.line(screen,const.BLACK,[0,p1[1]],[game.options.dimensions[0],p1[1]])
-                        
+
                 #MOUSEHOVER
                 if game.storage.runMouseHover:
                     pos = list(pygame.mouse.get_pos())
@@ -293,21 +293,21 @@ class execute:
                     screen.blit(s_speedText,(1010,670))
             elif game.options.currentScreen == "menu":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
+                screen.blit(game.storage.textureStorage["logo_small"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
                 screen.blit(menuTextA if not (mousePos[0] in range((game.options.dimensions[0]//2)-(menuTextA.get_rect().width//2),(game.options.dimensions[0]//2)+(menuTextA.get_rect().width//2)) and mousePos[1] in range(220,290)) else menuTextA_HOVER,((game.options.dimensions[0]//2)-(menuTextA.get_rect().width//2),220))
                 screen.blit(menuTextB if not (mousePos[0] in range((game.options.dimensions[0]//2)-(menuTextB.get_rect().width//2),(game.options.dimensions[0]//2)+(menuTextB.get_rect().width//2)) and mousePos[1] in range(320,390)) else menuTextB_HOVER,((game.options.dimensions[0]//2)-(menuTextB.get_rect().width//2),320))
                 screen.blit(game.storage.guiTexts["settings"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["settings"].get_rect().width//2),(game.options.dimensions[0]//2)+(menuTextB.get_rect().width//2)) and mousePos[1] in range(420,490)) else game.storage.guiTexts["settingsHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["settings"].get_rect().width//2),420))
             elif game.options.currentScreen == "benchmarkMenu":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
+                screen.blit(game.storage.textureStorage["logo_small"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
                 screen.blit(game.storage.guiTexts["simulationBenchmark"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["simulationBenchmark"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["simulationBenchmark"].get_rect().width//2)) and mousePos[1] in range(220,290)) else game.storage.guiTexts["simulationBenchmarkHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["simulationBenchmark"].get_rect().width//2),220))
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(420,490)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),420))
             elif game.options.currentScreen == "settings":
                 viewdistance = game.storage.fonts[48].render(game.options.langData["settings"]["view_distance"]+": "+(game.options.langData["settings"]["low"] if game.storage.viewDistance == 16 else game.options.langData["settings"]["medium"] if game.storage.viewDistance == 32 else game.options.langData["settings"]["high"]), True, const.WHITE)
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
-                screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
+                screen.blit(game.storage.textureStorage["logo_small"],(515,28))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(620,690)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),620))
                 screen.blit(viewdistance,(450 if game.storage.viewDistance == 16 else 465 if game.storage.viewDistance == 32 else 480,180))
@@ -377,7 +377,7 @@ class execute:
             elif game.options.currentScreen == "gamemodeSelect":
                 screen.blit(game.storage.textureStorage["backgroundimage"],(0,0))
                 screen.blit(startText,((game.options.dimensions[0]//2)-(startText.get_rect().width//2),20))
-                screen.blit(game.storage.textureStorage["logoSmall"],(515,28))
+                screen.blit(game.storage.textureStorage["logo_small"],(515,28))
                 screen.blit(game.storage.guiTexts["back"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["back"].get_rect().width//2)) and mousePos[1] in range(620,690)) else game.storage.guiTexts["backHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["back"].get_rect().width//2),620))
                 screen.blit(game.storage.guiTexts["newGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["newGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["newGame"].get_rect().width//2)) and mousePos[1] in range(200,270)) else game.storage.guiTexts["newGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["newGame"].get_rect().width//2),200))
                 screen.blit(game.storage.guiTexts["loadGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["loadGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["loadGame"].get_rect().width//2)) and mousePos[1] in range(290,360)) else game.storage.guiTexts["loadGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["loadGame"].get_rect().width//2),300))
@@ -416,7 +416,7 @@ class execute:
                 screen.blit(game.storage.textureStorage["right"],(1196, 328))
                 worldNameToLoad = game.storage.fonts[48].render(game.storage.savedWorldsList[game.storage.worldNumber],True,const.WHITE)
                 screen.blit(worldNameToLoad,[(game.options.dimensions[0]//2)-(worldNameToLoad.get_rect().width//2) + 120,330])
-                screen.blit(game.storage.textureStorage["worldImage"],[100,180])
+                screen.blit(game.storage.textureStorage["world_preview"],[100,180])
                 screen.blit(game.storage.guiTexts["startGame"] if not (mousePos[0] in range((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),(game.options.dimensions[0]//2)+(game.storage.guiTexts["startGame"].get_rect().width//2)) and mousePos[1] in range(540,610)) else game.storage.guiTexts["startGameHover"],((game.options.dimensions[0]//2)-(game.storage.guiTexts["startGame"].get_rect().width//2),540))
             if game.storage.toastDuration > 0:
                 game.storage.toastDuration -= 1
@@ -424,7 +424,7 @@ class execute:
                 screen.blit(game.storage.toastMessage,[(game.options.dimensions[0]//2)-(game.storage.toastMessage.get_rect().width//2),635])
 
 
-            
+
             #Code, der jeden Frame ausgeführt wird. (auch Draw-Befehle)
     class timedExecute:
         def onSecondFunction():
@@ -434,7 +434,7 @@ class execute:
             if game.options.currentScreen == "game" and game.storage.simulationRunning:
                 game.storage.gameWorld = creatureEngine.runWorldIteration(game.storage.gameWorld)
             #Code, der jede Sekunde ausgeführt wird.
-    
+
     class evolvers:
         def respawnPlayer():
             game.storage.playerInformation = creatureEngine.newCreature()
@@ -484,7 +484,7 @@ pygame.init()
 screen = pygame.display.set_mode(game.options.dimensions)
 execute.init.texLoader()
 execute.init.gameInit()
-programIcon = pygame.image.load('icon.png')
+programIcon = pygame.image.load('images/icon.png')
 
 
 
@@ -575,10 +575,10 @@ while not game.state.done:
                         game.storage.worldSizeSlider = mousePos[0] - 165
                     if (mousePos[0] in range(165,1115) and mousePos[1] in range(380,430)):
                         game.storage.entityCountSlider = mousePos[0] - 165
-                        
+
             except AttributeError:
                 pass
-                            
+
 
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 4 and game.options.currentScreen == "game":
