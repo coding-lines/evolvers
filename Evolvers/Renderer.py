@@ -4,10 +4,12 @@ import time
 import random
 
 class Renderer:
-    def __init__(self, dimensions, pixels_per_tile = 40):
+    def __init__(self, dimensions, font, pixels_per_tile = 40):
         self.scaling = pixels_per_tile
         self.width = dimensions[0]
         self.height = dimensions[1]
+
+        self.font = font
 
         self.water_color = [0, 100, 150]
         self.infertile = [100, 100, 100]
@@ -61,3 +63,17 @@ class Renderer:
 
         for n in range(math.ceil(self.width / tile_size)):
             pygame.draw.line(screen, [0, 0, 0], [(-camera.x % 1) * tile_size + n * tile_size, 0], [(-camera.x % 1) * tile_size + n * tile_size, self.height])
+
+    def render_creatures(self, screen, camera, creatures):
+
+        font = pygame.font.Font(self.font, round(camera.z * 40))
+
+        for creature in creatures:
+            size = round(((creature.energy + 50) * camera.z * self.scaling) // 250)
+            pos = [(creature.x - camera.x) * self.scaling * camera.z, (creature.y - camera.y) * self.scaling * camera.z]
+
+            pygame.draw.circle(screen, creature.background_color, pos, size + 2)
+            pygame.draw.circle(screen, creature.color, pos, size)
+
+            name_label = font.render(creature.name, True, [255, 255, 255])
+            screen.blit(name_label, [pos[0] - (name_label.get_width() // 2), pos[1] + size])

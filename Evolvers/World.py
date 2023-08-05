@@ -86,4 +86,6 @@ class World:
                 self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor)
                 count += 1
 
-        print(count)
+
+    def full_creature_iteration(self):
+        self = self.creature_manager.full_iteration(self)

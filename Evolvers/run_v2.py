@@ -32,9 +32,9 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Evolvers")
 
-test_world = World.World(size_limit=[2,2])
+test_world = World.World(size_limit=[4,4], water_cover=0.2)
 cam = Camera.Camera()
-renderer = Renderer.Renderer(dimensions)
+renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
 
 dt = 0
 t = time.time()
@@ -60,10 +60,12 @@ while open:
         cam.x += dt * cam.movement_speed
 
     test_world.visible_only_world_iteration(renderer, cam)
+    test_world.full_creature_iteration()
 
 
     screen.fill([0,0,0])
     renderer.render_world(screen, cam, test_world)
+    renderer.render_creatures(screen, cam, test_world.creature_manager.creatures)
 
     pygame.display.flip()
 

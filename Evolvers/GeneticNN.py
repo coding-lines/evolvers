@@ -39,17 +39,28 @@ class Network:
 
         neuron_outputs = []
 
-        for neuron in self.neurons[layer_no]:
-            neuron_inputs = data.copy()
+        if layer_no == 0:
+            for n_neuron, neuron in enumerate(self.neurons[layer_no]):
+                neuron_input = data[n_neuron]
 
-            for element, value in enumerate(neuron_inputs):
-                neuron_inputs[element] = value * neuron.input_weights[element] #Apply input weights
+                neuron_output = neuron_input * neuron.input_weights[0]
 
-            neuron_output = sum(neuron_inputs)
+                neuron_outputs += [neuron_output]
 
-            neuron_outputs += [neuron_output]
+            return neuron_outputs
 
-        return neuron_outputs
+        else:
+            for neuron in self.neurons[layer_no]:
+                neuron_inputs = data.copy()
+
+                for element, value in enumerate(neuron_inputs):
+                    neuron_inputs[element] = value * neuron.input_weights[element] #Apply input weights
+
+                neuron_output = sum(neuron_inputs)
+
+                neuron_outputs += [neuron_output]
+
+            return neuron_outputs
 
     def predict(self, data):
 
