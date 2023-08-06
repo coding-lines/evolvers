@@ -3,7 +3,7 @@ import CreatureManager
 import time
 
 class World:
-    def __init__(self, size_limit=[0, 0], chunk_size = 12, regrowth_factor = 1, fertility_range_factor = 1, water_cover = 0.5):
+    def __init__(self, size_limit=[0, 0], chunk_size = 12, regrowth_factor = 1, fertility_range_factor = 1, water_cover = 0.5, start_creatures=50, maintain_population=5):
 
         #[0, 0] = unlimited
         self.size_limit = size_limit
@@ -27,7 +27,7 @@ class World:
         #Percentage of water in the world (-1 = automatic (random), 0 = no water, 1 = only water)
         self.water_cover = water_cover
 
-        self.creature_manager = CreatureManager.CreatureManager(self.tile_limit)
+        self.creature_manager = CreatureManager.CreatureManager(self.tile_limit, start_creatures, maintain_population)
 
     def is_chunk_loaded(self, chunk):
         if chunk not in self.generated_chunks:

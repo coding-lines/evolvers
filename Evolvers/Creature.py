@@ -42,8 +42,7 @@ class Creature:
             self.color = CreatureProperties.get_random_color()
             self.background_color = CreatureProperties.get_background_color(self.color)
 
-            if spawn_range == 0:
-                spawn_range = 100
+            spawn_range = spawn_range if spawn_range > 0 else 100
 
             self.x = random.randint(0, spawn_range)
             self.y = random.randint(0, spawn_range)
@@ -167,6 +166,9 @@ class Creature:
 
                 self.energy -= 0.25 * delta_time #Preventing creatures from doing nothing
 
+                if ground_is_water:
+                    self.energy -= 10 * delta_time #Water hurts the creature
+
                 self.energy -= changes[1] * delta_time
 
                 #Eating
@@ -174,7 +176,7 @@ class Creature:
                     self.energy -= delta_time #Discourage constant eating
 
                     if ground_is_water:
-                        self.energy -= 10 * delta_time #Trying to eat water hurts the creature
+                        self.energy -= 15 * delta_time #Trying to eat water hurts the creature
                     else:
                         self.energy += min(10 * delta_time, ground_food)
                         world.chunks[chunk_id].food[chunk_coords[0]][chunk_coords[1]] -= min(10 * delta_time, ground_food)
@@ -211,17 +213,25 @@ class Creature:
                 self.x += acceleration_x * delta_time
                 self.y += acceleration_y * delta_time
 
-                #Limit movement across world borders
+                #'laziness' penalty
+                if abs(self.v_x) + abs(self.v_y) < 0.2:
+                    self.energy -= 50 * (0.2 - (abs(self.v_x) + abs(self.v_y))) * delta_time
+
+                #Limit movement across world borders and penalize it
                 if world.size_limit != [0, 0]:
                     if self.x < 0:
                         self.x = 1
+                        self.energy -= 10 * delta_time
                     elif self.x > world.size_limit[0] * world.chunk_size:
                         self.x = world.size_limit[0] * world.chunk_size - 1
+                        self.energy -= 10 * delta_time
 
                     if self.y < 0:
                         self.y = 1
+                        self.energy -= 10 * delta_time
                     elif self.y > world.size_limit[1] * world.chunk_size:
                         self.y = world.size_limit[1] * world.chunk_size - 1
+                        self.energy -= 10 * delta_time
 
         self.last_iteration = time.time()
         return world, reproduce

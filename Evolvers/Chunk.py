@@ -1,3 +1,4 @@
+import math
 import random
 import time
 
@@ -68,6 +69,31 @@ class Chunk:
 
                 self.terrain[x] += [random.choice([last_x, last_y, random_tile])]
 
+        #Basic world smoothing (needs rework for chunk border cases)
+        for smoothing_step in range(3):
+            for x in range(self.size):
+                for y in range(self.size):
+                    neighbor_terrain = []
+
+                    for x_neighbor in range(x-1, x+2):
+                        for y_neighbor in range(y-1, y+2):
+                            if x == x_neighbor and y == y_neighbor:
+                                continue
+
+                            if x_neighbor >= len(self.terrain) or y_neighbor >= len(self.terrain):
+                                continue
+
+                            if x_neighbor < 0 or y_neighbor < 0:
+                                continue
+
+                            neighbor_terrain += [self.terrain[x_neighbor][y_neighbor]]
+
+                    if neighbor_terrain.count(self.terrain[x][y]) < math.floor(len(neighbor_terrain) / 2):
+                        if self.terrain[x][y] == -1:
+                            self.terrain[x][y] = 1
+                        else:
+                            self.terrain[x][y] = -1
+
         #TODO: fertility
 
         for x in range(self.size):
@@ -75,7 +101,7 @@ class Chunk:
                 if self.terrain[x][y] <= 0:
                     self.food[x] += [0]
                 else:
-                    self.food[x] += [2 * self.terrain[x][y]]
+                    self.food[x] += [5 * self.terrain[x][y] * random.random()]
 
         self.loaded = True
         self.last_iteration = time.time()
