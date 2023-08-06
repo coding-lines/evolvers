@@ -163,6 +163,26 @@ class execute:
             game.storage.trueFPS = clock.get_fps()
             if game.options.currentScreen == "game":
                 mPos = list(pygame.mouse.get_pos())
+                if pygame.key.get_pressed()[pygame.K_LEFT]:
+                    if not game.storage.playerInGame:
+                        game.storage.cameraMoved = True
+                        game.storage.cameraSpeed[0] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
+                if pygame.key.get_pressed()[pygame.K_RIGHT]:
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[0] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
+                if pygame.key.get_pressed()[pygame.K_UP]:
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[1] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
+                if pygame.key.get_pressed()[pygame.K_DOWN]:
+                    if not game.storage.playerInGame:
+                        game.storage.cameraSpeed[1] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
+                        game.storage.cameraMoved = True
+                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
                 if not game.storage.cameraMoved:
                     game.storage.cameraSpeed = [0,0]
                 else:
@@ -498,8 +518,6 @@ pygame.display.set_icon(programIcon)
 clock = pygame.time.Clock()
 pygame.display.set_caption(game.options.gameTitle)
 
-pygame.key.set_repeat(100, 10)
-
 for i in [96,64,48,28,24,18]: #Alle zu ladenden Schriftgrößen
     game.storage.fonts[i] = pygame.font.Font("font/PTSans-Regular.ttf",i) #Fonts laden
 
@@ -743,26 +761,6 @@ while not game.state.done:
                 if event.key == pygame.K_ESCAPE:
                     game.options.currentScreen = "escapeMenu"
                     game.storage.simulationRunning = False
-                if event.key == pygame.K_LEFT:
-                    if not game.storage.playerInGame:
-                        game.storage.cameraMoved = True
-                        game.storage.cameraSpeed[0] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
-                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
-                if event.key == pygame.K_RIGHT:
-                    if not game.storage.playerInGame:
-                        game.storage.cameraSpeed[0] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[0]*7)/8
-                        game.storage.cameraMoved = True
-                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[game.storage.cameraSpeed[0],0],game.storage.worldSize)
-                if event.key == pygame.K_UP:
-                    if not game.storage.playerInGame:
-                        game.storage.cameraSpeed[1] = (-(game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
-                        game.storage.cameraMoved = True
-                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
-                if event.key == pygame.K_DOWN:
-                    if not game.storage.playerInGame:
-                        game.storage.cameraSpeed[1] = ((game.storage.camMaxSpeed)+game.storage.cameraSpeed[1]*7)/8
-                        game.storage.cameraMoved = True
-                        game.storage.cameraPos = cameraEngine.moveCamera(game.storage.cameraPos,[0,game.storage.cameraSpeed[1]],game.storage.worldSize)
                 if event.key == pygame.K_SPACE:
                     game.storage.simulationRunning = not game.storage.simulationRunning
                     execute.evolvers.toastMessage(game.options.langData["general"]["started"] if game.storage.simulationRunning else game.options.langData["general"]["stopped"],60)
