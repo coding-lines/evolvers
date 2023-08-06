@@ -70,7 +70,7 @@ class Renderer:
 
         for creature in creatures:
             size = round(((creature.energy + 50) * camera.z * self.scaling) // 250)
-            pos = [(creature.x - camera.x) * self.scaling * camera.z, (creature.y - camera.y) * self.scaling * camera.z]
+            pos = [(creature.x - camera.x) * self.scaling * camera.z - size, (creature.y - camera.y) * self.scaling * camera.z - size]
 
             pygame.draw.circle(screen, creature.background_color, pos, size + 2)
             pygame.draw.circle(screen, creature.color, pos, size)

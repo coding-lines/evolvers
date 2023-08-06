@@ -72,20 +72,20 @@ class World:
 
         return self.chunks[chunk]
 
-    def full_world_iteration(self):
+    def full_world_iteration(self, speed = 1):
         for chunk in self.chunks.keys():
-            self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor)
+            self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor, speed = speed)
 
-    def visible_only_world_iteration(self, renderer, camera):
+    def visible_only_world_iteration(self, renderer, camera, speed = 1):
         visible = renderer.get_chunks_in_view(camera, self)
 
         count = 0
 
         for chunk in visible:
             if self.is_chunk_loaded(chunk):
-                self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor)
+                self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor, speed = speed)
                 count += 1
 
 
-    def full_creature_iteration(self):
-        self = self.creature_manager.full_iteration(self)
+    def full_creature_iteration(self, speed = 1):
+        self = self.creature_manager.full_iteration(self, speed = speed)

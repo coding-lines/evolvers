@@ -80,11 +80,11 @@ class Chunk:
         self.loaded = True
         self.last_iteration = time.time()
 
-    def run_iteration(self, regrowth_factor = 1):
+    def run_iteration(self, regrowth_factor = 1, speed = 1):
         for x in range(self.size):
             for y in range(self.size):
                 if self.terrain[x][y] > 0:
-                    self.food[x][y] += 0.5 * self.terrain[x][y] * (time.time() - self.last_iteration) * regrowth_factor
+                    self.food[x][y] += 0.25 * self.terrain[x][y] * (time.time() - self.last_iteration) * regrowth_factor * speed
                     if self.food[x][y] > 10:
                         self.food[x][y] = 10
 

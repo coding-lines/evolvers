@@ -11,7 +11,7 @@ class CreatureProperties:
     def alter_color(color):
         value_to_change = random.randint(0,2)
 
-        color[value_to_change] += random.randint(-3, 3)
+        color[value_to_change] += random.randint(-5, 5)
 
         if color[value_to_change] > 255:
             color[value_to_change] = 255
@@ -31,7 +31,7 @@ class CreatureProperties:
         return creatureNames.alterName(name)
 
 class Creature:
-    def __init__(self, new = True):
+    def __init__(self, new = True, spawn_range=20):
         if not new:
             self.populated = False
         else:
@@ -42,8 +42,11 @@ class Creature:
             self.color = CreatureProperties.get_random_color()
             self.background_color = CreatureProperties.get_background_color(self.color)
 
-            self.x = random.randint(0, 20)
-            self.y = random.randint(0, 20)
+            if spawn_range == 0:
+                spawn_range = 100
+
+            self.x = random.randint(0, spawn_range)
+            self.y = random.randint(0, spawn_range)
             self.rotation = random.randint(0, 359)
 
             self.v_x = 0
@@ -64,12 +67,12 @@ class Creature:
             ################
             #NEURAL NETWORK#
             ################
-            #Inputs: Energy, Ground type, Ground food content, rotation, constant 1, memory?
+            #Inputs: Energy, Ground type, Ground food content, rotation, constant 1, memory?, -x border, +x border, -y border, +y border
             ###
             #Outputs: Rotation change, speed, eat, reproduce, memory
             ###
 
-            self.brain_storage = GeneticNN.Network([6, 6, 5])
+            self.brain_storage = GeneticNN.Network([10, 10, 5])
             self.memory = 0
 
     def create_mutation_of(self, other):
@@ -100,10 +103,12 @@ class Creature:
 
         self.energy = 100
 
-    def run_iteration(self, world, speed = 20):
+    def run_iteration(self, world, speed = 1):
         reproduce = False
         delta_time = speed * (time.time() - self.last_iteration)
-        if self.populated and not math.isnan(delta_time):
+        if self.populated:
+            self.age += delta_time
+
             chunk_id = str(math.floor(self.x / world.chunk_size)) + "_" + str(math.floor(self.y / world.chunk_size))
 
             if world.is_chunk_loaded(chunk_id):
@@ -118,7 +123,23 @@ class Creature:
                 ground_food = chunk.food[chunk_coords[0]][chunk_coords[1]]
 
                 if self.brain_type == "neural_network":
-                    changes = self.brain_storage.predict([self.energy, ground_is_water, ground_food, self.rotation, 1, self.memory])
+
+                    borderless_world = world.size_limit == [0, 0]
+
+                    brain_inputs = [
+                    self.energy,
+                    ground_is_water,
+                    ground_food,
+                    self.rotation,
+                    int(math.floor(self.x - 2) >= world.size_limit[0] * world.chunk_size) if not borderless_world else 0,
+                    int(math.ceil(self.x + 2) >= world.size_limit[0] * world.chunk_size) if not borderless_world else 0,
+                    int(math.floor(self.y - 2) >= world.size_limit[1] * world.chunk_size) if not borderless_world else 0,
+                    int(math.ceil(self.y + 2) >= world.size_limit[1] * world.chunk_size) if not borderless_world else 0,
+                    self.memory,
+                    1
+                    ]
+
+                    changes = self.brain_storage.predict(brain_inputs)
 
                     #Limit memory
                     if changes[4] > 255:
