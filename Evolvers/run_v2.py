@@ -37,6 +37,7 @@ cam = Camera.Camera()
 renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
 
 dt = 0
+global_speed = 1
 t = time.time()
 
 while open:
@@ -50,6 +51,12 @@ while open:
             elif event.button == 5:
                 cam.z -= 0.1 if cam.z >= 0.2 else 0
 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                global_speed += 1 if global_speed < 50 else 0
+            elif event.key == pygame.K_o:
+                global_speed -= 1 if global_speed > 1 else 0
+
     if pygame.key.get_pressed()[pygame.K_DOWN]:
         cam.y += dt * cam.movement_speed
     if pygame.key.get_pressed()[pygame.K_UP]:
@@ -59,8 +66,8 @@ while open:
     if pygame.key.get_pressed()[pygame.K_RIGHT]:
         cam.x += dt * cam.movement_speed
 
-    test_world.visible_only_world_iteration(renderer, cam)
-    test_world.full_creature_iteration()
+    test_world.visible_only_world_iteration(renderer, cam, global_speed)
+    test_world.full_creature_iteration(global_speed)
 
 
     screen.fill([0,0,0])
