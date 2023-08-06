@@ -11,7 +11,7 @@ class CreatureProperties:
     def alter_color(color):
         value_to_change = random.randint(0,2)
 
-        color[value_to_change] += random.randint(-5, 5)
+        color[value_to_change] += random.choice([-10, -5, 5, 10])
 
         if color[value_to_change] > 255:
             color[value_to_change] = 255
@@ -28,12 +28,50 @@ class CreatureProperties:
         return creatureNames.createNameOfLength(7)
 
     def alter_name(name):
+        change_type = random.random()
+        if change_type < 0.2:
+            if len(name) > 3 and random.random() < 0.5:
+                return name[:-1] #Cut off one letter
+            elif len(name) < 9:
+                return creatureNames.continueName(name)
         return creatureNames.alterName(name)
 
 class Creature:
-    def __init__(self, new = True, spawn_range=20):
+    def __init__(self, new = True, spawn_range=20, json_repr = ""):
         if not new:
-            self.populated = False
+            if json_repr != "":
+                self.populated = json_repr["populated"]
+
+                self.name = json_repr["name"]
+
+                self.color = json_repr["color"]
+                self.background_color = CreatureProperties.get_background_color(self.color)
+
+                self.x = json_repr["x"]
+                self.y = json_repr["y"]
+                self.rotation = json_repr["rotation"]
+
+                self.v_x = 0
+                self.v_y = 0
+
+                self.energy = json_repr["energy"]
+
+                self.generation = json_repr["generation"]
+                self.age = json_repr["age"]
+                self.ancestors = json_repr["ancestors"]
+                self.children = json_repr["children"]
+
+                self.last_iteration = time.time()
+
+                self.brain_type = json_repr["brain_type"]
+
+                if self.brain_type == "neural_network":
+                    self.brain_storage = GeneticNN.Network(json_repr = json_repr["brain_storage"])
+
+                self.memory = json_repr["memory"]
+
+            else:
+                self.populated = False
         else:
             self.populated = True
 
@@ -71,14 +109,14 @@ class Creature:
             #Outputs: Rotation change, speed, eat, reproduce, memory
             ###
 
-            self.brain_storage = GeneticNN.Network([10, 10, 5])
+            self.brain_storage = GeneticNN.Network([10, 5])
             self.memory = 0
 
     def create_mutation_of(self, other):
         self.populated = True
         self.name = CreatureProperties.alter_name(other.name)
 
-        self.color = CreatureProperties.alter_color(other.color)
+        self.color = CreatureProperties.alter_color(other.color.copy())
         self.background_color = CreatureProperties.get_background_color(self.color)
 
         self.x = other.x
@@ -102,9 +140,34 @@ class Creature:
 
         self.energy = 100
 
-    def run_iteration(self, world, speed = 1):
+    def get_json_repr(self):
+        brain_json = {}
+        if self.brain_type == "neural_network":
+            brain_json = self.brain_storage.get_json_repr()
+
+        return {
+        "populated": self.populated,
+        "name": self.name,
+        "color": self.color,
+        "x": self.x,
+        "y": self.y,
+        "rotation": self.rotation,
+        "energy": self.energy,
+        "generation": self.generation,
+        "age": self.age,
+        "ancestors": self.ancestors,
+        "children": self.children,
+        "brain_type": self.brain_type,
+        "brain_storage": brain_json,
+        "memory": self.memory
+        }
+
+    def run_iteration(self, world, speed = 1, override_dt = 0):
         reproduce = False
-        delta_time = speed * (time.time() - self.last_iteration)
+        if override_dt != 0:
+            delta_time = override_dt
+        else:
+            delta_time = speed * (time.time() - self.last_iteration)
         if self.populated:
             self.age += delta_time
 
@@ -221,17 +284,17 @@ class Creature:
                 if world.size_limit != [0, 0]:
                     if self.x < 0:
                         self.x = 1
-                        self.energy -= 10 * delta_time
+                        self.energy -= 5
                     elif self.x > world.size_limit[0] * world.chunk_size:
                         self.x = world.size_limit[0] * world.chunk_size - 1
-                        self.energy -= 10 * delta_time
+                        self.energy -= 5
 
                     if self.y < 0:
                         self.y = 1
-                        self.energy -= 10 * delta_time
+                        self.energy -= 5
                     elif self.y > world.size_limit[1] * world.chunk_size:
                         self.y = world.size_limit[1] * world.chunk_size - 1
-                        self.energy -= 10 * delta_time
+                        self.energy -= 5
 
         self.last_iteration = time.time()
         return world, reproduce

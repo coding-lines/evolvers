@@ -1,6 +1,9 @@
 import math
+import os
 import random
 import time
+
+from ast import literal_eval
 
 class ChunkConverters:
     def boolean_to_tile_type(tile):
@@ -30,7 +33,13 @@ class Chunk:
         self.loaded = False
 
     def load_from_file(self, file_name):
-        pass
+        with open(file_name, "r") as f:
+            json_repr = literal_eval(f.read())
+
+        self.terrain = json_repr["terrain"]
+        self.food = json_repr["food"]
+
+        self.loaded = True
 
     def generate(self, borders = {}, water_cover = 0.5):
         self.terrain = []
@@ -115,3 +124,20 @@ class Chunk:
                         self.food[x][y] = 10
 
         self.last_iteration = time.time()
+
+    def compress(self, food_map):
+        for x in range(len(food_map)):
+            for y in range(len(food_map[0])):
+                food_map[x][y] = round(food_map[x][y], 2)
+
+        return food_map
+
+    def save_to(self, path, key):
+
+        chunk_data = {
+        "terrain": self.terrain,
+        "food": self.compress(self.food)
+        }
+
+        with open(os.path.join(path, key + ".json"), "w") as f:
+            f.write(str(chunk_data))

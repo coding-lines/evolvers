@@ -1,11 +1,23 @@
 import random
 import copy
 
-class Neuron:
-    def __init__(self, type="neuron", prev_layer=1):
-        self.type = str(type)
+from ast import literal_eval
 
-        self.input_weights = [10 * (random.random()-0.5) for i in range(prev_layer)]
+class Neuron:
+    def __init__(self, type = "neuron", prev_layer = 1, json_repr = None):
+        if json_repr != None:
+            self.type = json_repr["type"]
+            self.input_weights = json_repr["input_weights"]
+        else:
+            self.type = str(type)
+
+            if self.type != "input":
+                self.input_weights = [random.choice([0, 10 * (random.random()-0.5)]) for i in range(prev_layer)]
+            else:
+                self.input_weights = [10 * (random.random()-0.5) for i in range(prev_layer)]
+
+    def get_json_repr(self):
+        return {"type": self.type, "input_weights": self.input_weights}
 
     def __repr__(self):
         if self.type == "neuron":
@@ -14,21 +26,42 @@ class Neuron:
             return "< " + str(self.type) + " Neuron with input weights of " + str(self.input_weights) + ">"
 
 class Network:
-    def __init__(self, layers=[], neurons=[]):
-        self.layers = layers
-        self.layer_count = len(layers)
-        self.neurons = []
+    def __init__(self, layers = [], json_repr = ""):
+        if json_repr != "":
+            json_repr = literal_eval(json_repr)
+            self.layers = json_repr["layers"]
+            self.layer_count = len(self.layers)
 
-        for layer_no, layer in enumerate(layers):
-            self.neurons += [[]]
-            for neuron in range(layer):
-                if layer_no == 0:
-                    self.neurons[-1] += [Neuron(type="input")]
-                else:
-                    self.neurons[-1] += [Neuron(prev_layer=layers[layer_no - 1])]
+            self.neurons = []
+            for layer in json_repr["neurons"]:
+                self.neurons += [[]]
+                for neuron in layer:
+                    self.neurons[-1] += [Neuron(json_repr = neuron)]
+
+        else:
+            self.layers = layers
+            self.layer_count = len(layers)
+            self.neurons = []
+
+            for layer_no, layer in enumerate(layers):
+                self.neurons += [[]]
+                for neuron in range(layer):
+                    if layer_no == 0:
+                        self.neurons[-1] += [Neuron(type="input")]
+                    else:
+                        self.neurons[-1] += [Neuron(prev_layer=layers[layer_no - 1])]
 
     def get_architecture(self):
         return str(self.neurons)
+
+    def get_json_repr(self):
+        neurons = []
+        for layer in self.neurons:
+            neurons += [[]]
+            for neuron in layer:
+                neurons[-1] += [neuron.get_json_repr()]
+
+        return str({"layers": self.layers, "neurons": neurons})
 
     def get_layer_output(self, data, layer_no):
         if (len(data) != self.layers[layer_no]) and (len(data) != len(self.neurons[layer_no][0].input_weights)):
@@ -82,6 +115,10 @@ class Network:
             random_neuron = random.randint(0, len(self.neurons[random_layer]) - 1)
 
             random_position = random.randint(0, len(mutated.neurons[random_layer][random_neuron].input_weights) - 1)
+
+            #Ability to disable a neuron connection
+            if random.random() < 0.1 and random_layer != 0:
+                mutated.neurons[random_layer][random_neuron].input_weights[random_position] = 0
 
             mutated.neurons[random_layer][random_neuron].input_weights[random_position] += random.choice([-1, 1]) * random.choice([1, 0.1, 0.1, 0.1, 0.01])
 

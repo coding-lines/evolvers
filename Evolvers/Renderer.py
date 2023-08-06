@@ -37,7 +37,10 @@ class Renderer:
 
         return chunks_in_view
 
-    def render_world(self, screen, camera, world):
+    def render_world(self, screen, camera, world, water_background=True):
+        if water_background:
+            screen.fill(self.water_color)
+
         chunks_in_view = self.get_chunks_in_view(camera, world)
 
         tile_size = self.scaling * camera.z
@@ -51,6 +54,9 @@ class Renderer:
 
                 for x in range(chunk.size):
                     for y in range(chunk.size):
+                        if chunk.terrain[x][y] == -1 and water_background:
+                            continue
+                        
                         draw_x = (chunk_coords[0]) * chunk_pixel_size - camera.x * tile_size + x * tile_size
                         draw_y = (chunk_coords[1]) * chunk_pixel_size - camera.y * tile_size + y * tile_size
 

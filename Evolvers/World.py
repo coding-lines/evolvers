@@ -1,33 +1,61 @@
 import Chunk
 import CreatureManager
+import os
 import time
 
+from ast import literal_eval
+
 class World:
-    def __init__(self, size_limit=[0, 0], chunk_size = 12, regrowth_factor = 1, fertility_range_factor = 1, water_cover = 0.5, start_creatures=50, maintain_population=5):
+    def __init__(self, size_limit=[0, 0], chunk_size = 12, regrowth_factor = 1, fertility_range_factor = 1, water_cover = 0.5, start_creatures = 50, maintain_population = 5, file_name = ""):
 
-        #[0, 0] = unlimited
-        self.size_limit = size_limit
+        if file_name != "":
+            with open(os.path.join(file_name, "world.json"), "r") as f:
+                json_repr = literal_eval(f.read())
 
-        self.chunk_size = chunk_size
+            self.size_limit = json_repr["size_limit"]
 
-        self.tile_limit = [chunk_size * size_limit[0], chunk_size * size_limit[1]]
+            self.chunk_size = json_repr["chunk_size"]
 
-        #List of ALL generated chunk keys
-        self.generated_chunks = []
+            self.tile_limit = [self.chunk_size * self.size_limit[0], self.chunk_size * self.size_limit[1]]
 
-        #Loaded Chunk objects (key = x_y)
-        self.chunks = {}
+            self.regrowth_factor = json_repr["regrowth_factor"]
+            self.fertility_range_factor = json_repr["fertility_range_factor"]
+            self.water_cover = json_repr["water_cover"]
 
-        #Food regrowth rate (0 = food does not regrow, 1 = normal growth rate, 2 = 2x growth, ...)
-        self.regrowth_factor = regrowth_factor
+            self.generated_chunks = json_repr["generated_chunks"]
 
-        #Radius around water where the ground is fertile (-1 = ground is always fertile, 0 = no fertile ground, 1 = standard range, 2 = 2x range, ...)
-        self.fertility_range_factor = fertility_range_factor
+            self.chunks = {}
 
-        #Percentage of water in the world (-1 = automatic (random), 0 = no water, 1 = only water)
-        self.water_cover = water_cover
+            for chunk in self.generated_chunks:
+                self.chunks[chunk] = Chunk.Chunk(size = self.chunk_size)
+                self.chunks[chunk].load_from_file(os.path.join(file_name, chunk + ".json"))
 
-        self.creature_manager = CreatureManager.CreatureManager(self.tile_limit, start_creatures, maintain_population)
+            self.creature_manager = CreatureManager.CreatureManager(self.tile_limit, file_name = file_name)
+
+        else:
+            #[0, 0] = unlimited
+            self.size_limit = size_limit
+
+            self.chunk_size = chunk_size
+
+            self.tile_limit = [chunk_size * size_limit[0], chunk_size * size_limit[1]]
+
+            #List of ALL generated chunk keys
+            self.generated_chunks = []
+
+            #Loaded Chunk objects (key = x_y)
+            self.chunks = {}
+
+            #Food regrowth rate (0 = food does not regrow, 1 = normal growth rate, 2 = 2x growth, ...)
+            self.regrowth_factor = regrowth_factor
+
+            #Radius around water where the ground is fertile (-1 = ground is always fertile, 0 = no fertile ground, 1 = standard range, 2 = 2x range, ...)
+            self.fertility_range_factor = fertility_range_factor
+
+            #Percentage of water in the world (-1 = automatic (random), 0 = no water, 1 = only water)
+            self.water_cover = water_cover
+
+            self.creature_manager = CreatureManager.CreatureManager(self.tile_limit, start_creatures, maintain_population)
 
     def is_chunk_loaded(self, chunk):
         if chunk not in self.generated_chunks:
@@ -87,5 +115,22 @@ class World:
                 count += 1
 
 
-    def full_creature_iteration(self, speed = 1):
-        self = self.creature_manager.full_iteration(self, speed = speed)
+    def full_creature_iteration(self, speed = 1, override_dt = 0):
+        self = self.creature_manager.full_iteration(self, speed = speed, override_dt = override_dt)
+
+    def save_world_to(self, path):
+        metadata = {
+        "size_limit": self.size_limit,
+        "chunk_size": self.chunk_size,
+        "regrowth_factor": self.regrowth_factor,
+        "fertility_range_factor": self.fertility_range_factor,
+        "water_cover": self.water_cover,
+        "generated_chunks": self.generated_chunks
+        }
+        with open(os.path.join(path, "world.json"), "w") as f:
+            f.write(str(metadata))
+
+        for chunk_key in self.chunks.keys():
+            self.chunks[chunk_key].save_to(path, chunk_key)
+
+        self.creature_manager.save_to(path)
