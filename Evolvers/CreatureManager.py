@@ -59,6 +59,6 @@ class CreatureManager:
         self.creatures += new_creatures
 
         if len(self.creatures) < self.maintain_population:
-            self.creatures += [Creature.Creature(new=True, spawn_range = self.tile_limit[0] - 1)]
+            self.creatures += [Creature.Creature(new=True, spawn_range = min(self.tile_limit) - 1)]
 
         return world
