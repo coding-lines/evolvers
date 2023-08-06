@@ -5,7 +5,7 @@ class Neuron:
     def __init__(self, type="neuron", prev_layer=1):
         self.type = str(type)
 
-        self.input_weights = [random.random() for i in range(prev_layer)]
+        self.input_weights = [2 * (random.random()-0.5) for i in range(prev_layer)]
 
     def __repr__(self):
         if self.type == "neuron":
