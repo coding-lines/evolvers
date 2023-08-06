@@ -100,9 +100,9 @@ class World:
 
         return self.chunks[chunk]
 
-    def full_world_iteration(self, speed = 1):
+    def full_world_iteration(self, speed = 1, override_dt = 0):
         for chunk in self.chunks.keys():
-            self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor, speed = speed)
+            self.chunks[chunk].run_iteration(regrowth_factor = self.regrowth_factor, speed = speed, override_dt = override_dt)
 
     def visible_only_world_iteration(self, renderer, camera, speed = 1):
         visible = renderer.get_chunks_in_view(camera, self)

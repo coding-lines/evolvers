@@ -129,6 +129,7 @@ class Creature:
         self.generation = other.generation + 1
         self.age = 0
         self.ancestors = other.ancestors[:19] + [other.name]
+        self.children = []
 
         self.last_iteration = time.time()
 
@@ -139,6 +140,9 @@ class Creature:
         self.memory = 0
 
         self.energy = 100
+
+        other.children = other.children[:19] + [self.name]
+        return other
 
     def get_json_repr(self):
         brain_json = {}
@@ -295,6 +299,11 @@ class Creature:
                     elif self.y > world.size_limit[1] * world.chunk_size:
                         self.y = world.size_limit[1] * world.chunk_size - 1
                         self.energy -= 5
+
+                #Force reproduction when creature is hoarding energy
+                if self.energy > 1000 and not reproduce:
+                    reproduce = True
+                    self.energy -= 100
 
         self.last_iteration = time.time()
         return world, reproduce

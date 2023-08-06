@@ -32,7 +32,7 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Evolvers")
 
-test_world = World.World(size_limit=[6, 6], water_cover=0.4, start_creatures=200, maintain_population=10)
+test_world = World.World(size_limit=[6, 6], water_cover=0.4, start_creatures=200, maintain_population=30)
 #test_world = World.World(file_name = "save/world_test")
 cam = Camera.Camera()
 renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")

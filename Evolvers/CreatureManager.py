@@ -49,7 +49,7 @@ class CreatureManager:
 
         for i in reproducing:
             new_creatures += [Creature.Creature(new=False, spawn_range = min(self.tile_limit) - 1)]
-            new_creatures[-1].create_mutation_of(self.creatures[i])
+            self.creatures[i] = new_creatures[-1].create_mutation_of(self.creatures[i])
 
         death.reverse()
 
