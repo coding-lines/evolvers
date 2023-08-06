@@ -32,7 +32,7 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Evolvers")
 
-test_world = World.World(size_limit=[4,4], water_cover=0.2)
+test_world = World.World(size_limit=[5,5], water_cover=0.7)
 cam = Camera.Camera()
 renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
 
@@ -47,7 +47,7 @@ while open:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 4:
                 cam.z += 0.1 if cam.z < 10 else 0
-            else:
+            elif event.button == 5:
                 cam.z -= 0.1 if cam.z >= 0.2 else 0
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:

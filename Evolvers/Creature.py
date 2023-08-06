@@ -120,6 +120,12 @@ class Creature:
                 if self.brain_type == "neural_network":
                     changes = self.brain_storage.predict([self.energy, ground_is_water, ground_food, self.rotation, 1, self.memory])
 
+                    #Limit memory
+                    if changes[4] > 255:
+                        changes[4] = 255
+                    elif changes[4] < -255:
+                        changes[4] = -255
+
                     self.memory = changes[4]
 
                 else:
@@ -136,6 +142,9 @@ class Creature:
                     changes[1] = 5
                 elif changes[1] < 0:
                     changes[1] = 0
+
+
+                self.energy -= 0.25 * delta_time #Preventing creatures from doing nothing
 
                 self.energy -= changes[1] * delta_time
 
