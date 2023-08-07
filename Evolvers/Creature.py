@@ -84,7 +84,7 @@ class Creature:
 
             self.x = random.randint(0, spawn_range)
             self.y = random.randint(0, spawn_range)
-            self.rotation = random.randint(0, 359)
+            self.rotation = random.random()
 
             self.v_x = 0
             self.v_y = 0
@@ -121,7 +121,7 @@ class Creature:
 
         self.x = other.x
         self.y = other.y
-        self.rotation = random.randint(0, 359)
+        self.rotation = random.random()
 
         self.v_x = 0
         self.v_y = 0
@@ -197,9 +197,9 @@ class Creature:
                     ground_is_water,
                     ground_food,
                     self.rotation,
-                    int(math.floor(self.x - 2) >= world.size_limit[0] * world.chunk_size) if not borderless_world else 0,
+                    int(math.floor(self.x - 2) < 0) if not borderless_world else 0,
                     int(math.ceil(self.x + 2) >= world.size_limit[0] * world.chunk_size) if not borderless_world else 0,
-                    int(math.floor(self.y - 2) >= world.size_limit[1] * world.chunk_size) if not borderless_world else 0,
+                    int(math.floor(self.y - 2) < 0) if not borderless_world else 0,
                     int(math.ceil(self.y + 2) >= world.size_limit[1] * world.chunk_size) if not borderless_world else 0,
                     self.memory,
                     1
@@ -220,8 +220,8 @@ class Creature:
 
                 #Rotation change
                 self.rotation += changes[0] * delta_time
-                if self.rotation > 360 or self.rotation < 0:
-                    self.rotation = self.rotation % 360
+                if self.rotation > 1 or self.rotation < 0:
+                    self.rotation = self.rotation % 1
 
                 #Speed change
                 #Limit maximum speed
@@ -256,7 +256,7 @@ class Creature:
 
 
                 #PHYSICS
-                rotation_rad = self.rotation * (math.pi / 180)
+                rotation_rad = self.rotation * 2 * math.pi
 
                 acceleration_x = math.cos(rotation_rad)
                 acceleration_y = math.sin(rotation_rad)

@@ -69,11 +69,11 @@ while open:
     if pygame.key.get_pressed()[pygame.K_RIGHT]:
         cam.x += dt * cam.movement_speed
 
-    test_world.full_world_iteration(global_speed)
+    test_world.full_world_iteration(override_dt = dt if global_speed == 1 else global_speed * (1 / target_fps))
     #test_world.visible_only_world_iteration(renderer, cam, global_speed)
     #sped up iterations while converving accuracy
     for i in range(global_speed):
-        test_world.full_creature_iteration(override_dt = dt)
+        test_world.full_creature_iteration(override_dt = dt if global_speed == 1 else 1 / target_fps)
 
     renderer.render_world(screen, cam, test_world, water_background=True)
     renderer.render_creatures(screen, cam, test_world.creature_manager.creatures)
