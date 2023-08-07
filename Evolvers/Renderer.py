@@ -60,9 +60,11 @@ class Renderer:
                         draw_x = (chunk_coords[0]) * chunk_pixel_size - camera.x * tile_size + x * tile_size
                         draw_y = (chunk_coords[1]) * chunk_pixel_size - camera.y * tile_size + y * tile_size
 
-                        color = self.water_color if chunk.terrain[x][y] == -1 else self.mix_color(self.mix_color(self.grown, self.ungrown, chunk.food[x][y] / 10), self.infertile, chunk.terrain[x][y])
+                        #If tile is visible
+                        if draw_x + tile_size > 0 and draw_x < self.width and draw_y + tile_size > 0 and draw_y < self.height:
+                            color = self.water_color if chunk.terrain[x][y] == -1 else self.mix_color(self.mix_color(self.grown, self.ungrown, chunk.food[x][y] / 10), self.infertile, chunk.terrain[x][y])
 
-                        pygame.draw.rect(screen, color, [draw_x, draw_y, tile_size, tile_size])
+                            pygame.draw.rect(screen, color, [draw_x, draw_y, tile_size, tile_size])
 
         for n in range(math.ceil(self.height / tile_size)):
             pygame.draw.line(screen, [0, 0, 0], [0, (-camera.y % 1) * tile_size + n * tile_size], [self.width, (-camera.y % 1) * tile_size + n * tile_size])
@@ -78,8 +80,10 @@ class Renderer:
             size = round(((creature.energy + 50) * camera.z * self.scaling) // 250)
             pos = [round((creature.x - camera.x) * self.scaling * camera.z), round((creature.y - camera.y) * self.scaling * camera.z)]
 
-            pygame.draw.circle(screen, creature.background_color, pos, size + 2)
-            pygame.draw.circle(screen, creature.color, pos, size)
+            if pos[0] - size < self.width and pos[0] + size > 0 and pos[1] - size < self.height and pos[1] + size > 0:
 
-            name_label = font.render(creature.name, True, [255, 255, 255])
-            screen.blit(name_label, [pos[0] - (name_label.get_width() // 2), pos[1] + size])
+                pygame.draw.circle(screen, creature.background_color, pos, size + 2)
+                pygame.draw.circle(screen, creature.color, pos, size)
+
+                name_label = font.render(creature.name, True, [255, 255, 255])
+                screen.blit(name_label, [pos[0] - (name_label.get_width() // 2), pos[1] + size])
