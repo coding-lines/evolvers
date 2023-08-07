@@ -56,7 +56,7 @@ class Renderer:
                     for y in range(chunk.size):
                         if chunk.terrain[x][y] == -1 and water_background:
                             continue
-                        
+
                         draw_x = (chunk_coords[0]) * chunk_pixel_size - camera.x * tile_size + x * tile_size
                         draw_y = (chunk_coords[1]) * chunk_pixel_size - camera.y * tile_size + y * tile_size
 
@@ -76,7 +76,7 @@ class Renderer:
 
         for creature in creatures:
             size = round(((creature.energy + 50) * camera.z * self.scaling) // 250)
-            pos = [(creature.x - camera.x) * self.scaling * camera.z, (creature.y - camera.y) * self.scaling * camera.z]
+            pos = [round((creature.x - camera.x) * self.scaling * camera.z), round((creature.y - camera.y) * self.scaling * camera.z)]
 
             pygame.draw.circle(screen, creature.background_color, pos, size + 2)
             pygame.draw.circle(screen, creature.color, pos, size)
