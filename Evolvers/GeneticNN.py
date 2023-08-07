@@ -110,16 +110,20 @@ class Network:
     def mutate(self):
         mutated = copy.deepcopy(self)
 
-        for i in range(random.randint(1, 5)):
+        for i in range(random.randint(1, 10)):
             random_layer = random.randint(0, self.layer_count - 1)
             random_neuron = random.randint(0, len(self.neurons[random_layer]) - 1)
 
             random_position = random.randint(0, len(mutated.neurons[random_layer][random_neuron].input_weights) - 1)
 
             #Ability to disable a neuron connection
-            if random.random() < 0.1 and random_layer != 0:
+            if random.random() < 0.25 and random_layer != 0:
                 mutated.neurons[random_layer][random_neuron].input_weights[random_position] = 0
 
             mutated.neurons[random_layer][random_neuron].input_weights[random_position] += random.choice([-1, 1]) * random.choice([1, 0.1, 0.1, 0.1, 0.01])
+            if mutated.neurons[random_layer][random_neuron].input_weights[random_position] > 32768:
+                mutated.neurons[random_layer][random_neuron].input_weights[random_position] = 32768
+            elif mutated.neurons[random_layer][random_neuron].input_weights[random_position] < -32768:
+                mutated.neurons[random_layer][random_neuron].input_weights[random_position] = -32768
 
         return mutated

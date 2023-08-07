@@ -11,12 +11,12 @@ class CreatureProperties:
     def alter_color(color):
         value_to_change = random.randint(0,2)
 
-        color[value_to_change] += random.choice([-10, -5, 5, 10])
+        color[value_to_change] += random.choice([-20, -10, -1, 1, 10, 20])
 
         if color[value_to_change] > 255:
-            color[value_to_change] = 255
+            color[value_to_change] = int(random.random() * 50) + 200
         elif color[value_to_change] < 0:
-            color[value_to_change] = 0
+            color[value_to_change] = int(random.random() * 50)
 
         return color
 
@@ -193,7 +193,7 @@ class Creature:
                     borderless_world = world.size_limit == [0, 0]
 
                     brain_inputs = [
-                    self.energy,
+                    self.energy / 100,
                     ground_is_water,
                     ground_food,
                     self.rotation,
