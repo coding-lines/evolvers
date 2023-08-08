@@ -24,6 +24,9 @@ class CreatureManager:
             for i in range(start_creatures):
                 self.creatures += [Creature.Creature(new = True, spawn_range = min(self.tile_limit) - 1)]
 
+    def spawn_new_creatures(self, count):
+        for i in range(count):
+            self.creatures += [Creature.Creature(new = True, spawn_range = min(self.tile_limit) - 1)]
 
     def save_to(self, path):
         creatures_json = []
