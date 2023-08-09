@@ -65,3 +65,8 @@ class CreatureManager:
             self.creatures += [Creature.Creature(new=True, spawn_range = min(self.tile_limit) - 1)]
 
         return world
+
+    def deselect_all(self):
+        for creature in self.creatures:
+            if creature.selected:
+                creature.selected = False

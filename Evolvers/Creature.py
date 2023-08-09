@@ -62,6 +62,8 @@ class Creature:
                 self.children = json_repr["children"]
 
                 self.last_iteration = time.time()
+                self.last_inputs = []
+                self.selected = False
 
                 self.brain_type = json_repr["brain_type"]
 
@@ -98,6 +100,8 @@ class Creature:
             #Ancestors and children only stored as names. For children, only store direct children
 
             self.last_iteration = time.time()
+            self.last_inputs = []
+            self.selected = False
 
             self.brain_type = "neural_network" #Type of logic to execute on iteration
 
@@ -132,6 +136,8 @@ class Creature:
         self.children = []
 
         self.last_iteration = time.time()
+        self.last_inputs = []
+        self.selected = False
 
         self.brain_type = other.brain_type[:]
         if other.brain_type == "neural_network":
@@ -192,9 +198,9 @@ class Creature:
 
                     borderless_world = world.size_limit == [0, 0]
 
-                    brain_inputs = [
+                    self.last_inputs = [
                     self.energy / 100,
-                    ground_is_water,
+                    ground_type,
                     ground_food,
                     self.rotation,
                     int(math.floor(self.x - 2) < 0) if not borderless_world else 0,
@@ -205,7 +211,7 @@ class Creature:
                     1
                     ]
 
-                    changes = self.brain_storage.predict(brain_inputs)
+                    changes = self.brain_storage.predict(self.last_inputs)
 
                     #Limit memory
                     if changes[4] > 255:

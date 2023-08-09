@@ -7,14 +7,14 @@ class Neuron:
     def __init__(self, type = "neuron", prev_layer = 1, json_repr = None):
         if json_repr != None:
             self.type = json_repr["type"]
-            self.input_weights = json_repr["input_weights"]
+            if self.type != "input":
+                self.input_weights = json_repr["input_weights"]
         else:
             self.type = str(type)
 
             if self.type != "input":
                 self.input_weights = [random.choice([0, 10 * (random.random()-0.5)]) for i in range(prev_layer)]
-            else:
-                self.input_weights = [10 * (random.random()-0.5) for i in range(prev_layer)]
+
 
     def get_json_repr(self):
         return {"type": self.type, "input_weights": self.input_weights}
@@ -73,14 +73,7 @@ class Network:
         neuron_outputs = []
 
         if layer_no == 0:
-            for n_neuron, neuron in enumerate(self.neurons[layer_no]):
-                neuron_input = data[n_neuron]
-
-                neuron_output = neuron_input * neuron.input_weights[0]
-
-                neuron_outputs += [neuron_output]
-
-            return neuron_outputs
+            return data
 
         else:
             for neuron in self.neurons[layer_no]:
@@ -111,7 +104,7 @@ class Network:
         mutated = copy.deepcopy(self)
 
         for i in range(random.randint(1, 10)):
-            random_layer = random.randint(0, self.layer_count - 1)
+            random_layer = random.randint(1, self.layer_count - 1)
             random_neuron = random.randint(0, len(self.neurons[random_layer]) - 1)
 
             random_position = random.randint(0, len(mutated.neurons[random_layer][random_neuron].input_weights) - 1)

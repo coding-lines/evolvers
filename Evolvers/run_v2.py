@@ -51,32 +51,47 @@ while open:
                 cam.z += 0.1 if cam.z < 10 else 0
             elif event.button == 5:
                 cam.z -= 0.1 if cam.z >= 0.2 else 0
+            elif current_screen == "simulation":
+                pos = list(pygame.mouse.get_pos())
+                renderer.get_clicked(pos, cam, test_world.creature_manager.creatures)
 
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
-                global_speed += 1 if global_speed < 50 else 0
-            elif event.key == pygame.K_o:
-                global_speed -= 1 if global_speed > 1 else 0
-            elif event.key == pygame.K_F12:
-                test_world.save_world_to("save/world_test")
+            if current_screen == "simulation":
+                if event.key == pygame.K_p:
+                    global_speed += 1 if global_speed < 50 else 0
+                elif event.key == pygame.K_o:
+                    global_speed -= 1 if global_speed > 1 else 0
+                elif event.key == pygame.K_F12:
+                    test_world.save_world_to("save/world_test")
+                elif event.key == pygame.K_ESCAPE:
+                    if renderer.clicked_creature:
+                        renderer.clicked_creature = False
+                        test_world.creature_manager.deselect_all()
+                    else:
+                        current_screen = "escape_menu"
 
-    if pygame.key.get_pressed()[pygame.K_DOWN]:
-        cam.y += dt * cam.movement_speed
-    if pygame.key.get_pressed()[pygame.K_UP]:
-        cam.y -= dt * cam.movement_speed
-    if pygame.key.get_pressed()[pygame.K_LEFT]:
-        cam.x -= dt * cam.movement_speed
-    if pygame.key.get_pressed()[pygame.K_RIGHT]:
-        cam.x += dt * cam.movement_speed
+            elif current_screen == "escape_menu":
+                if event.key == pygame.K_ESCAPE:
+                    current_screen = "simulation"
 
-    test_world.full_world_iteration(override_dt = dt if global_speed == 1 else global_speed * (1 / target_fps))
-    #test_world.visible_only_world_iteration(renderer, cam, global_speed)
-    #sped up iterations while converving accuracy
-    for i in range(global_speed):
-        test_world.full_creature_iteration(override_dt = dt if global_speed == 1 else 1 / target_fps)
+    if current_screen == "simulation":
+        if pygame.key.get_pressed()[pygame.K_DOWN]:
+            cam.y += dt * cam.movement_speed
+        if pygame.key.get_pressed()[pygame.K_UP]:
+            cam.y -= dt * cam.movement_speed
+        if pygame.key.get_pressed()[pygame.K_LEFT]:
+            cam.x -= dt * cam.movement_speed
+        if pygame.key.get_pressed()[pygame.K_RIGHT]:
+            cam.x += dt * cam.movement_speed
 
-    renderer.render_world(screen, cam, test_world, water_background=True)
-    renderer.render_creatures(screen, cam, test_world.creature_manager.creatures)
+        test_world.full_world_iteration(override_dt = dt if global_speed == 1 else global_speed * (1 / target_fps))
+        #test_world.visible_only_world_iteration(renderer, cam, global_speed)
+        #sped up iterations while converving accuracy
+        for i in range(global_speed):
+            test_world.full_creature_iteration(override_dt = dt if global_speed == 1 else 1 / target_fps)
+
+        renderer.render_world(screen, cam, test_world, water_background=True)
+        renderer.render_creatures(screen, cam, test_world.creature_manager.creatures)
 
     pygame.display.flip()
 
