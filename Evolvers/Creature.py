@@ -25,7 +25,7 @@ class CreatureProperties:
         return [255, 255, 255] if brightness < 384 else [0, 0, 0]
 
     def get_random_name():
-        return creatureNames.createNameOfLength(7)
+        return CreatureNames.createNameOfLength(7)
 
     def alter_name(name):
         change_type = random.random()
@@ -33,8 +33,8 @@ class CreatureProperties:
             if len(name) > 3 and random.random() < 0.5:
                 return name[:-1] #Cut off one letter
             elif len(name) < 9:
-                return creatureNames.continueName(name)
-        return creatureNames.alterName(name)
+                return CreatureNames.continueName(name)
+        return CreatureNames.alterName(name)
 
 class Creature:
     def __init__(self, new = True, spawn_range=20, json_repr = ""):
