@@ -1,4 +1,4 @@
-import creatureNames
+import CreatureNames
 import math
 import random
 import time
