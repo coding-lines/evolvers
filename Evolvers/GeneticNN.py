@@ -19,7 +19,7 @@ class Neuron:
     def get_json_repr(self):
         if self.type != "input":
             return {"type": self.type, "input_weights": self.input_weights}
-        return {"type"; self.type}
+        return {"type": self.type}
 
     def __repr__(self):
         if self.type == "neuron":
