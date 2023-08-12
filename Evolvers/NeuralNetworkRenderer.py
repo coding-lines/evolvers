@@ -118,6 +118,6 @@ def render_nn(network, dimensions = [1024, 1024], inputs = None, background_colo
             elif layer == network.layer_count - 1 and len(output_labels) > node:
                 label_font = pygame.font.Font("font/PTSans-Regular.ttf", subrow_height // 2)
                 text = label_font.render(output_labels[node], min(dimensions) > 300, get_text_color(background_color))
-                surface.blit(text, [dimensions[1] - (1.5 * subcol_width - size // 2), y - text.get_height() // 2])
+                surface.blit(text, [dimensions[0] - (1.5 * subcol_width - size // 2), y - text.get_height() // 2])
 
     return surface
