@@ -2,18 +2,13 @@
 
 Evolution simulation inspired by <a href="https://www.youtube.com/watch?v=C9tWr1WUTuI"> the Evolv.io project from carykh </a> (<a href="https://github.com/carykh/EvolutionSimulator2D">original Github repo</a>) remade in Python using Pygame.
 
-#### <b> WARNING: </b> This is my original version from 2019 and 2020 (referred to v1 in documentation). The code is extremely bad and unreadable! 
-
-<i> (14-year-old me didn't really know what structuring was) </i>
+#### This is an early version of v2. For the original version from 2019 and 2020, switch to branch <code>v1</code>
 
 <br/>
 
-A reworked and restructured version (created in 2020, 2021 and 2023) will be uploaded soon.
-
-
 ## How to run
 
-#### Prerequisites: Python 3.6 or higher with pip installed
+#### Prerequisites: Python 3.7 or higher with pip installed
 
 ### Install the required packages
 
@@ -25,55 +20,7 @@ If you have multiple Python versions installed, you might have to specify the Py
 
 ### Run the GUI
 
-Open Evolvers/run.py
-
-### Optional: Configure language settings
-
-Once the GUI has been run at least once, the config file can be edited.
-
-Open <code>Evolvers/config.json</code> and change the <code>"language"</code> value.
-
-### Valid languages
-
-<table>
-    <tr>
-        <th>
-            Value
-        </th>
-        <th>
-            Language
-        </th>
-    </tr>
-    <tr>
-        <td>
-            <code>STD</code>
-        </td>
-        <td>
-            Default language baked into the python file (English, as long as unchanged)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <code>DE</code>
-        </td>
-        <td>
-            Deutsch / German
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <code>ENG</code>
-        </td>
-        <td>
-            English
-        </td>
-    </tr>
-</table>
-
-Additional languages can be implemented by creating a <code>[Language Code].lang</code> file by following the JSON-like structure in the other files and setting the config value to that language code.
-
-Evolvers will load the <code>STD</code> language if there is a syntax error in your language file.
-
+Open Evolvers/run_v2.py
 
 ## How to build
 
@@ -91,3 +38,4 @@ Building itself is as easy as running
 This will create a build for your current operating system under the <code>build/</code> subdirectory.
 Building takes less than a minute on a modern Windows PC, but can take over 30 minutes on low-power systems such as the Raspberry Pi.
 
+## More documentation will be added soon.
