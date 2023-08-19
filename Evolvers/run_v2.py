@@ -32,7 +32,7 @@ pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Evolvers")
 
-test_world = World.World(size_limit=[6, 6], water_cover=0.4, start_creatures=200, maintain_population=30)
+test_world = World.World(size_limit=[10, 10], water_cover=0.4, start_creatures=200, maintain_population=30)
 #test_world = World.World(file_name = "save/world_test")
 cam = Camera.Camera()
 renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
@@ -62,7 +62,14 @@ while open:
                 elif event.key == pygame.K_o:
                     global_speed -= 1 if global_speed > 1 else 0
                 elif event.key == pygame.K_F12:
+                    if not os.path.exists("save/world_test"):
+                        if not os.path.exists("save"):
+                            os.mkdir("save")
+                        os.mkdir("save/world_test")
                     test_world.save_world_to("save/world_test")
+                elif event.key == pygame.K_F11:
+                    if os.path.exists("save/world_test"):
+                        test_world = World.World(file_name = "save/world_test")
                 elif event.key == pygame.K_ESCAPE:
                     if renderer.clicked_creature:
                         renderer.clicked_creature = False

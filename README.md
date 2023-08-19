@@ -4,7 +4,6 @@ Evolution simulation inspired by <a href="https://www.youtube.com/watch?v=C9tWr1
 
 #### This is an early version of v2. For the original version from 2019 and 2020, switch to branch <code>v1</code>
 
-<br/>
 
 ## How to run
 
