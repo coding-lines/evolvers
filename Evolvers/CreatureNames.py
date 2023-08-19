@@ -20,6 +20,12 @@ def continueName(name):
         return name + choice(vowels)
         #Verwendet Vokal, wenn kein Vokal in den letzten zwei Buchstaben
 
+def createNameOfLength(length):
+    name = newName()
+    for i in range(int(length)-2):
+        name = continueName(name)
+    return name
+
 def alterName(name): #Generiert eine leicht veränderte Version eines Namens
     alteredLetter = choice(range(len(list(name))-1))+1
     if list(name)[alteredLetter] in vowels:
@@ -29,5 +35,3 @@ def alterName(name): #Generiert eine leicht veränderte Version eines Namens
         name = list(name)
         name[alteredLetter] = choice(consonants)
     return "".join(name)
-
-
