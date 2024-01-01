@@ -82,14 +82,7 @@ while open:
                     current_screen = "simulation"
 
     if current_screen == "simulation":
-        if pygame.key.get_pressed()[pygame.K_DOWN]:
-            cam.y += dt * cam.movement_speed
-        if pygame.key.get_pressed()[pygame.K_UP]:
-            cam.y -= dt * cam.movement_speed
-        if pygame.key.get_pressed()[pygame.K_LEFT]:
-            cam.x -= dt * cam.movement_speed
-        if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            cam.x += dt * cam.movement_speed
+        cam.update(pygame.key.get_pressed(), dt)
 
         test_world.full_world_iteration(override_dt = dt if global_speed == 1 else global_speed * (1 / target_fps))
         #test_world.visible_only_world_iteration(renderer, cam, global_speed)
