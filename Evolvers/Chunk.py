@@ -57,7 +57,7 @@ class Chunk:
                     last_x = ChunkConverters.terrain_value_to_tile_type(border["-x"][y])
                 elif x == self.size - 1 and "+x" in borders.keys():
                     last_x = ChunkConverters.terrain_value_to_tile_type(border["+x"][y])
-                elif x != 0 and x != self.size -1 and y != 0:
+                elif x != 0 and x != self.size - 1 and y != 0:
                     last_x = self.terrain[x][y-1]
                 else:
                     #If no directly attached generated tile exists, randomize the tile
@@ -65,18 +65,16 @@ class Chunk:
 
                 #Get the nearest generated tile on the y-axis
                 if y == 0 and "-y" in borders.keys():
-                    last_y = ChunkConverters.terrain_value_to_tile_type(border["-y"][y])
+                    last_y = ChunkConverters.terrain_value_to_tile_type(border["-y"][x])
                 elif y == self.size - 1 and "+y" in borders.keys():
-                    last_y = ChunkConverters.terrain_value_to_tile_type(border["+y"][y])
-                elif y != 0 and y != self.size -1 and x != 0:
+                    last_y = ChunkConverters.terrain_value_to_tile_type(border["+y"][x])
+                elif y != 0 and y != self.size - 1 and x != 0:
                     last_y = self.terrain[x-1][y]
                 else:
                     #If no directly attached generated tile exists, randomize the tile
                     last_y = ChunkConverters.boolean_to_tile_type(random.random() > water_cover)
 
-                random_tile = ChunkConverters.boolean_to_tile_type(random.random() > water_cover)
-
-                self.terrain[x] += [random.choice([last_x, last_y, random_tile])]
+                self.terrain[x] += [random.choice([last_x, last_y])]
 
         #Basic world smoothing (needs rework for chunk border cases)
         for smoothing_step in range(3):
