@@ -79,8 +79,6 @@ class Renderer:
 
         font = pygame.font.Font(self.font, round(camera.z * 40))
 
-        max_energy = 0
-
         for creature in creatures:
             size = round(((creature.energy + 50) * camera.z * self.scaling) // 250)
             pos = [round((creature.x - camera.x) * self.scaling * camera.z), round((creature.y - camera.y) * self.scaling * camera.z)]
@@ -93,23 +91,19 @@ class Renderer:
                 name_label = font.render(creature.name, True, [255, 255, 255])
                 screen.blit(name_label, [pos[0] - (name_label.get_width() // 2), pos[1] + size])
 
-            #max_energy = max(max_energy, creature.energy)
-
         if self.clicked_creature:
             selected_creature = None
             for creature in creatures:
                 if creature.selected:
                     selected_creature = creature
                     break
-            #    if creature.energy == max_energy:
-            #        selected_creature = creature
-            #        break
+
             if selected_creature != None:
 
                 input_labels = ["Energy", "Ground", "Food", "Rotation", "-x Border", "+x Border", "-y Border", "+y Border", "Memory", "Const"]
                 output_labels = ["Rotation", "Acceleration", "Eat", "Reproduce", "Memory"]
 
-                screen.blit(NeuralNetworkRenderer.render_nn(selected_creature.brain_storage, dimensions = [500, 500], inputs = selected_creature.last_inputs or None, input_labels = input_labels, output_labels = output_labels, background_color = [100, 120, 150, 150]), [0,0])
+                screen.blit(NeuralNetworkRenderer.render_nn(selected_creature.brain_storage, dimensions = [max(500, self.width // 4), self.height], inputs = selected_creature.last_inputs or None, input_labels = input_labels, output_labels = output_labels, background_color = [100, 120, 150, 150]), [0,0])
             else:
                 self.clicked_creature = False
 

@@ -3,21 +3,11 @@ import time, os
 
 from ast import literal_eval
 
-import Camera, World, Renderer
+import Camera, World, SimulationRenderer, UIRenderer
 
 def readfile(name):
     with open(name,"rb") as f:
         return f.read().decode("utf-8")
-
-
-class const:
-    WHITE = [255,255,255]
-    BLACK = [0,0,0]
-    LIGHT_GREY = [200,200,200]
-    GREY = [100,100,100]
-    DARK_GREY = [50,50,50]
-    RED = [255,0,0]
-    GREEN = [0,200,0]
 
 dimensions = [1280,720]
 target_fps = 60
@@ -35,7 +25,8 @@ pygame.display.set_caption("Evolvers")
 test_world = World.World(size_limit=[10, 10], water_cover=0.4, start_creatures=200, maintain_population=30)
 #test_world = World.World(file_name = "save/world_test")
 cam = Camera.Camera()
-renderer = Renderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
+renderer = SimulationRenderer.Renderer(dimensions, "font/PTSans-Regular.ttf")
+ui_renderer = UIRenderer.UIRenderer(dimensions, "font/PTSans-Regular.ttf")
 
 dt = 0
 global_speed = 1
@@ -46,6 +37,7 @@ while open:
     for event in events:
         if event.type == pygame.QUIT:
             open = False
+
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 4:
                 cam.z += 0.1 if cam.z < 10 else 0
@@ -92,6 +84,9 @@ while open:
 
         renderer.render_world(screen, cam, test_world, water_background=True)
         renderer.render_creatures(screen, cam, test_world.creature_manager.creatures)
+
+    else:
+        ui_renderer.render_menu(screen)
 
     pygame.display.flip()
 
