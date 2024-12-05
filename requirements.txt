@@ -1,3 +1,2 @@
 pygame >= 2.0.0, != 2.3.0
 #Pygame 2.3.0 causes visual glitches due to https://github.com/pygame/pygame/issues/3778
-Pillow >= 9.5.0
